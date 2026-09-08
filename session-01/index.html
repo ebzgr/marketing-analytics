@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Session 1 · Introduction &amp; Segmentation · Marketing Analytics</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css"/>
+  <link rel="stylesheet" href="../css/theme.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/monokai.css"/>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+<section class="title-slide">
+
+  <img class="essec-logo" src="../assets/essec-logo.svg" alt="ESSEC Business School"/>
+  <p class="eyebrow">AIDAMS · Marketing Analytics</p>
+  <h1>Session 1</h1>
+  <p class="subtitle">Introduction &amp; Segmentation</p>
+
+</section>
+
+<section>
+<h2>About me</h2>
+
+  <div class="two-col single">
+    <div>
+      <p class="lead">Let us get to know each other first</p>
+      <ul>
+        <li>My name is Ebrahim (Ebi) Barzegary</li>
+        <li>PhD in Marketing from University of Washington</li>
+        <li>Worked as Business Analysis Manager / Data Scientist</li>
+        <li>Expert in computer science &amp; engineering — algorithm design</li>
+      </ul>
+    </div>
+  </div>
+
+</section>
+
+<section>
+<h2>I want to get to know you</h2>
+
+  <p class="lead">Raise your hand if…</p>
+  <ul>
+    <li class="fragment">You want to be an <strong>engineer</strong></li>
+    <li class="fragment">…a <strong>consultant</strong></li>
+    <li class="fragment">…a <strong>researcher</strong></li>
+    <li class="fragment">…an <strong>entrepreneur</strong></li>
+    <li class="fragment">…a <strong>data scientist</strong></li>
+    <li class="fragment">You have already developed a software idea</li>
+    <li class="fragment">You want to specialize in marketing</li>
+  </ul>
+
+</section>
+
+<section class="section-slide">
+
+  <p class="eyebrow">Part A</p>
+  <h1>An introduction to<br/>Marketing Analytics</h1>
+
+</section>
+
+<section class="media-heavy">
+<h2>What is marketing?</h2>
+<div class="image-grid">
+<img src="assets/image8.jpeg" alt="Boston Market coupon"/>
+<img src="assets/image10.jpeg" alt="BMW logo"/>
+<img src="assets/image11.jpeg" alt="McDonald's logo"/>
+<img src="assets/image12.jpeg" alt="Coca-Cola logo"/>
+<img src="assets/image13.jpg" alt="Email overload"/>
+<img src="assets/image14.jpeg" alt="Salvation Army promotion"/>
+</div>
+</section>
+
+<section class="quote-slide">
+
+  <p class="eyebrow">Marketing</p>
+  <h2 class="quote-line">Marketing is all about identifying (or creating), getting and keeping customers, <em>profitably</em>.</h2>
+
+</section>
+
+<section>
+<h2>Consequences of this definition</h2>
+
+  <ul>
+    <li class="fragment">This framing makes <strong>exploitation and manipulation</strong> possible</li>
+    <li class="fragment">It is based on a <strong>push</strong> strategy — firms create demand and push products toward customers</li>
+    <li class="fragment">Customer needs can be secondary to what the firm wants to sell</li>
+  </ul>
+
+</section>
+
+<section class="quote-slide">
+
+  <p class="eyebrow">An alternative definition</p>
+  <h2 class="quote-line">Marketing is the science of identifying customer needs, satisfying them, and sharing the created value.</h2>
+
+</section>
+
+<section>
+<h2>How marketing has changed</h2>
+
+  <ul>
+    <li class="fragment"><strong>Marketing as an art</strong>
+      <ul>
+        <li>Based on the intuition of the marketer / business owner</li>
+        <li>No way for measuring its effectiveness</li>
+      </ul>
+    </li>
+    <li class="fragment"><strong>More systematic marketing</strong>
+      <ul>
+        <li>An effort to make marketing more systematic</li>
+        <li>Techniques become ineffective, isolated after a while</li>
+      </ul>
+    </li>
+    <li class="fragment"><strong>An evolving learning algorithm</strong>
+      <ul>
+        <li>Focus on changing customer preferences</li>
+        <li>Focus on personalization</li>
+        <li>Constant measurement, experimentation, and change</li>
+        <li>Only possible in the current data-driven era</li>
+      </ul>
+    </li>
+  </ul>
+
+</section>
+
+<section>
+<h2>Marketing in the data era</h2>
+
+  <ul>
+    <li>Advances in data gathering, processing, and experimentation techniques</li>
+  </ul>
+
+  <ul class="spaced-block fragment">
+    <li><strong>We can constantly see what works</strong>
+      <ul>
+        <li>Real-time measurement of KPI</li>
+        <li>Experimentation possibilities</li>
+        <li>Especially possible in the digital environment</li>
+      </ul>
+    </li>
+    <li class="fragment"><strong>We have huge data on consumers</strong>
+      <ul>
+        <li>We can predict their behavior</li>
+      </ul>
+    </li>
+    <li class="fragment"><strong>Marketing techniques are designed by machines</strong>
+      <ul>
+        <li>We can constantly change / personalize marketing interventions</li>
+      </ul>
+    </li>
+  </ul>
+
+</section>
+
+<section class="discussion-slide">
+<h2>Can you give some examples of data-driven marketing in your daily life?</h2>
+</section>
+
+<section>
+<h2>Three modeling paradigms</h2>
+
+  <p class="lead">Business questions fall into three groups</p>
+  <div class="cards three">
+    <div class="card">
+      <h3>Descriptive</h3>
+      <p>Describe and visualize data; find relations.</p>
+      <p class="meta">Methods: visualization, PCA, perceptual maps</p>
+      <p class="meta">Apps: segmentation, positioning, competition</p>
+      <p class="tag">Mostly unsupervised ML</p>
+    </div>
+    <div class="card fragment">
+      <h3>Predictive</h3>
+      <p>Predict outcomes such as purchase / click.</p>
+      <p class="meta">Methods: CART, XGBoost, …</p>
+      <p class="meta">Apps: CTR, targeting, retention</p>
+    </div>
+    <div class="card fragment">
+      <h3>Causal / Inferential</h3>
+      <p>Did marketing decision X cause outcome Y?</p>
+      <p class="meta">Methods: A/B tests, regression</p>
+      <p class="meta">Apps: ad/price effectiveness, budgeting, profit</p>
+    </div>
+  </div>
+
+</section>
+
+<section>
+<h2>Analytical approach to marketing</h2>
+
+  <div class="flow-diagram">
+    <div class="flow-node">Consumer Data</div>
+    <div class="flow-v"></div>
+    <div class="flow-node">Statistical Analysis</div>
+    <div class="flow-branch">
+      <div class="flow-leaf"><div class="flow-node">Descriptive Analysis</div></div>
+      <div class="flow-leaf"><div class="flow-node">Predictive Analysis</div></div>
+      <div class="flow-leaf"><div class="flow-node">Causal / Inferential Analysis</div></div>
+    </div>
+    <div class="flow-optimize">
+      <div class="flow-optimize-label">Optimization →</div>
+      <div class="flow-ps">
+        <div class="flow-node">Product</div>
+        <div class="flow-node">Price</div>
+        <div class="flow-node">Promotion</div>
+        <div class="flow-node">Place (distribution)</div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+<section>
+<h2>In this class</h2>
+
+  <ul>
+    <li>Focus on analytics for the <strong>4 Ps</strong> — Product, Pricing, Place, and Promotion / Advertising</li>
+    <li class="fragment">Cover all three modeling paradigms across business applications</li>
+    <li class="fragment">Eventual goal: given a business problem, provide a clean data-driven solution</li>
+    <li class="fragment">Requires conceptual understanding <em>and</em> hands-on work</li>
+    <li class="fragment highlight">A good data scientist knows <strong>why</strong>, not just how — you will see this in interviews</li>
+  </ul>
+
+</section>
+
+<section class="section-slide">
+
+  <p class="eyebrow">Logistics</p>
+  <h1>Course logistics</h1>
+
+</section>
+
+<section>
+<h2>Class format</h2>
+
+  <div class="cards two">
+    <div class="card">
+      <h3>1. Lectures</h3>
+      <ul>
+        <li>Start with managerial questions</li>
+        <li>Discuss why the questions matter</li>
+        <li>Statistical methods to answer them</li>
+      </ul>
+    </div>
+    <div class="card fragment">
+      <h3>2. In-class consulting</h3>
+      <ul>
+        <li>Usually the second half of class</li>
+        <li>Apply methods on real-ish problems</li>
+      </ul>
+    </div>
+  </div>
+
+</section>
+
+<section>
+<h2>In-class consulting projects</h2>
+
+  <div class="two-col">
+    <div>
+      <h3>What?</h3>
+      <ul>
+        <li>Short analytics consulting projects during class</li>
+        <li>Application of concepts just learned</li>
+        <li>Individual or pairs</li>
+        <li><strong>Not graded, but submission required</strong></li>
+      </ul>
+    </div>
+    <div>
+      <h3 class="fragment">How / Why?</h3>
+      <ul class="fragment">
+        <li>Bring a laptop + stable internet</li>
+        <li>Google Colab account</li>
+        <li>Download materials from Moodle</li>
+        <li>Real applications that prepare you for assignments</li>
+      </ul>
+    </div>
+  </div>
+
+</section>
+
+<section>
+<h2>Evaluation</h2>
+
+  <div class="cards two">
+    <div class="card accent">
+      <h3>6 mini quizzes · 15%</h3>
+      <ul>
+        <li>Short quizzes to keep attention</li>
+        <li>Typically at the start of the second half of class</li>
+      </ul>
+    </div>
+    <div class="card accent fragment">
+      <h3>5 assignments · 85%</h3>
+      <ul>
+        <li>Mix of individual and group work</li>
+        <li>Download / manipulate data, run Python, recommend</li>
+        <li>~4–6 hours each on average</li>
+        <li>Each builds on an in-class consulting task</li>
+        <li>Delivered as a Google Colab notebook</li>
+      </ul>
+    </div>
+  </div>
+
+</section>
+
+<section>
+<h2>Assignment discussion board</h2>
+
+  <ul>
+    <li>Need clarifications? Post in the <strong>class forum</strong></li>
+    <li>Do not email me unless it is a personal issue</li>
+  </ul>
+  <p class="lead fragment">Why?</p>
+  <ul class="fragment">
+    <li>Many students have the same questions</li>
+    <li>Keeps everyone on equal footing</li>
+    <li>Lets students answer each other and learn collaboratively</li>
+  </ul>
+
+</section>
+
+<section>
+<h2>Class participation bonus</h2>
+
+  <p class="lead">Reward constructive, consistent contributions</p>
+  <div class="cards two">
+    <div class="card">
+      <h3>In class</h3>
+      <p>Ask thoughtful questions, share insights</p>
+    </div>
+    <div class="card fragment">
+      <h3>Class forum</h3>
+      <p>Answer peers, clarify concepts, share useful resources</p>
+    </div>
+  </div>
+
+</section>
+
+<section>
+<h2>Generative AI policy</h2>
+
+  <div class="cards two">
+    <div class="card">
+      <h3>Encouraged</h3>
+      <ul>
+        <li>AI will be part of your work environment — learn it</li>
+        <li>Use it to learn and go beyond what you already know</li>
+      </ul>
+    </div>
+    <div class="card fragment">
+      <h3>Caveats</h3>
+      <ul>
+        <li>AI can be wrong — and confident</li>
+        <li>Assistant / helper, not replacer</li>
+        <li>Ask it to explain code; get step-by-step guidance</li>
+        <li>I expect you to know your code and edit it if asked</li>
+      </ul>
+    </div>
+  </div>
+
+</section>
+
+<section>
+<h2>Google Colab</h2>
+
+  <ul>
+    <li>Submit assignments as a Python notebook link (Google Colab)</li>
+    <li>Share the Colab notebook with me</li>
+  </ul>
+  <h3 class="fragment">Coding best practices</h3>
+  <ul class="fragment">
+    <li>Short, useful comments</li>
+    <li>Modular (function-based) programming</li>
+  </ul>
+
+</section>
+
+<section class="discussion-slide section-slide">
+
+  <h1>Any questions about<br/>class logistics?</h1>
+
+</section>
+
+<section class="section-slide">
+
+  <p class="eyebrow">Part B</p>
+  <h1>Segmentation</h1>
+
+</section>
+
+<section>
+<h2>Managerial questions</h2>
+
+  <ul>
+    <li>How do I segment customers into groups?
+      <ul>
+        <li>Different needs / preferences across groups</li>
+        <li>People in the same group are fairly similar</li>
+      </ul>
+    </li>
+    <li class="fragment">How can I target each group?
+      <ul>
+        <li>Where to find them</li>
+        <li>Best advertising approach for them</li>
+      </ul>
+    </li>
+  </ul>
+
+</section>
+
+<section>
+<h2>Why segmentation</h2>
+
+  <p class="lead">A company deals with hundreds, thousands, even millions of customers/prospects every day</p>
+
+  <ul>
+    <li class="fragment"><strong>You cannot treat them all the same way</strong>
+      <ul>
+        <li>They have different needs, wants, profiles, profit potential</li>
+      </ul>
+    </li>
+    <li class="fragment"><strong>You cannot treat them all differently</strong>
+      <ul>
+        <li>They are too many</li>
+        <li>A company rarely has enough resources/capabilities to customize everything (product, offer, price, communication) with everyone</li>
+      </ul>
+    </li>
+  </ul>
+
+</section>
+
+<section class="quote-slide">
+
+  <p class="eyebrow">Definition</p>
+  <h2 class="quote-line">Segmentation is categorizing customers into groups so that customers within a segment are <em>similar enough</em> to be treated similarly, yet <em>different enough</em> from other segments to be worth differentiating.</h2>
+
+</section>
+
+<section class="discussion-slide">
+
+  <h2>What are some examples of segmentation you are exposed to every day?</h2>
+
+</section>
+
+<section>
+<h2>What is a good segmentation</h2>
+
+  <ul>
+    <li class="fragment"><strong>Distinct from the other segments</strong>
+      <ul>
+        <li>Homogeneous</li>
+        <li>If two segments look alike, don’t split them</li>
+        <li>If not homogeneous within, same treatment fails</li>
+      </ul>
+    </li>
+    <li class="fragment"><strong>Identifiable</strong>
+      <ul>
+        <li>Not only conceptual — also operational</li>
+        <li>Hard to identify/target → low value</li>
+      </ul>
+    </li>
+    <li class="fragment"><strong>Substantial</strong>
+      <ul>
+        <li>Not only about headcount</li>
+        <li>Worth treating separately</li>
+      </ul>
+    </li>
+    <li class="fragment"><strong>Useful, operational, and informative</strong>
+      <ul>
+        <li>Too many segments kill the purpose</li>
+        <li>What does it teach for strategy?</li>
+      </ul>
+    </li>
+  </ul>
+
+</section>
+
+<section class="media-heavy">
+<h2>What is the optimal way of segmenting a deck of cards?</h2>
+
+  <img src="assets/image16.jpeg" alt="Deck of cards" class="hero-img"/>
+
+</section>
+
+<section class="quote-slide">
+
+  <div class="quote-hero">
+    <p class="eyebrow">Takeaway</p>
+    <h2 class="quote-line">There is no such thing as an <em>optimal</em> segmentation.</h2>
+    <p class="subtitle">But some segmentations are good — and appropriate for a specific purpose.</p>
+  </div>
+
+</section>
+
+<section>
+<h2>Uses of segmentation (short term)</h2>
+
+  <ul>
+    <li><strong>Resource allocation</strong> — salesforce, call planning, direct marketing</li>
+    <li><strong>Communication</strong> — different email templates per segment</li>
+    <li><strong>Pricing</strong> — different prices to different segments</li>
+    <li><strong>Promotions</strong> — e.g., back-to-school to students</li>
+  </ul>
+
+</section>
+
+<section>
+<h2>Uses of segmentation (long term)</h2>
+
+  <ul>
+    <li><strong>Strategic positioning</strong> — enter a new market with limited resources</li>
+    <li><strong>Product development</strong> — design for a segment; find niches</li>
+    <li><strong>Emerging needs</strong> — identify today’s small groups that may represent future mass demand</li>
+  </ul>
+
+</section>
+
+<section class="process-slide">
+<h2>Managing segmentation</h2>
+
+  <ol class="process">
+    <li>Define segmentation problem</li>
+    <li>Identify data needs</li>
+    <li>Conduct market research</li>
+    <li>Build segmentation database</li>
+    <li>Define market segments</li>
+    <li>Describe market segments</li>
+    <li>Implement results</li>
+  </ol>
+  <img src="assets/image17.gif" alt="Segmentation process" class="side-img"/>
+
+</section>
+
+<section>
+<h2>1. Define the segmentation problem</h2>
+
+  <div class="cards two">
+    <div class="card">
+      <h3>Internal assessment</h3>
+      <ul>
+        <li>Objective(s) of segmentation? <em>(critical)</em></li>
+        <li>Resources? Constraints?</li>
+      </ul>
+    </div>
+    <div class="card fragment">
+      <h3>Database review</h3>
+      <ul>
+        <li><strong>Primary:</strong> data we own</li>
+        <li><strong>Secondary:</strong> partners / public</li>
+        <li><strong>Third-party:</strong> data we buy</li>
+      </ul>
+    </div>
+  </div>
+
+</section>
+
+<section>
+<h2>2. Identify data needs</h2>
+
+  <p>What data best answers the business problem?</p>
+  <ul>
+    <li>Socio-demographic / firmographic?</li>
+    <li>Past behavior, purchases, scanner, online footprints, IoT usage?</li>
+    <li>Deep needs, benefits sought, perceptions?</li>
+  </ul>
+  <div class="decision fragment">
+    <div><strong>Have the data?</strong> → Database marketing (usually behavioral)</div>
+    <div><strong>No?</strong> → Market research on a sample, then leverage insights</div>
+  </div>
+
+</section>
+
+<section>
+<h2>3. Conduct market research (if needed)</h2>
+
+  <div class="cards two">
+    <div class="card">
+      <h3>Qualitative</h3>
+      <ul>
+        <li>Interviews, sources, materials</li>
+        <li>“Deep needs” identification</li>
+        <li>Decision-making process</li>
+        <li>Which criteria / questions?</li>
+      </ul>
+    </div>
+    <div class="card fragment">
+      <h3>Quantitative</h3>
+      <ul>
+        <li>Sample design</li>
+        <li>Questionnaire development</li>
+        <li>Data collection</li>
+      </ul>
+    </div>
+  </div>
+
+</section>
+
+<section>
+<h2>4. Build the segmentation database</h2>
+
+  <div class="cards two">
+    <div class="card">
+      <h3>1. Segmentation variables (bases)</h3>
+      <p>Why segments differ: needs, wants, benefits, usage situation, usage rate, decision processes, past behavior</p>
+      <p class="meta">Use for product / service design · use only these for clustering</p>
+    </div>
+    <div class="card fragment">
+      <h3>2. Discriminant variables (descriptors)</h3>
+      <p>How to find / reach segments: age, income, education, lifestyles, media habits, firmographics…</p>
+      <p class="meta">Use for targeting and advertising</p>
+    </div>
+  </div>
+
+</section>
+
+<section>
+<h2>5/6. Define &amp;amp; describe segments</h2>
+
+  <ul>
+    <li><strong>How many?</strong> Not too many / not too few — functional and intuitive</li>
+    <li><strong>How defined?</strong> Segmentation variables — name each segment</li>
+    <li><strong>How reached?</strong> Discriminant variables / descriptors</li>
+  </ul>
+
+</section>
+
+<section>
+<section class="section-slide">
+
+  <p class="eyebrow">Case</p>
+  <h1>The Obama Campaign</h1>
+  <p class="subtitle">Segmentation in action</p>
+
+</section>
+<section>
+<h2>Step 1 · Deep needs survey</h2>
+
+  <ul>
+    <li>Large US survey · ~3,000 respondents · ~140 questions</li>
+    <li>Deep needs, beliefs, values (future, success, priorities, environment…)</li>
+    <li>Past party vote</li>
+  </ul>
+
+</section>
+<section>
+<h2>Step 2 · Segmentation</h2>
+
+  <ul>
+    <li>Found 5 segments, e.g.
+      <ul>
+        <li>“Extending opportunities to others” (37%)</li>
+        <li>“Working within the community”</li>
+        <li>“Achieving independence”</li>
+        <li>“Focusing on family”</li>
+        <li>“Defending righteousness” (16%)</li>
+      </ul>
+    </li>
+  </ul>
+
+</section>
+<section>
+<h2>Step 3 · Focus on swing voters</h2>
+
+  <ul>
+    <li><strong>Extending opportunities…</strong> — Democrats; no need to convince</li>
+    <li><strong>Defending righteousness</strong> — hard Republicans; don’t bother</li>
+    <li class="fragment"><strong>Swing potential:</strong> community / independence / family</li>
+  </ul>
+
+</section>
+<section>
+<h2>Step 4 · Discriminant analysis</h2>
+
+  <ul>
+    <li>Bought descriptor data (ChoicePoint, Acxiom, …)</li>
+    <li>Tax / court / shopping / lifestyle data on millions of Americans</li>
+    <li class="fragment">Predict segment membership from descriptors</li>
+  </ul>
+  <div class="cards two fragment">
+    <div class="card"><h3>More Democrat-leaning signals</h3><p>Cat · sushi · Apple computer · …</p></div>
+    <div class="card"><h3>More Republican-leaning signals</h3><p>Dog · Pontiac · gun · church · …</p></div>
+  </div>
+
+</section>
+<section>
+<h2>Step 5 · Targeting (mail)</h2>
+
+  <div class="two-col">
+    <div>
+      <p>Tight race in eastern North Carolina</p>
+      <ul>
+        <li>Buy ~20,000 addresses likely in “Working within the community”</li>
+        <li>Send tailored direct mail about helping local community groups</li>
+      </ul>
+    </div>
+    <div><img src="assets/image18.jpg" alt="Direct mail targeting" class="hero-img"/></div>
+  </div>
+
+</section>
+<section>
+<h2>Step 5 · Targeting (TV)</h2>
+
+  <div class="two-col">
+    <div>
+      <ul>
+        <li>Check TV programs “Focusing on family” watches</li>
+        <li>Buy spots; advertise children’s education / family welfare</li>
+      </ul>
+    </div>
+    <div><img src="assets/image19.png" alt="TV targeting" class="hero-img"/></div>
+  </div>
+
+</section>
+</section>
+
+<section>
+<section class="section-slide">
+
+  <p class="eyebrow">Method</p>
+  <h1>K-means clustering</h1>
+  <p class="subtitle">A segmentation algorithm</p>
+
+</section>
+<section>
+<h2>Introduction to K-means</h2>
+
+  <ul>
+    <li>Unsupervised ML: no outcome Y — only features X</li>
+    <li>Partition data into K distinct, non-overlapping clusters</li>
+    <li class="fragment"><strong>Marketing apps:</strong> customer segmentation; behavior patterns; behaviors that lead to churn</li>
+  </ul>
+
+</section>
+<section>
+<h2>How K-means works</h2>
+
+  <ol>
+    <li><strong>Initialize:</strong> choose K; pick K centroids</li>
+    <li><strong>Assign:</strong> each point to nearest centroid</li>
+    <li><strong>Update:</strong> centroid = mean of its points</li>
+    <li><strong>Repeat</strong> until centroids stabilize</li>
+  </ol>
+
+</section>
+<section>
+<h2>A visualization of K-means</h2>
+
+  <div class="kmeans-demo" data-kmeans-demo>
+    <canvas class="kmeans-canvas" width="800" height="520" aria-label="K-means scatter plot"></canvas>
+    <div class="kmeans-panel">
+      <div class="kmeans-block">
+        <label>
+          Data
+          <input class="kmeans-k-data" type="number" min="1" max="8" value="3" placeholder="K"/>
+        </label>
+        <button type="button" class="kmeans-reset">Generate</button>
+      </div>
+      <div class="kmeans-block">
+        <label>
+          Clustering
+          <input class="kmeans-k-clust" type="number" min="1" max="8" value="3" placeholder="K"/>
+        </label>
+        <button type="button" class="kmeans-step">Step</button>
+      </div>
+      <p class="kmeans-status">Loading…</p>
+    </div>
+  </div>
+
+</section>
+<section>
+<h2>Distance &amp; normalization</h2>
+
+  <ul>
+    <li><strong>Euclidean distance</strong> — most common metric between points</li>
+  </ul>
+  <p class="formula">\( d(p,q) = \sqrt{\sum_{i=1}^{n}(p_i - q_i)^2} \)</p>
+  <ul>
+    <li class="fragment"><strong>Why normalize?</strong> different scales (age vs income); large-range features dominate</li>
+    <li class="fragment"><strong>Min–max</strong> → usually \([0,1]\) &nbsp;·&nbsp; <strong>Z-score</strong> → mean \(0\), SD \(1\)</li>
+  </ul>
+
+</section>
+<section>
+<h2>Choosing K</h2>
+
+  <div class="two-col">
+    <div>
+      <ul>
+        <li><strong>Elbow method</strong> — plot within-cluster SSE; look for the “elbow”</li>
+        <li><strong>Judgment</strong> — try several K; choose what is useful for the decision</li>
+      </ul>
+    </div>
+    <div><img src="assets/image22.png" alt="Elbow method" class="hero-img"/></div>
+  </div>
+
+</section>
+</section>
+
+<section class="discussion-slide">
+
+  <h2>How can we check the quality of our segmentation <em>for targeting</em>?</h2>
+
+</section>
+
+<section>
+<h2>Discriminant analysis</h2>
+
+  <ul>
+    <li><strong>Bases</strong> define segments (often survey-only) → used for clustering</li>
+    <li><strong>Descriptors</strong> describe / find segments (often in secondary data) → used for targeting</li>
+  </ul>
+  <p class="note">Goal: can we find (target) people in each segment using descriptors alone?</p>
+
+</section>
+
+<section>
+<h2>Assessing discriminant quality</h2>
+
+  <ul>
+    <li>Build a <strong>predictive model</strong>: descriptors → predicted segment</li>
+    <li>Compare predicted vs actual membership → <strong>confusion matrix</strong> &amp; hit rate</li>
+  </ul>
+
+  <table class="confusion-matrix">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Pred. 1</th>
+        <th>Pred. 2</th>
+        <th>Pred. 3</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th>Actual 1</th>
+        <td class="hit">13</td>
+        <td>2</td>
+        <td>3</td>
+        <td>18</td>
+      </tr>
+      <tr>
+        <th>Actual 2</th>
+        <td>2</td>
+        <td class="hit">12</td>
+        <td>0</td>
+        <td>14</td>
+      </tr>
+      <tr>
+        <th>Actual 3</th>
+        <td>3</td>
+        <td>1</td>
+        <td class="hit">4</td>
+        <td>8</td>
+      </tr>
+      <tr>
+        <th>Total</th>
+        <td>18</td>
+        <td>15</td>
+        <td>7</td>
+        <td>40</td>
+      </tr>
+    </tbody>
+  </table>
+  <p class="note">Correct: \(13+12+4=29\) of 40 &nbsp;→&nbsp; hit rate \(29/40 = 72\%\)</p>
+
+</section>
+
+<section class="section-slide">
+
+  <p class="eyebrow">In-class consulting</p>
+  <h1>Customizing ESSEC’s<br/>Executive MBA</h1>
+
+</section>
+
+<section>
+<h2>The case</h2>
+
+  <ul>
+    <li>Survey current and past participants on motivations for joining
+      <ul>
+        <li>18 questions (1–5 scale)</li>
+      </ul>
+    </li>
+    <li>Include a few descriptors</li>
+  </ul>
+  <p class="lead spaced-block">Goals</p>
+  <ul>
+    <li>What segments exist in the program?
+      <ul>
+        <li>What are their needs and wants?</li>
+      </ul>
+    </li>
+    <li>Create custom modules for each segment to improve satisfaction</li>
+    <li>How can we reach and acquire new students?
+      <ul>
+        <li>Marketing message · negotiation · targeting</li>
+      </ul>
+    </li>
+  </ul>
+
+</section>
+
+<section class="title-slide">
+
+  <h1>That’s all for today</h1>
+  <p class="subtitle">Next: we continue building the analytics toolkit</p>
+
+</section>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/markdown/markdown.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/math/math.js"></script>
+  <script src="../js/theme.js"></script>
+  <script src="js/kmeans-demo.js"></script>
+  <script>
+    Reveal.initialize({
+      hash: true,
+      slideNumber: 'c/t',
+      width: 1280,
+      height: 720,
+      margin: 0.06,
+      transition: 'fade',
+      backgroundTransition: 'fade',
+      plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealMath.KaTeX ]
+    });
+  </script>
+</body>
+</html>

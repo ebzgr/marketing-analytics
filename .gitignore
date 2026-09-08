@@ -1,0 +1,18 @@
+# Build / scratch
+_tmp_s1/
+_build_*.py
+*.pyc
+__pycache__/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+Desktop.ini
+.vscode/
+.idea/
+*.swp
+*~
+
+# Local env
+.env
+.env.*
