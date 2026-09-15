@@ -1,0 +1,2194 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="referrer" content="strict-origin-when-cross-origin"/>
+  <title>Session 2 · Product Analytics · Marketing Analytics</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css"/>
+  <link rel="stylesheet" href="../css/theme.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/monokai.css"/>
+  <style>
+    /* Session-2 helpers for positioning demos */
+    .pos-map {
+      position: relative;
+      width: min(520px, 100%);
+      aspect-ratio: 1;
+      margin: 0.4em auto;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background:
+        linear-gradient(to right, transparent 49.5%, var(--line) 49.5%, var(--line) 50.5%, transparent 50.5%),
+        linear-gradient(to bottom, transparent 49.5%, var(--line) 49.5%, var(--line) 50.5%, transparent 50.5%),
+        var(--bg-soft);
+    }
+    .pos-map .axis-label {
+      position: absolute;
+      font-size: 0.55em;
+      font-weight: 700;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .pos-map .axis-top { top: 0.6em; left: 50%; transform: translateX(-50%); }
+    .pos-map .axis-bottom { bottom: 0.6em; left: 50%; transform: translateX(-50%); }
+    .pos-map .axis-left { left: 0.55em; top: 50%; transform: translateY(-50%) rotate(-90deg); transform-origin: center; }
+    .pos-map .axis-right { right: 0.55em; top: 50%; transform: translateY(-50%) rotate(90deg); transform-origin: center; }
+    .pos-map .dot {
+      position: absolute;
+      width: 0.85em;
+      height: 0.85em;
+      border-radius: 50%;
+      background: var(--accent-2);
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent-2) 25%, transparent);
+    }
+    .pos-map .dot-label {
+      position: absolute;
+      font-size: 0.48em;
+      font-weight: 700;
+      color: var(--ink);
+      transform: translate(-50%, 0.7em);
+      white-space: nowrap;
+    }
+    .pos-map .firm { left: 72%; top: 28%; background: var(--accent-2); }
+    .pos-map .rival1 { left: 38%; top: 62%; background: #64748b; }
+    .pos-map .rival2 { left: 48%; top: 70%; background: #64748b; }
+    .pos-map .rival3 { left: 30%; top: 55%; background: #64748b; }
+    .pos-map.customer .firm { left: 58%; top: 42%; }
+    .brand-eq {
+      font-size: 1.35em;
+      font-weight: 700;
+      text-align: center;
+      margin: 0.6em 0 0;
+      color: var(--accent-2);
+    }
+    .tiny-note {
+      font-size: var(--fs-card-meta);
+      color: var(--muted);
+      margin-top: 0.35em;
+    }
+    .brand-case .logo-img {
+      max-height: 72px;
+      width: auto;
+      object-fit: contain;
+      margin: 0.65em auto 0;
+      display: block;
+      border-radius: 12px;
+      background: transparent;
+      color: var(--ink);
+    }
+    .brand-case .car-img {
+      max-height: 280px;
+      width: 100%;
+      object-fit: cover;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      box-shadow: 0 10px 28px rgba(0,0,0,0.08);
+    }
+    .brand-case .two-col {
+      gap: 1em;
+      align-items: center;
+    }
+    .brand-case ul {
+      margin-top: 0.2em;
+    }
+    .brand-case .visual {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      width: 100%;
+    }
+    .brand-case.rebrand .car-img {
+      max-height: 300px;
+    }
+    .brand-case.rebrand .logo-img {
+      max-height: 56px;
+    }
+    html[data-theme="dark"] .brand-case .logo-img {
+      filter: brightness(0) invert(1);
+    }
+    html[data-theme="light"] .brand-case .logo-img {
+      filter: brightness(0);
+    }
+    .jump-cards {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 0.75em;
+      align-items: stretch;
+      margin-top: 0.6em;
+    }
+    .jump-cards .card {
+      margin: 0;
+    }
+    .jump-arrow {
+      align-self: center;
+      font-size: 1.6em;
+      font-weight: 700;
+      color: var(--accent-2);
+    }
+    .jump-cards .tag {
+      display: inline-block;
+      font-size: 0.55em;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--accent-2);
+      margin-bottom: 0.35em;
+    }
+    .video-slide h2 {
+      font-size: 1.15em;
+      line-height: 1.25;
+      max-width: 22em;
+      margin-left: auto;
+      margin-right: auto;
+      text-align: center;
+    }
+    .video-frame {
+      position: relative;
+      width: min(920px, 100%);
+      margin: 0.55em auto 0;
+      aspect-ratio: 16 / 9;
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      background: #000;
+      box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+    }
+    .video-frame iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+    .flow-line {
+      margin-top: 0.85em;
+      font-size: 0.85em;
+      font-weight: 650;
+      color: var(--accent-2);
+      letter-spacing: 0.01em;
+    }
+    .pca-algo-cards.cards {
+      gap: 0.7em;
+      margin-bottom: 0.55em;
+    }
+    .pca-algo-cards .card {
+      padding: 0.55em 0.75em;
+      min-height: 0;
+    }
+    .pca-algo-cards .card h3 {
+      margin-bottom: 0.25em;
+    }
+    .pca-algo-cards .card p {
+      margin-bottom: 0.3em;
+    }
+    .pca-algo-cards .card .meta {
+      margin: 0;
+    }
+    .pca-algo-question {
+      margin-top: 0.15em;
+      font-size: var(--fs-card-body);
+      font-weight: 650;
+      color: var(--ink);
+      text-align: center;
+    }
+    .pca-demo {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45em;
+      width: 100%;
+      max-width: 100%;
+    }
+    .pca-demo-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.15fr) minmax(220px, 0.85fr);
+      gap: 0.75em;
+      align-items: stretch;
+    }
+    .pca-demo.compact .pca-demo-layout {
+      grid-template-columns: minmax(0, 0.72fr) minmax(0, 1.28fr);
+      gap: 1em;
+      align-items: start;
+    }
+    .pca-demo.compact .pca-plot-col {
+      max-width: 400px;
+    }
+    .pca-demo.compact .pca-side ul {
+      font-size: 0.92em;
+      line-height: 1.35;
+    }
+    .pca-demo.compact .pca-side ul li {
+      text-wrap: pretty;
+    }
+    .pca-demo canvas {
+      width: 100%;
+      height: min(320px, 46vh);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--bg-soft);
+      display: block;
+    }
+    .pca-demo.compact canvas {
+      height: min(280px, 42vh);
+    }
+    .pca-side {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45em;
+      justify-content: space-between;
+    }
+    .pca-side ul {
+      margin: 0;
+      font-size: var(--fs-card-body);
+    }
+    .pca-stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.4em;
+    }
+    .pca-stat {
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: var(--bg);
+      padding: 0.4em 0.55em;
+    }
+    .pca-stat .label {
+      display: block;
+      font-size: 0.55em;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.15em;
+    }
+    .pca-stat .value {
+      font-size: 0.95em;
+      font-weight: 700;
+      color: var(--ink);
+      font-variant-numeric: tabular-nums;
+    }
+    .pca-kept {
+      grid-column: 1 / -1;
+      border-color: color-mix(in srgb, var(--accent-2) 45%, var(--line));
+      background: color-mix(in srgb, var(--accent-2) 8%, var(--bg));
+    }
+    .pca-controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4em;
+    }
+    .pca-controls button {
+      font: inherit;
+      font-size: var(--fs-card-meta);
+      font-weight: 700;
+      padding: 0.45em 0.75em;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      cursor: pointer;
+      background: var(--bg-soft);
+      color: var(--ink);
+    }
+    .pca-controls button.primary {
+      background: var(--accent-2);
+      border-color: var(--accent-2);
+      color: #fff;
+    }
+    .pca-controls button:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+    .pca-status {
+      font-size: var(--fs-card-meta);
+      color: var(--muted);
+      margin: 0;
+      min-height: 1.35em;
+    }
+    .pca-tooltip {
+      position: fixed;
+      z-index: 10000;
+      pointer-events: none;
+      padding: 0.55em 0.75em;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: var(--bg);
+      color: var(--ink);
+      font-size: 18px;
+      line-height: 1.45;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+      white-space: nowrap;
+    }
+    .pca-tooltip strong {
+      color: var(--accent-2);
+      margin-right: 0.35em;
+      font-size: 1.05em;
+    }
+    .pca-stat .share {
+      display: block;
+      margin-top: 0.15em;
+      font-size: 0.72em;
+      font-weight: 650;
+      color: var(--accent-2);
+    }
+    .pca-plot-col {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35em;
+      min-width: 0;
+    }
+    .pca-formulas {
+      margin-top: 0;
+      display: grid;
+      gap: 0.2em;
+      min-height: 2.6em;
+    }
+    .pca-formulas.is-hidden [data-f1-formula],
+    .pca-formulas.is-hidden [data-f2-formula] {
+      visibility: hidden;
+    }
+    .dim-map-slide .two-col {
+      align-items: center;
+      gap: 0.85em;
+    }
+    .dim-map-slide .dim-map-img {
+      max-height: min(340px, 48vh);
+      max-width: 100%;
+      width: auto;
+      height: auto;
+      object-fit: contain;
+      margin: 0;
+    }
+    .naming-example-formula {
+      margin: 0.35em auto 0.15em;
+      font-size: 0.95em;
+    }
+    li:has(> .naming-example-formula) {
+      list-style: none;
+      margin-left: 0;
+    }
+    .pca-formulas .formula,
+    .pca-formulas [data-f1-formula],
+    .pca-formulas [data-f2-formula] {
+      margin: 0;
+      font-size: 0.72em;
+      font-weight: 650;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      color: var(--ink);
+      line-height: 1.35;
+    }
+    .pca-dgp {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+      gap: 0.35em;
+      align-items: end;
+      margin-bottom: 0.15em;
+    }
+    .pca-dgp label {
+      display: flex;
+      flex-direction: column;
+      gap: 0.15em;
+      font-size: 0.55em;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .pca-dgp input {
+      font: inherit;
+      font-size: 0.85em;
+      font-weight: 650;
+      padding: 0.3em 0.4em;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--bg-soft);
+      color: var(--ink);
+      width: 100%;
+      box-sizing: border-box;
+    }
+    .pca-dgp button {
+      font: inherit;
+      font-size: var(--fs-card-meta);
+      font-weight: 700;
+      padding: 0.45em 0.65em;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      cursor: pointer;
+      background: var(--bg);
+      color: var(--ink);
+      white-space: nowrap;
+    }
+    .pca-check-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 20000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+      background: rgba(15, 23, 32, 0.5);
+      backdrop-filter: blur(4px);
+    }
+    .pca-check-modal[hidden] {
+      display: none !important;
+    }
+    .pca-check-dialog {
+      --check-pop: "Nunito", "Source Sans 3", system-ui, sans-serif;
+      width: min(680px, 100%);
+      font-family: var(--check-pop);
+      color: var(--ink);
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      padding: 1.5em 1.65em 1.35em;
+      background: var(--bg);
+      box-shadow: 0 22px 50px rgba(0,0,0,0.22);
+      animation: pca-check-pop 0.35s cubic-bezier(0.22, 1.15, 0.36, 1) both;
+    }
+    @keyframes pca-check-pop {
+      from { opacity: 0; transform: scale(0.94) translateY(12px); }
+      to { opacity: 1; transform: scale(1) translateY(0); }
+    }
+    .pca-check-eyebrow {
+      display: inline-block;
+      margin: 0 0 0.4em;
+      font-size: 0.78em;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .pca-check-dialog h3 {
+      margin: 0 0 0.85em;
+      font-size: 1.85em;
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.02em;
+      color: var(--ink);
+    }
+    .pca-check-dialog ol {
+      list-style: none;
+      margin: 0 0 1.2em;
+      padding: 0;
+      display: grid;
+      gap: 0.75em;
+      counter-reset: pca-q;
+    }
+    .pca-check-dialog li {
+      counter-increment: pca-q;
+      position: relative;
+      margin: 0;
+      padding: 0.8em 0.9em 0.8em 3.15em;
+      font-size: 1.22em;
+      font-weight: 700;
+      line-height: 1.4;
+      border-radius: 12px;
+      background: var(--bg-soft);
+      border: 1px solid var(--line);
+    }
+    .pca-check-dialog li::before {
+      content: counter(pca-q);
+      position: absolute;
+      left: 0.75em;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 1.7em;
+      height: 1.7em;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      font-size: 0.9em;
+      font-weight: 800;
+      color: var(--ink);
+      background: var(--bg);
+      border: 1px solid var(--line);
+    }
+    .pca-check-dialog li strong {
+      color: var(--ink);
+      font-weight: 800;
+      text-decoration: underline;
+      text-decoration-thickness: 2px;
+      text-underline-offset: 3px;
+    }
+    .pca-check-dialog button {
+      font-family: inherit;
+      font-size: 1.1em;
+      font-weight: 800;
+      padding: 0.65em 1.25em;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      cursor: pointer;
+      color: var(--ink);
+      background: var(--bg-soft);
+      transition: background 0.15s ease, transform 0.15s ease;
+    }
+    .pca-check-dialog button:hover {
+      background: color-mix(in srgb, var(--accent-2) 14%, var(--bg-soft));
+      transform: translateY(-1px);
+    }
+    .pca-check-dialog button:active {
+      transform: translateY(1px);
+    }
+    @media (max-width: 900px) {
+      .pca-demo-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+    .beer-table-img {
+      margin-bottom: 0.85em;
+    }
+    .beer-competitors-note {
+      margin-top: 0.35em;
+      font-size: 0.95em;
+    }
+    .table-to-map {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.85em;
+      margin-top: 1em;
+      flex-wrap: wrap;
+    }
+    .ttm-card {
+      width: min(260px, 38vw);
+      height: 10.5em;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--bg-soft);
+      padding: 0.55em 0.65em 0.7em;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+    }
+    .ttm-grid {
+      display: grid;
+      grid-template-columns: 1.1fr repeat(3, 1fr);
+      gap: 0.28em;
+      flex: 1;
+      align-content: center;
+    }
+    .ttm-axes {
+      position: relative;
+      flex: 1;
+      min-height: 0;
+      border-left: 2px solid var(--ink);
+      border-bottom: 2px solid var(--ink);
+      margin: 0.35em 0.25em 0.45em 0.55em;
+      background:
+        linear-gradient(to right, transparent 49.5%, color-mix(in srgb, var(--line) 80%, transparent) 49.5%, color-mix(in srgb, var(--line) 80%, transparent) 50.5%, transparent 50.5%),
+        linear-gradient(to bottom, transparent 49.5%, color-mix(in srgb, var(--line) 80%, transparent) 49.5%, color-mix(in srgb, var(--line) 80%, transparent) 50.5%, transparent 50.5%);
+    }
+    .ttm-card-label {
+      font-size: 0.55em;
+      font-weight: 800;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.45em;
+      text-align: center;
+    }
+    .ttm-grid span {
+      display: block;
+      height: 1.05em;
+      border-radius: 5px;
+      background: color-mix(in srgb, var(--accent-2) 18%, var(--bg));
+      border: 1px solid var(--line);
+    }
+    .ttm-grid span:nth-child(-n+4),
+    .ttm-grid span:nth-child(5),
+    .ttm-grid span:nth-child(9),
+    .ttm-grid span:nth-child(13) {
+      background: color-mix(in srgb, var(--ink) 10%, var(--bg));
+      font-size: 0.42em;
+      font-weight: 700;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 1.15em;
+    }
+    .ttm-grid span:first-child {
+      background: transparent;
+      border: 0;
+    }
+    .ttm-arrow {
+      font-size: 1.8em;
+      font-weight: 800;
+      color: var(--accent-2);
+      line-height: 1;
+    }
+    .ttm-dot {
+      position: absolute;
+      width: 0.55em;
+      height: 0.55em;
+      border-radius: 50%;
+      background: var(--accent);
+      transform: translate(-50%, 50%);
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent);
+    }
+    .ttm-dot.d1 { left: 22%; bottom: 70%; background: var(--accent-2); }
+    .ttm-dot.d2 { left: 38%; bottom: 42%; }
+    .ttm-dot.d3 { left: 58%; bottom: 58%; background: var(--accent-2); }
+    .ttm-dot.d4 { left: 72%; bottom: 28%; }
+    .ttm-dot.d5 { left: 84%; bottom: 48%; background: #64748b; }
+    .policy-icons {
+      max-height: 280px;
+      background: #fff;
+      padding: 12px;
+    }
+    .poll-chart {
+      max-height: 340px;
+      width: auto;
+      background: #fff;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      box-shadow: 0 8px 24px color-mix(in srgb, var(--ink) 8%, transparent);
+    }
+    .gamify-slide {
+      overflow: hidden;
+      position: relative;
+    }
+    .gamify-slide::before {
+      content: "";
+      position: absolute;
+      inset: -20% -10% auto auto;
+      width: 55%;
+      height: 70%;
+      background:
+        radial-gradient(circle at 70% 30%, color-mix(in srgb, #d4a017 28%, transparent), transparent 55%),
+        radial-gradient(circle at 90% 80%, color-mix(in srgb, var(--accent) 18%, transparent), transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .gamify-slide > * { position: relative; z-index: 1; }
+    .gamify-slide .lead {
+      margin: 0.15em 0 0.55em;
+      font-size: 0.78em;
+      color: var(--muted);
+    }
+    .gamify-layout {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 1.1em;
+      align-items: center;
+    }
+    .coin-tiers {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.55em;
+      margin: 0 0 0.85em;
+    }
+    .coin-tier {
+      text-align: center;
+      padding: 0.55em 0.35em 0.65em;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: color-mix(in srgb, var(--bg-soft) 80%, var(--bg));
+      box-shadow: inset 0 1px 0 color-mix(in srgb, #fff 55%, transparent);
+    }
+    .coin-tier .coin {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 1.55em;
+      height: 1.55em;
+      border-radius: 50%;
+      font-size: 0.72em;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      color: #1a1208;
+      margin-bottom: 0.25em;
+      box-shadow:
+        inset 0 2px 3px color-mix(in srgb, #fff 45%, transparent),
+        0 3px 8px color-mix(in srgb, var(--ink) 18%, transparent);
+    }
+    .coin-tier.copper .coin {
+      background: linear-gradient(145deg, #e8a878, #b87333 55%, #8a4f22);
+    }
+    .coin-tier.silver .coin {
+      background: linear-gradient(145deg, #f3f5f7, #b8c0c4 55%, #8a939c);
+    }
+    .coin-tier.gold .coin {
+      background: linear-gradient(145deg, #ffe08a, #d4a017 55%, #a67c00);
+    }
+    .coin-tier .label {
+      display: block;
+      font-size: 0.55em;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+    }
+    .coin-tier .pts {
+      display: block;
+      font-size: 0.9em;
+      font-weight: 800;
+      color: var(--ink);
+      line-height: 1.15;
+      margin-top: 0.1em;
+    }
+    .gamify-rules {
+      margin: 0;
+      font-size: 0.78em;
+    }
+    .gamify-rules > li {
+      margin-bottom: 0.35em;
+    }
+    .xp-chip {
+      display: inline-block;
+      margin-left: 0.25em;
+      padding: 0.08em 0.45em;
+      border-radius: 999px;
+      font-size: 0.72em;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      color: #5c3b0a;
+      background: color-mix(in srgb, #d4a017 28%, var(--bg));
+      border: 1px solid color-mix(in srgb, #d4a017 45%, var(--line));
+      vertical-align: middle;
+    }
+    .coin-sack-wrap {
+      text-align: center;
+    }
+    .coin-sack {
+      max-height: min(360px, 48vh);
+      width: auto;
+      filter: drop-shadow(0 14px 28px color-mix(in srgb, #b45309 28%, transparent));
+      animation: coin-bob 3.2s ease-in-out infinite;
+    }
+    .loot-caption {
+      margin: 0.35em 0 0;
+      font-size: 0.55em;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+    .stat-strip {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.55em;
+      margin: 0 0 0.75em;
+    }
+    .stat-pill {
+      padding: 0.55em 0.7em;
+      border-radius: 14px;
+      border: 1px solid var(--line);
+      background: color-mix(in srgb, var(--bg-soft) 75%, var(--bg));
+      box-shadow: inset 0 1px 0 color-mix(in srgb, #fff 50%, transparent);
+    }
+    .stat-pill .k {
+      display: block;
+      font-size: 0.5em;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 0.15em;
+    }
+    .stat-pill .v {
+      display: block;
+      font-size: 0.95em;
+      font-weight: 800;
+      color: var(--ink);
+      line-height: 1.15;
+    }
+    .stat-pill.accent {
+      background: color-mix(in srgb, #d4a017 16%, var(--bg));
+      border-color: color-mix(in srgb, #d4a017 40%, var(--line));
+    }
+    .quest-list {
+      margin: 0;
+      font-size: 0.78em;
+    }
+    .quest-list > li { margin-bottom: 0.35em; }
+    .level-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.5em;
+      margin: 0 0 0.75em;
+    }
+    .level-card {
+      padding: 0.55em 0.65em;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: color-mix(in srgb, var(--bg-soft) 80%, var(--bg));
+      font-size: 0.68em;
+      font-weight: 650;
+      color: var(--ink);
+    }
+    .level-card .ico {
+      display: inline-block;
+      width: 0.85em;
+      height: 0.85em;
+      border-radius: 50%;
+      margin-right: 0.35em;
+      vertical-align: -0.05em;
+      box-shadow: inset 0 1px 2px color-mix(in srgb, #fff 50%, transparent);
+    }
+    .level-card.hard .ico { background: linear-gradient(145deg, #ffe08a, #d4a017); }
+    .level-card.quality .ico { background: linear-gradient(145deg, #f3f5f7, #9aa3ad); }
+    .level-card.freq .ico { background: linear-gradient(145deg, #e8a878, #b87333); }
+    .level-card.rare .ico { background: linear-gradient(145deg, #ffe08a, #a67c00); }
+    .bet-callout {
+      margin-top: 0.55em;
+      padding: 0.55em 0.7em;
+      border-radius: 12px;
+      border: 1px dashed color-mix(in srgb, #d4a017 55%, var(--line));
+      background: color-mix(in srgb, #d4a017 12%, var(--bg));
+      font-size: 0.72em;
+    }
+    .brave-media {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+    }
+    .brave-slide .brave-img {
+      max-height: min(260px, 36vh);
+      width: auto;
+      border-radius: 14px;
+      object-fit: cover;
+      box-shadow: 0 12px 28px color-mix(in srgb, var(--ink) 14%, transparent);
+    }
+    .brave-caption {
+      margin: 0.3em 0 0;
+      font-size: 0.42em;
+      font-weight: 650;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: center;
+      line-height: 1.2;
+    }
+    .discussion-slide .lead.soft-lead {
+      font-size: 0.62em;
+      max-width: 28em;
+      margin-left: auto;
+      margin-right: auto;
+      line-height: 1.45;
+      color: var(--muted);
+    }
+    html[data-theme="dark"] .stat-pill,
+    html[data-theme="dark"] .level-card {
+      background: color-mix(in srgb, var(--panel) 90%, #000);
+      box-shadow: none;
+    }
+    @keyframes coin-bob {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+    html[data-theme="dark"] .coin-tier {
+      background: color-mix(in srgb, var(--panel) 90%, #000);
+      box-shadow: none;
+    }
+    html[data-theme="dark"] .poll-chart {
+      background: #fff;
+    }
+    @media (max-width: 900px) {
+      .gamify-layout {
+        grid-template-columns: 1fr;
+      }
+      .coin-sack {
+        max-height: 220px;
+      }
+      .brave-slide .brave-img {
+        max-height: 180px;
+      }
+    }
+    .survey-slide .lead { margin-bottom: 0.4em; font-size: 0.85em; }
+    .reveal .slides section.survey-slide {
+      overflow: hidden;
+    }
+    .survey-scroll {
+      max-height: min(520px, 68vh);
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      padding: 0.35em 0.55em 0.75em 0.15em;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--bg-soft);
+      -webkit-overflow-scrolling: touch;
+    }
+    .survey-block {
+      margin: 0 0 0.85em;
+      padding: 0.55em 0.65em 0.7em;
+      border-radius: 10px;
+      background: var(--bg);
+      border: 1px solid var(--line);
+    }
+    .survey-block h3 {
+      margin: 0 0 0.45em;
+      font-size: 0.95em;
+      color: var(--accent-2);
+    }
+    .survey-matrix {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.62em;
+    }
+    .survey-matrix th,
+    .survey-matrix td {
+      padding: 0.35em 0.25em;
+      text-align: center;
+      border-bottom: 1px solid var(--line);
+      vertical-align: middle;
+    }
+    .survey-matrix th:first-child,
+    .survey-matrix td:first-child {
+      text-align: left;
+      font-weight: 700;
+      white-space: nowrap;
+      padding-left: 0.35em;
+    }
+    .survey-matrix thead th {
+      font-size: 0.9em;
+      color: var(--muted);
+      font-weight: 700;
+    }
+    .survey-matrix input[type="radio"] {
+      width: 1.05em;
+      height: 1.05em;
+      accent-color: var(--accent-2);
+      cursor: pointer;
+    }
+    .survey-scale-note {
+      font-size: 0.58em;
+      color: var(--muted);
+      margin: 0 0 0.55em;
+    }
+    .pca-var-table {
+      width: 100%;
+      max-width: 920px;
+      margin: 0.75em auto 0.35em;
+      border-collapse: collapse;
+      font-size: 0.78em;
+    }
+    .pca-var-table th,
+    .pca-var-table td {
+      border: 1px solid var(--line);
+      padding: 0.45em 0.4em;
+      text-align: center;
+      background: var(--bg);
+    }
+    .pca-var-table thead th {
+      background: var(--bg-soft);
+      font-weight: 750;
+    }
+    .pca-var-table th[scope="row"] {
+      text-align: left;
+      font-weight: 700;
+      white-space: nowrap;
+      padding-left: 0.65em;
+      background: var(--bg-soft);
+    }
+  </style>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@600;700;800&display=swap" rel="stylesheet"/>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section class="title-slide">
+  <img class="essec-logo" src="../assets/essec-logo.svg" alt="ESSEC Business School"/>
+  <p class="eyebrow">AIDAMS · Marketing Analytics</p>
+  <h1>Session 2</h1>
+  <p class="subtitle">Product Analytics</p>
+</section>
+
+<section>
+  <h2>Announcements</h2>
+  <ul>
+    <li><strong>Assignment 1</strong> will be posted today
+      <ul>
+        <li>Deadline: <strong>Monday next week</strong> (21 September)</li>
+      </ul>
+    </li>
+    <li>Form groups of <strong>2–3</strong> for Assignments 3, 4, and 5
+      <ul>
+        <li>Sign up on <strong>Moodle</strong></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<section>
+  <h2>Some changes in the course policies</h2>
+  <div class="two-col">
+    <div>
+      <ul>
+        <li>Two-day workshop on teaching effectiveness
+          <ul>
+            <li>Led by highly rated teaching professors</li>
+          </ul>
+        </li>
+        <li>Strong shared advice: <strong>no electronics</strong>
+          <ul>
+            <li>~90% use laptops for email / homework</li>
+            <li>Resistance first → satisfaction later</li>
+            <li>Better focus, learning, interaction</li>
+          </ul>
+        </li>
+        <li><strong>No phone, no laptop</strong> in the first half
+          <ul>
+            <li>Put your laptop and phones in your backpack (silent your phones)</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div>
+      <img src="assets/No_electronic_poll.png" alt="Student poll results on the no-electronics policy experiment" class="hero-img poll-chart"/>
+    </div>
+  </div>
+</section>
+
+<section class="gamify-slide">
+  <h2>Gamification of learning <span class="xp-chip">Quest mode</span></h2>
+  <p class="lead">Attention is the scarce resource — so we turn class into a game worth playing.</p>
+  <div class="stat-strip">
+    <div class="stat-pill accent">
+      <span class="k">Assignments</span>
+      <span class="v">75% of grade</span>
+    </div>
+    <div class="stat-pill">
+      <span class="k">Participation</span>
+      <span class="v">10% · coin economy</span>
+    </div>
+  </div>
+  <ul class="quest-list">
+    <li>Today’s dopamine systems are heavily pushed for our attention
+      <ul>
+        <li>Social media, advertising, apps</li>
+        <li>It becomes hard to go without a “hit”</li>
+        <li>That is one reason phones feel so necessary</li>
+      </ul>
+    </li>
+    <li>To keep attention in class, we will use <strong>gamification</strong>
+      <ul>
+        <li>At the end of the semester, we can vote to change it back if you prefer</li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<section class="gamify-slide">
+  <h2>Gamification rules <span class="xp-chip">Loot drop</span></h2>
+  <p class="lead">Answer in class → earn coins → bank them before you leave.</p>
+  <div class="gamify-layout">
+    <div>
+      <div class="coin-tiers" aria-label="Coin point values">
+        <div class="coin-tier copper">
+          <span class="coin">Cu</span>
+          <span class="label">Copper</span>
+          <span class="pts">1 pt</span>
+        </div>
+        <div class="coin-tier silver">
+          <span class="coin">Ag</span>
+          <span class="label">Silver</span>
+          <span class="pts">2 pts</span>
+        </div>
+        <div class="coin-tier gold">
+          <span class="coin">Au</span>
+          <span class="label">Gold</span>
+          <span class="pts">5 pts</span>
+        </div>
+      </div>
+      <ul class="gamify-rules">
+        <li>You earn coins for answering questions in class
+          <ul>
+            <li>Return your coins at the end of the session to <strong>bank</strong> the points</li>
+            <li>I total points at the end of the course for participation</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div class="coin-sack-wrap">
+      <img src="assets/coin-sack.png" alt="Sack overflowing with copper, silver, and gold coins" class="coin-sack"/>
+      <p class="loot-caption">Bank your haul each session</p>
+    </div>
+  </div>
+</section>
+
+<section class="gamify-slide">
+  <h2>How coin levels work <span class="xp-chip">Boss rules</span></h2>
+  <p class="lead">Not every answer pays the same — rarity and quality matter.</p>
+  <div class="level-grid" aria-label="What drives coin level">
+    <div class="level-card hard"><span class="ico" aria-hidden="true"></span>How hard the question is</div>
+    <div class="level-card quality"><span class="ico" aria-hidden="true"></span>How good your answer is</div>
+    <div class="level-card freq"><span class="ico" aria-hidden="true"></span>How often you contribute</div>
+    <div class="level-card rare"><span class="ico" aria-hidden="true"></span><strong>Gold coins are rare</strong></div>
+  </div>
+  <ul class="quest-list">
+    <li>Give me your suggestions on how to make it more interesting</li>
+  </ul>
+  <div class="bet-callout">
+    Example idea: <strong>betting in class</strong> — stake coins on an answer, win bigger if you’re right.
+  </div>
+</section>
+
+<section class="brave-slide">
+  <h2>If speaking up feels hard</h2>
+  <div class="two-col">
+    <div>
+      <ul>
+        <li>Many students find participation difficult
+          <ul>
+            <li>Fear of sounding silly is common</li>
+            <li>Public speaking is a skill worth building</li>
+          </ul>
+        </li>
+        <li>We make it safer to try
+          <ul>
+            <li>French is welcome</li>
+            <li>Brave attempts can earn points even if wrong</li>
+            <li>Quieter students may get a boost for speaking</li>
+            <li>Fewer coins → higher priority when answering</li>
+          </ul>
+        </li>
+        <li>Goal: practice, not perfection
+          <ul>
+            <li>Speak → usually nothing bad happens</li>
+            <li>And you may earn points</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div class="brave-media">
+      <img src="assets/brave-answer.png" alt="Student standing up bravely to answer in class" class="brave-img"/>
+      <p class="brave-caption">Courage counts</p>
+    </div>
+  </div>
+</section>
+
+<section class="discussion-slide">
+  <h2>Questions / suggestions?</h2>
+  <p class="lead soft-lead">Suggestions are welcome — we are creating this together to have a better learning experience.</p>
+</section>
+
+<section class="section-slide">
+  <p class="eyebrow">Before we start</p>
+  <h1>Refresher · Session 1<br/>Segmentation</h1>
+</section>
+
+<section>
+  <h2>Why segmentation?</h2>
+  <ul>
+    <li>Group people based on their <strong>needs</strong></li>
+    <li>Choose which groups we want to focus on
+      <ul>
+        <li>It is not always a good idea to target everybody</li>
+      </ul>
+    </li>
+    <li>Optimize the <strong>4 Ps</strong> for those groups</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Targeting after segmentation</h2>
+  <ul>
+    <li>After segmentation, we still need to know <strong>how to reach</strong> each segment</li>
+    <li>Optimize <strong>advertising</strong> and <strong>promotion</strong> toward the right people</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Procedure</h2>
+  <ul>
+    <li><strong>Define the question</strong> → know what data you need
+      <ul>
+        <li>Design the questionnaire</li>
+      </ul>
+    </li>
+    <li><strong>Gather data</strong>
+      <ul>
+        <li>Segmentation dataset + descriptors dataset</li>
+      </ul>
+    </li>
+    <li><strong>Segment</strong> with K-means on the segmentation data
+      <ul>
+        <li>Find a good number of clusters \(K\)</li>
+      </ul>
+    </li>
+    <li><strong>Target</strong> using the descriptor data
+      <ul>
+        <li>Can we target? Are descriptors good enough?</li>
+        <li>Check with a <strong>confusion matrix</strong></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<section>
+  <h2>ESSEC EMBA · naming the segments</h2>
+  <p class="lead">From the in-class consulting project</p>
+  <ul>
+    <li><strong>Excellence seekers</strong> — reputation, ranking, networking; knowledge &amp; personal development (not salary / promotion)</li>
+    <li><strong>Career sharks</strong> — change career &amp; company to raise salary and get promoted</li>
+    <li><strong>New opportunity seekers</strong> — switch field / company; more personal development than pay; mostly female, mostly French</li>
+    <li><strong>Growth-seeker internationals</strong> — stay in role/company; seek promotion &amp; skills; often employer-funded</li>
+  </ul>
+  <p class="note">How can ESSEC optimize the <strong>4 Ps</strong> for each of these segments?</p>
+</section>
+
+<section>
+  <h2>ESSEC EMBA · targeting lesson</h2>
+  <p class="lead">Our confusion matrix was <strong>not good enough</strong> — descriptors did not predict segments well.</p>
+  <ul>
+    <li><strong>Question 1:</strong> What other data would help us target people better and distinguish segments?</li>
+    <li><strong>Question 2:</strong> Once we have that data, how can we do better targeting?</li>
+  </ul>
+</section>
+
+<section class="section-slide">
+  <p class="eyebrow">Product Analytics</p>
+  <p class="part-label">Part A</p>
+  <h1>Why perception<br/>matters</h1>
+</section>
+
+<section>
+  <h2>What is perception?</h2>
+  <p class="lead">Think about the following brands. What words come to mind?</p>
+  <ul>
+    <li class="fragment"><strong>Starbucks</strong></li>
+    <li class="fragment"><strong>Apple</strong></li>
+    <li class="fragment"><strong>TikTok</strong></li>
+    <li class="fragment"><strong>H&amp;M</strong></li>
+  </ul>
+  <p class="note fragment">This is our brand perception.</p>
+</section>
+
+<section>
+  <h2>Why does it matter?</h2>
+  <ul>
+    <li>Make sure we are aligned with our positioning
+      <ul>
+        <li>Remember <strong>STP</strong>: Segmentation → Targeting → Positioning</li>
+      </ul>
+    </li>
+    <li>Check our competitors</li>
+    <li>Check how our actions have changed our positioning
+      <ul>
+        <li>Example: does a campaign make people see us as greener / more environmentally friendly?</li>
+      </ul>
+    </li>
+    <li>Is there an opportunity for a new sub-brand?</li>
+    <li>Should we reposition?</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Brand &amp; consumer identities</h2>
+  <ul>
+    <li><strong>Brands have identities</strong> — innovative, premium, sustainable, playful, trustworthy, rebellious, caring, …
+      <ul>
+        <li>How are these identities created?
+          <ul>
+            <li class="fragment" data-fragment-index="1">Through the <strong>4 Ps</strong>: Product, Price, Place, Promotion</li>
+            <li class="fragment" data-fragment-index="2">Example: how has <strong>Apple</strong> shaped its perception through its 4 Ps?</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li class="fragment" data-fragment-index="3"><strong>Consumers also have identities and aspirations</strong>
+      <ul>
+        <li>Who we are — and who we want to be</li>
+        <li>We use consumption to signal our identities</li>
+        <li>Give examples from your personal life</li>
+      </ul>
+    </li>
+    <li class="fragment" data-fragment-index="4">Brands match their identities with users’ aspirations</li>
+    <li class="fragment" data-fragment-index="4">Brands create aspirations in people to match their identities</li>
+  </ul>
+</section>
+
+<section class="quote-slide">
+  <p class="eyebrow">Key idea</p>
+  <h2 class="quote-line">Shaping perception is very important — and there are many caveats: perception may not align with reality.</h2>
+</section>
+
+<section class="discussion-slide">
+  <h2>What comes to mind when you think about Volvo?</h2>
+  <img src="assets/image9.jpg" alt="Volvo safety advertising" class="hero-img wide fragment"/>
+</section>
+
+<section>
+  <h2>Illustration #1 · Volvo</h2>
+  <ul>
+    <li>Volvo has long been positioned on <strong>safety</strong></li>
+    <li>Yet others pioneered key safety innovations:</li>
+    <li>GM — barrier crash test (1934)</li>
+    <li>Saab — safety cage (1949)</li>
+    <li>Ford — fleet with airbags (1971)</li>
+  </ul>
+  <p class="brand-eq">Yet… Volvo = Safety</p>
+</section>
+
+<section>
+  <h2>Illustration #2 · Drilling company</h2>
+  <div class="two-col">
+    <div>
+      <ul>
+        <li>Do you know this kind of story?</li>
+        <li>A company created something <strong>cheaper and faster</strong> than rivals</li>
+        <li>Yet they could not sell it</li>
+        <li>Any idea why?</li>
+      </ul>
+    </div>
+    <div>
+      <img src="assets/image10.png" alt="Drilling operations" class="hero-img"/>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>How the company saw the market</h2>
+  <div class="two-col">
+    <div>
+      <ul>
+        <li>They were faster and cheaper than the competition</li>
+        <li>They thought they were “dominating”</li>
+        <li>Yet sales were not impressive…</li>
+      </ul>
+    </div>
+    <div>
+      <img src="assets/drilling-map-company.png" alt="Company view: faster and inexpensive outlier" class="hero-img"/>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>How customers saw the market</h2>
+  <div class="two-col">
+    <div>
+      <ul>
+        <li>Their positioning was <strong>not credible</strong></li>
+        <li>The product became successful once they <strong>increased the price</strong></li>
+        <li>Lesson: perceived value matters more than claimed specs</li>
+      </ul>
+    </div>
+    <div>
+      <img src="assets/drilling-map-customers.png" alt="Customer view: unclear position on the trade-off" class="hero-img"/>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Illustration #3 · Débitel</h2>
+  <div class="two-col">
+    <div>
+      <ul>
+        <li>French low-cost mobile reseller (no own network)</li>
+        <li>Bought airtime from SFR (#1 in quality)</li>
+        <li>Network quality perceptions:</li>
+        <li><strong>SFR = 8.0 / 10</strong></li>
+        <li><strong>Débitel = 5.9 / 10</strong></li>
+        <li>Same network — different brand perception</li>
+      </ul>
+    </div>
+    <div>
+      <img src="assets/image13.png" alt="Débitel and SFR perception" class="hero-img"/>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Perception might not be aligned with the truth</h2>
+  <ul>
+    <li>We always need to consider caveats</li>
+    <li>We need to do market research to understand
+      <ul>
+        <li>how consumers perceive us — which might differ from the facts</li>
+        <li>whether our brand perception is still relevant</li>
+      </ul>
+    </li>
+    <li>If needed, we might need to rebrand or reposition
+      <ul>
+        <li>Which can be very costly and risky</li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<section class="brand-case">
+  <h2>Case · Jaguar (classic brand)</h2>
+  <p class="lead">What comes to mind when you think about Jaguar?</p>
+  <div class="two-col">
+    <div class="visual">
+      <img src="assets/jaguar-car-classic.jpg" alt="Classic Jaguar car" class="car-img"/>
+      <img src="assets/jaguar-classic.png" alt="Classic Jaguar logo" class="logo-img"/>
+    </div>
+    <div>
+      <ul>
+        <li><strong>Positioning:</strong> British luxury + performance (“grace, space, pace”)</li>
+        <li><strong>Target:</strong> affluent, success-driven buyers who value heritage &amp; status</li>
+        <li>Often perceived as elegant — but also traditional / older</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="video-slide">
+  <h2>When your brand positioning is not clear or not visible, you need to reposition or rebrand</h2>
+  <div class="video-frame">
+    <iframe
+      data-src="https://www.youtube-nocookie.com/embed/pSesVA2A_GE?rel=0"
+      src="https://www.youtube-nocookie.com/embed/pSesVA2A_GE?rel=0"
+      title="Jaguar rebrand campaign video"
+      referrerpolicy="strict-origin-when-cross-origin"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      allowfullscreen
+      loading="lazy"></iframe>
+  </div>
+</section>
+
+<section>
+  <h2>Jaguar’s positioning jump</h2>
+  <p class="lead">This is not a small refresh — it is a deliberate repositioning.</p>
+  <div class="jump-cards">
+    <div class="card">
+      <h3>Heritage luxury</h3>
+      <ul>
+        <li>British elegance &amp; performance</li>
+        <li>Status through tradition</li>
+        <li>Older / more traditional buyers</li>
+        <li>Compete nearer mainstream premium</li>
+      </ul>
+    </div>
+    <div class="jump-arrow" aria-hidden="true">→</div>
+    <div class="card accent">
+      <h3>Design-led ultra-luxury EV</h3>
+      <ul>
+        <li>Exuberant Modernism · “Copy Nothing”</li>
+        <li>Status through originality &amp; art/design</li>
+        <li>Younger, design-conscious, cash-rich buyers</li>
+        <li>Aim closer to ultra-luxury / exclusive EV</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="brand-case rebrand">
+  <h2>How Jaguar is signaling the new position</h2>
+  <div class="two-col">
+    <div class="visual">
+      <img src="assets/jaguar-car-new.jpg" alt="Jaguar Type 00 concept car" class="car-img"/>
+      <img src="assets/jaguar-new.png" alt="New Jaguar wordmark" class="logo-img"/>
+    </div>
+    <div>
+      <ul>
+        <li>Art / culture reveal (Miami Art Week)</li>
+        <li>Partnership with the <strong>Royal College of Art</strong></li>
+        <li>Costly bet: Why?
+          <ul class="fragment">
+            <li>A new perception means you change previous perception → losing old customers</li>
+            <li>Reshape perception before new cars fully arrive</li>
+            <li>You may face bankruptcy</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="section-slide">
+  <p class="eyebrow">Product Analytics</p>
+  <p class="part-label">Part B</p>
+  <h1>Measuring perception<br/>&amp; positioning maps</h1>
+</section>
+
+<section>
+  <h2>How do we measure customers’ perceptions?</h2>
+  <div class="two-col">
+    <div>
+      <ul class="fragment">
+        <li>Ask them directly across attributes</li>
+        <li>E.g. “How sporty is BMW?” (1 = low, 5 = high)</li>
+        <li>Direct surveys are common in marketing research</li>
+      </ul>
+    </div>
+    <div>
+      <img src="assets/image16.jpeg" alt="Survey / perceptual measurement" class="hero-img"/>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Perceptual study</h2>
+  <p class="lead">A study designed to evaluate how different brands are perceived across dimensions</p>
+  <ul>
+    <li>Average perception scores by brand × attribute</li>
+    <li>Useful for competition, gaps, and new-product opportunity</li>
+  </ul>
+</section>
+
+<section>
+  <h2>What do you see?</h2>
+  <p class="lead">Perceptual study — beer brands in Spain</p>
+  <img src="assets/image17.png" alt="Beer brand perceptual table Spain" class="hero-img wide beer-table-img"/>
+  <p class="tiny-note beer-competitors-note">Who are the competitors? Is there room for a new product?</p>
+</section>
+
+<section>
+  <h2>From tables to positioning maps</h2>
+  <ul>
+    <li>Raw perceptual tables are hard to act on</li>
+    <li>Positioning maps turn them into a visual competitive picture</li>
+  </ul>
+  <div class="table-to-map" aria-hidden="true">
+    <div class="ttm-card ttm-table">
+      <div class="ttm-card-label">Perceptual table</div>
+      <div class="ttm-grid">
+        <span></span><span>A1</span><span>A2</span><span>A3</span>
+        <span>B1</span><span></span><span></span><span></span>
+        <span>B2</span><span></span><span></span><span></span>
+        <span>B3</span><span></span><span></span><span></span>
+      </div>
+    </div>
+    <div class="ttm-arrow">→</div>
+    <div class="ttm-card ttm-map">
+      <div class="ttm-card-label">Positioning map</div>
+      <div class="ttm-axes">
+        <i class="ttm-dot d1"></i>
+        <i class="ttm-dot d2"></i>
+        <i class="ttm-dot d3"></i>
+        <i class="ttm-dot d4"></i>
+        <i class="ttm-dot d5"></i>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>A simple positioning map</h2>
+  <div class="two-col">
+    <div>
+      <ul>
+        <li>Place competitors on a map</li>
+        <li>Position along dimensions relevant to customers</li>
+        <li><strong>Short distance ≈ fierce competition</strong></li>
+        <li>Where would mandarin oranges go?</li>
+      </ul>
+    </div>
+    <div>
+      <img src="assets/image18.png" alt="Simple fruit positioning map" class="hero-img"/>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Simple tool, powerful insights</h2>
+  <div class="two-col">
+    <div>
+      <ul>
+        <li>Easy to read — humans are good with 2D graphics</li>
+        <li>Easy to communicate, convince, and act</li>
+        <li>Creates the “aha” moment managers need</li>
+      </ul>
+    </div>
+    <div>
+      <img src="assets/image18.png" alt="Simple fruit positioning map" class="hero-img"/>
+    </div>
+  </div>
+</section>
+
+<section class="discussion-slide">
+  <h2>How can we create the same map for the beer brands in Spain?</h2>
+  <p class="flow-line">Perceptual study → Perceptual table → Positioning map</p>
+</section>
+
+<section>
+  <h2>Running a positioning study</h2>
+  <div class="cards three">
+    <div class="card">
+      <h3>Stage 1 · Design</h3>
+      <p>Select relevant brands</p>
+      <p>Select relevant dimensions / questions</p>
+    </div>
+    <div class="card">
+      <h3>Stage 2 · Collect</h3>
+      <p>Develop the survey</p>
+      <p>Collect data → perceptual table</p>
+    </div>
+    <div class="card">
+      <h3>Stage 3 · Analyze</h3>
+      <p>How many dimensions?</p>
+      <p>Interpret brands, axes, gaps</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Stage 1 · Design</h2>
+  <ul>
+    <li><strong>Brands:</strong> known by the segment; include category leaders</li>
+    <li><strong>Dimensions:</strong> descriptive attributes customers actually use</li>
+    <li>Include attributes that represent included brands (e.g. Volvo → Safety)</li>
+    <li>Choose a scale (e.g. 1–7)</li>
+  </ul>
+</section>
+
+<section class="survey-slide">
+  <h2>In-class perceptual questionnaire</h2>
+  <p class="lead">How much do you believe the following brands are…? Scale: 1 = low · 7 = high. Scroll inside the box.</p>
+  <div class="survey-scroll" data-survey-scroll></div>
+</section>
+
+<section>
+  <h2>Stage 2 · Collect data</h2>
+  <div class="two-col">
+    <div>
+      <ul>
+        <li>Develop the survey (perceptual ± preference data)</li>
+        <li>One matrix per respondent</li>
+        <li>Average perceptual ratings over the sample</li>
+      </ul>
+    </div>
+    <div>
+      <img src="assets/image19.png" alt="Survey data collection template" class="hero-img"/>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Outcome after Stage 2</h2>
+  <img src="assets/image17.png" alt="Average perceptual table" class="hero-img wide"/>
+  <p class="note">It is hard to use this table as is.</p>
+</section>
+
+<section>
+  <h2>Correlated car attributes</h2>
+  <div class="two-col">
+    <div>
+      <ul>
+        <li>Perceptual study of car brands across 6 dimensions
+          <ul>
+            <li>Affordable · Practical · Class · Sporty · Youth appealing · Fun</li>
+          </ul>
+        </li>
+        <li>The plot shows correlations among attributes
+          <ul>
+            <li>Which attributes are correlated?</li>
+          </ul>
+        </li>
+        <li>Can we merge the correlated attributes somehow?</li>
+      </ul>
+    </div>
+    <div>
+      <img src="assets/image20.png" alt="Correlation among car attributes" class="hero-img"/>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>What we want from a positioning map</h2>
+  <ul>
+    <li>Merge correlated features into a few dimensions</li>
+    <li>E.g. one axis capturing luxury / price / success</li>
+    <li>Create 2–3 dimensions that retain most variation</li>
+    <li>Map brands in a visually actionable figure</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Mapping brands</h2>
+  <div class="two-col">
+    <div>
+      <ul>
+        <li>Close brands on the map ≈ close competitors</li>
+        <li>Customers perceive them similarly</li>
+        <li>They compete on the same dimensions — but which ones?
+          <ul>
+            <li>Can you think about what the dimensions are in the plot?</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div>
+      <img src="assets/image21.png" alt="Brand proximity on map" class="hero-img"/>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>A complete example</h2>
+  <img src="assets/image22.png" alt="Complete positioning map example" class="hero-img wide"/>
+</section>
+
+<section class="dim-map-slide">
+  <h2>Mapping the dimensions</h2>
+  <div class="two-col">
+    <div>
+      <img src="assets/dimension-correlations.png" alt="Correlation types: highly, somewhat, uncorrelated, negatively correlated" class="hero-img dim-map-img"/>
+    </div>
+    <div>
+      <ul>
+        <li><strong>Highly correlated</strong> — similar direction</li>
+        <li><strong>Somewhat correlated</strong> — acute angle</li>
+        <li><strong>Uncorrelated</strong> — nearly orthogonal (90°)</li>
+        <li><strong>Negatively correlated</strong> — opposite directions</li>
+      </ul>
+      <p class="tiny-note">Example: expensive ↔ inexpensive</p>
+    </div>
+  </div>
+</section>
+
+<section class="section-slide">
+  <p class="eyebrow">Product Analytics</p>
+  <p class="part-label">Part C</p>
+  <h1>Principal Component<br/>Analysis (PCA)</h1>
+</section>
+
+<section class="discussion-slide">
+  <h2>How do we reduce the dimensionality of a high-dimensional survey?</h2>
+</section>
+
+<section>
+  <h2>What is PCA?</h2>
+  <div class="two-col">
+    <div>
+      <ul>
+        <li>Broad constructs often live in several correlated variables</li>
+        <li>watery, smooth, bitter, youthful, refreshing, easy to drink
+          <span class="fragment">→ <strong>Tasteful</strong></span>
+        </li>
+        <li>sophisticated, expensive, premium, to be seen, family, everyday, casual
+          <span class="fragment">→ <strong>Elegance</strong></span>
+        </li>
+        <li>PCA summarizes many correlated variables into fewer <strong>uncorrelated factors</strong></li>
+      </ul>
+    </div>
+    <div>
+      <img src="assets/image22.png" alt="Complete positioning map example" class="hero-img"/>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>PCA algorithm</h2>
+  <div class="cards two pca-algo-cards">
+    <div class="card">
+      <h3>In</h3>
+      <p>Several correlated variables \(x_1, x_2, \ldots, x_k\)</p>
+      <p class="meta">e.g. watery, smooth, bitter, youthful, refreshing, easy to drink, sophisticated, expensive, premium, to be seen, family, everyday, casual</p>
+    </div>
+    <div class="card accent">
+      <h3>Out</h3>
+      <p>A few distinct, uncorrelated factors \(f_1, f_2, f_3\)</p>
+      <p class="meta">e.g. Tasteful · Elegance</p>
+    </div>
+  </div>
+  <p class="pca-algo-question">Is PCA a supervised or unsupervised algorithm?</p>
+</section>
+
+<section>
+  <h2>PCA explained</h2>
+  <div class="pca-demo compact" data-pca-demo="explained"
+       data-var-x1="0.25" data-var-x2="0.25" data-corr="0.65">
+    <div class="pca-demo-layout">
+      <div class="pca-plot-col">
+        <canvas aria-label="Correlated Safety and Reliability scatter"></canvas>
+        <div class="pca-dgp">
+          <label>Var(X1)
+            <input type="number" step="0.05" min="0.05" max="2" value="0.25" data-input-var-x1/>
+          </label>
+          <label>Var(X2)
+            <input type="number" step="0.05" min="0.05" max="2" value="0.25" data-input-var-x2/>
+          </label>
+          <label>Corr
+            <input type="number" step="0.05" min="-0.95" max="0.95" value="0.65" data-input-corr/>
+          </label>
+          <button type="button" data-pca-generate>Generate</button>
+        </div>
+      </div>
+      <div class="pca-side">
+        <ul>
+          <li>Ratings on Safety (\(X_1\)) and Reliability (\(X_2\))</li>
+          <li>Clear positive correlation</li>
+          <li>Are we measuring one construct (e.g. quality)?</li>
+        </ul>
+        <div class="pca-stats">
+          <div class="pca-stat">
+            <span class="label">Var(X1)</span>
+            <span class="value" data-var-x1>—</span>
+            <span class="share" data-share-x1>—</span>
+          </div>
+          <div class="pca-stat">
+            <span class="label">Var(X2)</span>
+            <span class="value" data-var-x2>—</span>
+            <span class="share" data-share-x2>—</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>PCA in practice</h2>
+  <div class="pca-demo" data-pca-demo="practice"
+       data-var-x1="0.25" data-var-x2="0.25" data-corr="0.65">
+    <div class="pca-demo-layout">
+      <div class="pca-plot-col">
+        <canvas aria-label="Interactive PCA rotation demo"></canvas>
+        <div class="pca-formulas is-hidden">
+          <div data-f1-formula>F1 = …</div>
+          <div data-f2-formula>F2 = …</div>
+        </div>
+      </div>
+      <div class="pca-side">
+        <div class="pca-stats">
+          <div class="pca-stat">
+            <span class="label">Var(X1)</span>
+            <span class="value" data-var-x1>—</span>
+          </div>
+          <div class="pca-stat">
+            <span class="label">Var(X2)</span>
+            <span class="value" data-var-x2>—</span>
+          </div>
+          <div class="pca-stat">
+            <span class="label">Var(F1)</span>
+            <span class="value" data-var-f1>—</span>
+          </div>
+          <div class="pca-stat">
+            <span class="label">Var(F2)</span>
+            <span class="value" data-var-f2>—</span>
+          </div>
+          <div class="pca-stat pca-kept">
+            <span class="label">Variance kept by F1</span>
+            <span class="value" data-var-kept>—</span>
+          </div>
+        </div>
+        <div class="pca-controls">
+          <button type="button" class="primary" data-pca-run>Run PCA</button>
+          <button type="button" data-pca-rotate disabled>Rotate to F1, F2</button>
+          <button type="button" data-pca-reset>Reset</button>
+        </div>
+        <p class="pca-status" data-pca-status>The data come from the previous slide. Run PCA, then rotate. Hover a point for coordinates.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Factor scores</h2>
+  <ul>
+    <li>New dimensions are weighted combinations of the originals</li>
+    <li>Ratings in \(X_1, X_2\) → scores on \(F_1, F_2\)</li>
+    <li>Weights = factor score coefficients (from PCA eigenvectors)</li>
+    <li>\(F_1\) and \(F_2\) are uncorrelated</li>
+  </ul>
+  <p class="formula">\( F_j = w_{1j} X_1 + w_{2j} X_2 + \cdots + w_{kj} X_k \)</p>
+</section>
+
+<section>
+  <h2>The main idea</h2>
+  <ul>
+    <li>Suppose we start with 6 variables (\(X_1\) to \(X_6\))</li>
+    <li>PCA returns 6 new factors (\(F_1\) to \(F_6\)), each explaining some share of total variance</li>
+    <li>\(F_1\) explains the most; later factors explain less and less</li>
+    <li>Keeping the top few factors retains most of the information with far fewer dimensions</li>
+  </ul>
+  <table class="pca-var-table">
+    <thead>
+      <tr>
+        <th></th>
+        <th>\(F_1\)</th>
+        <th>\(F_2\)</th>
+        <th>\(F_3\)</th>
+        <th>\(F_4\)</th>
+        <th>\(F_5\)</th>
+        <th>\(F_6\)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">Variance explained</th>
+        <td>62%</td>
+        <td>22%</td>
+        <td>8%</td>
+        <td>4%</td>
+        <td>3%</td>
+        <td>1%</td>
+      </tr>
+      <tr>
+        <th scope="row">Cumulative</th>
+        <td>62%</td>
+        <td>84%</td>
+        <td>92%</td>
+        <td>96%</td>
+        <td>99%</td>
+        <td>100%</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<section>
+  <h2>Choosing the number of components</h2>
+  <div class="two-col">
+    <div>
+      <ul>
+        <li><strong>Elbow / scree</strong> method — systematic</li>
+        <li><strong>Intuition / use case</strong> — for a map, we usually keep 2 (or 3)</li>
+      </ul>
+    </div>
+    <div>
+      <img src="assets/PCA.png" alt="PCA explained variance scree plot" class="hero-img"/>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Naming the factors</h2>
+  <ul>
+    <li>We need to name the new factors (\(F_1, F_2, \ldots\))
+      <ul>
+        <li>Why is it important to name the new factors?</li>
+        <li>How can we come up with names?</li>
+        <li class="fragment" data-fragment-index="1">Based on their relationship with the original variables</li>
+        <li class="fragment" data-fragment-index="1">What would you call \(F_1\)?</li>
+        <li class="fragment" data-fragment-index="1">
+          <p class="formula naming-example-formula">\( F_1 = 0.4\,(\text{smooth}) + 0.5\,(\text{refreshing}) - 0.9\,(\text{bitter}) - 0.02\,(\text{family}) + 0.05\,(\text{premium}) \)</p>
+        </li>
+      </ul>
+    </li>
+    <li class="fragment" data-fragment-index="2">Make sure factor names are <strong>directional</strong>
+      <ul>
+        <li>“Taste” is not directional — <strong>tasteful</strong> is</li>
+        <li>“Economy” is not directional — <strong>economical</strong> is</li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<section class="section-slide">
+  <p class="eyebrow">Product Analytics</p>
+  <p class="part-label">Part D</p>
+  <h1>In-class consulting</h1>
+</section>
+
+<section>
+  <h2>Understanding car brand perceptions</h2>
+  <ul>
+    <li>Survey of <strong>20 consumers</strong> on <strong>six car brands</strong></li>
+    <li>Brands: Taurus, Mazda, Camry, Acura, BMW, Volkswagen</li>
+    <li>Each brand rated on <strong>six attributes</strong> (1–7 scale)</li>
+    <li>Data: <code>car-ratings.csv</code></li>
+    <li><strong>Goal:</strong> infer perceptions and relative positions in consumers’ minds</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Three-step method</h2>
+  <div class="cards three">
+    <div class="card">
+      <h3>1 · Explore</h3>
+      <p>Rescale · correlations · aggregate brand ratings</p>
+    </div>
+    <div class="card">
+      <h3>2 · PCA</h3>
+      <p>Fit PCA · link factors to attributes · choose &amp; name factors · plot</p>
+    </div>
+    <div class="card">
+      <h3>3 · Map and Analysis</h3>
+      <p>Aggregate factor scores by brand · 2D positioning map · analyze the map</p>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Coming assignment teaser</h2>
+  <ul>
+    <li>Understand attitudes toward discount stores</li>
+    <li>Same PCA toolkit — but for <strong>segmentation</strong>, not brand maps</li>
+    <li>Plot people (not brands) on factor scores; nearby respondents ≈ a segment</li>
+  </ul>
+  <p class="note">Details and deadline will be posted with the assignment brief.</p>
+</section>
+
+<section>
+  <h2>Assignment submission &amp; generative AI</h2>
+  <ul>
+    <li>Submit via <strong>Google Colab</strong> link and share the notebook with me</li>
+    <li><strong>Read the instructions at the end of the assignment file</strong></li>
+    <li>Generative AI is allowed to help you solve problems
+      <ul>
+        <li>Including help with code, debugging, and wording</li>
+      </ul>
+    </li>
+    <li><strong>Do not copy-paste class materials into AI</strong>
+      <ul>
+        <li>Use the slides to understand concepts, then use AI to implement and solve</li>
+      </ul>
+    </li>
+    <li>End every assignment with an <strong>AI usage statement</strong>
+      <ul>
+        <li>Which tools you used, and how (what you wrote vs what AI wrote)</li>
+        <li>Confirm you did not give the course slides to AI</li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<section class="title-slide">
+  <h1>That’s all for today</h1>
+  <p class="subtitle">Next: Demand Foundations</p>
+</section>
+
+    </div>
+  </div>
+
+  <div id="pca-check-modal" class="pca-check-modal" hidden>
+    <div class="pca-check-dialog" role="dialog" aria-modal="true" aria-labelledby="pca-check-title">
+      <p class="pca-check-eyebrow">Quick pause</p>
+      <h3 id="pca-check-title">Check your intuition</h3>
+      <ol>
+        <li>What happens when I increase the <strong>correlation</strong> in the data generating process?</li>
+        <li>What happens when I increase the <strong>variation of X1</strong> in the data generating process?</li>
+      </ol>
+      <button type="button" data-pca-check-continue>Got it — back to the demo</button>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/markdown/markdown.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/math/math.js"></script>
+  <script src="../js/theme.js"></script>
+  <script src="js/pca-demo.js"></script>
+  <script>
+    Reveal.initialize({
+      fragments: true,
+      hash: true,
+      slideNumber: 'c/t',
+      width: 1280,
+      height: 720,
+      margin: 0.06,
+      transition: 'fade',
+      backgroundTransition: 'fade',
+      plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealMath.KaTeX ]
+    }).then(function () {
+      (function buildSurvey() {
+        const root = document.querySelector("[data-survey-scroll]");
+        if (!root) return;
+        const brands = ["Peugeot", "Volvo", "Toyota", "Renault", "Hyundai", "Volkswagen", "BMW"];
+        const attrs = ["Affordable", "Practical", "Class", "Sporty", "Youth appealing", "Fun"];
+        const scale = [1, 2, 3, 4, 5, 6, 7];
+        root.innerHTML = attrs.map(function (attr, ai) {
+          const slug = attr.toLowerCase().replace(/\s+/g, "-");
+          const head = scale.map(function (s) {
+            return "<th>" + s + "</th>";
+          }).join("");
+          const rows = brands.map(function (brand, bi) {
+            const cells = scale.map(function (s) {
+              const id = "q-" + slug + "-" + bi + "-" + s;
+              return (
+                "<td>" +
+                "<input type=\"radio\" name=\"q-" + slug + "-" + bi + "\" id=\"" + id + "\" value=\"" + s + "\"/>" +
+                "</td>"
+              );
+            }).join("");
+            return "<tr><td>" + brand + "</td>" + cells + "</tr>";
+          }).join("");
+          return (
+            "<div class=\"survey-block\">" +
+            "<h3>" + (ai + 1) + ". How much do you believe the following brands are <em>" + attr.toLowerCase() + "</em>?</h3>" +
+            "<p class=\"survey-scale-note\">1 = not at all &nbsp;·&nbsp; 7 = extremely</p>" +
+            "<table class=\"survey-matrix\"><thead><tr><th>Brand</th>" + head + "</tr></thead>" +
+            "<tbody>" + rows + "</tbody></table></div>"
+          );
+        }).join("");
+
+        root.addEventListener("wheel", function (e) {
+          e.stopPropagation();
+        }, { passive: true });
+        root.addEventListener("touchstart", function (e) {
+          e.stopPropagation();
+        }, { passive: true });
+        root.addEventListener("touchmove", function (e) {
+          e.stopPropagation();
+        }, { passive: true });
+      })();
+
+      const modal = document.getElementById("pca-check-modal");
+      const continueBtn = modal.querySelector("[data-pca-check-continue]");
+      let modalOpen = false;
+      let shownOnce = false;
+      let pendingNav = null;
+
+      function isPracticeSlide(slide) {
+        return !!(slide && slide.querySelector('[data-pca-demo="practice"]'));
+      }
+
+      function openModal() {
+        modalOpen = true;
+        modal.hidden = false;
+        continueBtn.focus();
+      }
+
+      function closeModal() {
+        modalOpen = false;
+        modal.hidden = true;
+      }
+
+      function dismissAndStay() {
+        // Stay on / return to the practice slide; never show this popup again
+        shownOnce = true;
+        pendingNav = null;
+        closeModal();
+      }
+
+      Reveal.on("beforeslidechange", function (event) {
+        if (shownOnce || modalOpen) return;
+
+        const current = Reveal.getCurrentSlide();
+        if (!isPracticeSlide(current)) return;
+
+        const cur = Reveal.getIndices();
+        const nextH = event.indexh;
+        const nextV = event.indexv || 0;
+        const curH = cur.h;
+        const curV = cur.v || 0;
+        const goingForward = nextH > curH || (nextH === curH && nextV > curV);
+        if (!goingForward) return;
+
+        event.preventDefault();
+        pendingNav = {
+          h: nextH,
+          v: nextV,
+          f: typeof event.indexf === "number" ? event.indexf : undefined
+        };
+        openModal();
+      });
+
+      continueBtn.addEventListener("click", function (e) {
+        e.preventDefault();
+        e.stopPropagation();
+        dismissAndStay();
+      });
+
+      modal.addEventListener("click", function (e) {
+        if (e.target === modal) {
+          // Outside click: also dismiss once and stay on demo
+          dismissAndStay();
+        }
+      });
+
+      document.addEventListener("keydown", function (e) {
+        if (!modalOpen) return;
+        if (e.key === "Escape" || e.key === "Enter" || e.key === "ArrowRight" || e.key === " ") {
+          e.preventDefault();
+          e.stopPropagation();
+          dismissAndStay();
+        }
+      }, true);
+    });
+  </script>
+</body>
+</html>

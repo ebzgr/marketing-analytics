@@ -16,3 +16,20 @@ Desktop.ini
 # Local env
 .env
 .env.*
+
+# Local instructor materials (not for GitHub)
+../Updated Assignments/
+Updated Assignments/
+
+
+# Unused / export leftovers in session decks
+session-02/assets/*.emf
+session-02/assets/*.bin
+session-02/assets/*.wdp
+session-02/assets/ppt-slide*.png
+session-02/assets/No electronic poll.png
+session-02/assets/no-phone.png
+session-02/assets/image14.png
+_tmp_s2/
+no phone.png
+no-phone.png

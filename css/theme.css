@@ -234,6 +234,16 @@ html[data-theme="dark"] {
   margin: 0 0 var(--space-md);
 }
 
+.part-label {
+  font-family: var(--font-sans);
+  font-size: calc(var(--fs-eyebrow) * 1.15);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--muted);
+  margin: calc(var(--space-md) * -0.35) 0 var(--space-md);
+}
+
 .subtitle {
   font-size: var(--fs-subtitle);
   line-height: var(--lh-snug);
@@ -599,16 +609,42 @@ html[data-theme="dark"] .card.accent {
 .reveal .section-slide,
 .reveal .discussion-slide,
 .reveal .quote-slide {
-  text-align: center;
+  text-align: center !important;
   display: flex !important;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
+.reveal .title-slide h1,
+.reveal .section-slide h1,
+.reveal .discussion-slide h1,
+.reveal .quote-slide h1,
+.reveal .title-slide h2,
+.reveal .section-slide h2,
+.reveal .discussion-slide h2,
+.reveal .quote-slide h2,
+.reveal .title-slide .eyebrow,
+.reveal .section-slide .eyebrow,
+.reveal .section-slide .part-label,
+.reveal .discussion-slide .eyebrow,
+.reveal .quote-slide .eyebrow,
+.reveal .title-slide .subtitle,
+.reveal .section-slide .subtitle,
+.reveal .discussion-slide .lead,
+.reveal .quote-slide .quote-line {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 .reveal .discussion-slide h2 {
   max-width: 18em;
   margin-bottom: 0;
+}
+
+.reveal .section-slide h1 {
+  max-width: 16em;
 }
 
 .essec-logo {
@@ -842,10 +878,20 @@ html[data-theme="dark"] .essec-logo {
 
 /* ----- Reveal chrome ----- */
 .reveal .slide-number {
+  position: absolute;
+  right: 18px;
+  top: 14px;
+  left: auto;
+  bottom: auto;
+  z-index: 30;
   color: var(--muted);
   background: transparent;
   font-family: var(--font-sans);
-  font-size: 14px;
+  font-size: 15px;
+  font-weight: 650;
+  letter-spacing: 0.02em;
+  padding: 0;
+  border-radius: 0;
 }
 
 .reveal .controls {
