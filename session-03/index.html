@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="referrer" content="strict-origin-when-cross-origin"/>
+  <title>Session 3 · Demand Foundations · Marketing Analytics</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css"/>
+  <link rel="stylesheet" href="../css/theme.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/monokai.css"/>
+  <style>
+    .eq-block {
+      margin: 0.55em auto;
+      padding: 0.55em 0.85em;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: var(--bg-soft);
+      text-align: center;
+      max-width: 920px;
+    }
+    .eq-block .katex-display { margin: 0.25em 0; }
+    .eq-block.eq-local {
+      margin: 0.15em 0 0.2em;
+      max-width: none;
+      text-align: left;
+    }
+    .eq-block.eq-big {
+      margin: 0.7em auto;
+      padding: 0.85em 1em;
+      font-size: 1.15em;
+      max-width: 1000px;
+    }
+    .formula-label {
+      margin: 0 0 0.1em;
+      font-size: 0.78em;
+      font-weight: 700;
+      color: var(--accent-2);
+      text-align: left;
+    }
+    .param-note {
+      margin: 0.05em 0 0.55em;
+      font-size: 0.58em;
+      line-height: 1.25;
+      color: var(--muted);
+      text-align: left;
+    }
+    .tiny-note {
+      font-size: var(--fs-card-meta);
+      color: var(--muted);
+      margin-top: 0.35em;
+    }
+    .demand-fig {
+      max-height: min(420px, 58vh);
+      width: auto;
+      background: #fff;
+      padding: 8px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+    }
+    .demand-fig.wide { max-height: min(480px, 62vh); }
+    .two-fig {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.8em;
+      align-items: center;
+    }
+    .two-fig img { max-height: min(340px, 48vh); width: auto; margin: 0 auto; display: block; }
+    .hierarchy-wrap {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 0.9em;
+      align-items: stretch;
+      max-width: 40em;
+      margin: 0.45em auto 0;
+    }
+    .hierarchy {
+      display: flex;
+      flex-direction: column;
+      gap: 0.35em;
+      max-width: none;
+      margin: 0;
+    }
+    .hierarchy .tier {
+      padding: 0.45em 0.7em;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: var(--bg-soft);
+      font-size: 0.78em;
+      font-weight: 650;
+      text-align: center;
+    }
+    .hierarchy .tier.narrow { width: 62%; margin: 0 auto; background: color-mix(in srgb, var(--accent) 12%, var(--bg)); }
+    .hierarchy .tier.mid { width: 78%; margin: 0 auto; }
+    .elasticity-arrow {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 0.25em;
+      min-width: 6.5em;
+      color: var(--accent-2);
+      font-size: 0.62em;
+      font-weight: 750;
+      line-height: 1.2;
+      text-align: center;
+    }
+    .elasticity-arrow .arrow-shaft {
+      flex: 1;
+      width: 2px;
+      min-height: 7em;
+      background: linear-gradient(to top, color-mix(in srgb, var(--accent-2) 25%, transparent), var(--accent-2));
+      position: relative;
+      border-radius: 2px;
+    }
+    .elasticity-arrow .arrow-shaft::before {
+      content: "";
+      position: absolute;
+      top: -2px;
+      left: 50%;
+      transform: translateX(-50%);
+      border-left: 6px solid transparent;
+      border-right: 6px solid transparent;
+      border-bottom: 10px solid var(--accent-2);
+    }
+    .cards.compact-elastic {
+      max-width: 28em;
+      margin: 0.25em auto 0;
+      gap: 0.45em;
+    }
+    .cards.compact-elastic .card {
+      padding: 0.35em 0.5em;
+      min-height: 0;
+    }
+    .cards.compact-elastic .card h3 {
+      font-size: 0.8em;
+      margin-bottom: 0.1em;
+    }
+    .cards.compact-elastic .card p {
+      font-size: 0.7em;
+      margin: 0.08em 0;
+      line-height: 1.2;
+    }
+    .cards.compact-elastic .card .meta {
+      font-size: 0.62em;
+    }
+    .cards.compact-beta {
+      max-width: 26em;
+      margin: 0.2em auto 0;
+      gap: 0.45em;
+    }
+    .cards.compact-beta .card {
+      padding: 0.35em 0.5em;
+      min-height: 0 !important;
+    }
+    .cards.compact-beta .card h3 {
+      font-size: 0.82em;
+      margin-bottom: 0.1em;
+    }
+    .cards.compact-beta .card p {
+      font-size: 0.7em;
+      margin: 0.08em 0;
+      line-height: 1.2;
+    }
+    .elastic-note {
+      display: block;
+      clear: both;
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      margin-top: 1.35em;
+      padding-top: 0.35em;
+      font-size: 0.68em;
+      color: var(--muted);
+      line-height: 1.3;
+    }
+    .below-cards {
+      clear: both;
+      position: relative;
+      z-index: 2;
+      margin-top: 1.25em;
+      padding-top: 0.25em;
+    }
+    .cross-measure-slide ul {
+      font-size: 0.82em;
+    }
+    .cross-measure-slide .cereals-fig {
+      display: block;
+      max-height: min(260px, 34vh);
+      width: auto;
+      max-width: 100%;
+      margin: 0.45em auto 0.35em;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+    }
+    .cross-measure-slide .discuss-q {
+      margin: 0.25em 0 0;
+      font-size: 0.78em;
+      font-weight: 700;
+      color: var(--ink);
+      text-align: center;
+    }
+    .remember-rq {
+      text-align: center;
+      margin-top: 0.55em;
+      font-size: 0.78em;
+      font-weight: 700;
+      color: var(--muted);
+    }
+    .param-cards .card h3 { font-size: 0.95em; }
+    .case-box {
+      margin-top: 0.5em;
+      padding: 0.7em 0.9em;
+      border-radius: 14px;
+      border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--line));
+      background: color-mix(in srgb, var(--accent) 8%, var(--bg));
+      font-size: 0.82em;
+    }
+    .compact-list {
+      font-size: 0.82em;
+    }
+    .compact-list > li {
+      margin-bottom: 0.28em;
+    }
+    .compact-list ul {
+      font-size: 0.92em;
+    }
+    .roadmap-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.75em;
+      align-items: stretch;
+      margin-top: 0.35em;
+    }
+    .roadmap-grid .card {
+      min-height: 0;
+      margin: 0;
+      height: 100%;
+      box-sizing: border-box;
+    }
+    .roadmap-grid .card h3 {
+      font-size: 0.88em;
+      margin-bottom: 0.25em;
+    }
+    .roadmap-grid .card p {
+      font-size: 0.72em;
+      margin-bottom: 0;
+      line-height: 1.35;
+    }
+    .paradigm-cards {
+      align-items: start;
+      margin-bottom: 0.55em;
+    }
+    .paradigm-cards .card {
+      padding: 0.55em 0.7em 0.6em;
+      min-height: 0;
+    }
+    .paradigm-cards .card h3 {
+      font-size: 0.88em;
+      margin-bottom: 0.2em;
+    }
+    .paradigm-cards .card p {
+      font-size: 0.72em;
+      margin-bottom: 0.2em;
+      line-height: 1.3;
+    }
+    .paradigm-cards .card .meta {
+      font-size: 0.62em;
+      margin: 0.1em 0;
+      line-height: 1.25;
+    }
+    .paradigm-cards .card .tag {
+      margin-top: 0.35em;
+      font-size: 0.52em;
+      padding: 0.12em 0.45em;
+    }
+    .discuss-prompt {
+      margin-top: 0.15em;
+      padding: 0.55em 0.75em;
+      border-radius: 12px;
+      border: 1px dashed color-mix(in srgb, var(--accent-2) 40%, var(--line));
+      background: color-mix(in srgb, var(--accent-2) 8%, var(--bg));
+      font-size: 0.82em;
+      line-height: 1.35;
+    }
+    .wtp-poll-slide .wtp-poll-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      gap: 0.4em;
+      min-height: 0;
+      height: 100%;
+      text-align: center;
+      padding-top: 0.15em;
+    }
+    .wtp-poll-slide h2 {
+      margin: 0;
+      font-size: 1.2em;
+      line-height: 1.2;
+      max-width: 18em;
+    }
+    .wtp-poll-slide .wtp-poll-q {
+      margin: 0;
+      font-size: 0.92em;
+      line-height: 1.3;
+      max-width: 22em;
+      color: var(--ink);
+      white-space: normal;
+    }
+    .wtp-poll-slide .wtp-qr-lg {
+      width: min(52vh, 420px);
+      height: min(52vh, 420px);
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: #fff;
+      padding: 12px;
+      object-fit: contain;
+      box-shadow: 0 10px 28px rgba(26, 31, 36, 0.08);
+      flex: 0 0 auto;
+    }
+    .wtp-poll-slide .wtp-poll-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75em 1.1em;
+      justify-content: center;
+      align-items: center;
+      margin-top: 0.2em;
+      font-size: 0.72em;
+      font-weight: 700;
+      color: var(--muted);
+      line-height: 1.2;
+    }
+    .wtp-poll-slide .wtp-poll-meta .wtp-count {
+      color: var(--accent-2);
+      font-variant-numeric: tabular-nums;
+      font-weight: 800;
+    }
+    .wtp-poll-slide .wtp-poll-meta button {
+      padding: 0.2em 0.55em;
+      font-size: 1em;
+      font-weight: 700;
+      border-radius: 999px;
+      border: 1px solid color-mix(in srgb, #b42318 35%, var(--line));
+      background: color-mix(in srgb, #b42318 10%, var(--bg));
+      color: #b42318;
+      cursor: pointer;
+      font: inherit;
+      font-weight: 700;
+    }
+    .wtp-intro-fig {
+      position: relative;
+      background: #fff;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      padding: 0.25em;
+      overflow: hidden;
+    }
+    .wtp-intro-fig img {
+      display: block;
+      width: 100%;
+      max-height: min(440px, 58vh);
+      object-fit: contain;
+      margin: 0 auto;
+      background: #fff;
+    }
+    .wtp-intro-callout {
+      margin-top: 0.45em;
+      padding: 0.45em 0.65em;
+      border-radius: 10px;
+      border: 1px solid color-mix(in srgb, var(--accent-2) 35%, var(--line));
+      background: color-mix(in srgb, var(--accent-2) 10%, var(--bg));
+      font-size: 0.72em;
+      line-height: 1.35;
+      color: var(--ink);
+    }
+    .wtp-intro-q {
+      margin: 0 0 0.55em;
+      font-size: 0.78em;
+      line-height: 1.35;
+      color: var(--ink);
+      font-weight: 600;
+    }
+    .wtp-live-slide .wtp-plot-only {
+      display: flex;
+      flex-direction: column;
+      gap: 0.45em;
+      height: calc(100% - 2.2em);
+    }
+    .wtp-live-slide .wtp-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.45em;
+    }
+    .wtp-actions button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.4em 0.85em;
+      border-radius: 999px;
+      border: 1px solid var(--line);
+      background: var(--bg-soft);
+      color: var(--ink);
+      font: inherit;
+      font-size: 0.78em;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .wtp-actions button.primary {
+      background: color-mix(in srgb, var(--accent-2) 18%, var(--bg));
+      border-color: color-mix(in srgb, var(--accent-2) 40%, var(--line));
+      color: var(--accent-2);
+    }
+    .wtp-plot-wrap {
+      position: relative;
+      flex: 1;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 0.55em 0.65em 0.35em;
+      min-height: 420px;
+    }
+    .wtp-plot-wrap canvas {
+      width: 100% !important;
+      height: 420px !important;
+      display: block;
+    }
+    .wtp-elasticity-slide h2 {
+      margin: 0 0 0.25em;
+      font-size: 1.15em;
+    }
+    .wtp-elasticity-slide .wtp-elasticity-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 0.75em;
+      margin-bottom: 0.35em;
+    }
+    .wtp-elasticity-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.55em 0.75em;
+      font-size: 0.72em;
+      font-weight: 700;
+      color: var(--muted);
+    }
+    .wtp-elasticity-controls label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35em;
+      white-space: nowrap;
+    }
+    .wtp-elasticity-controls input[type="number"] {
+      width: 3.2em;
+      padding: 0.25em 0.35em;
+      border-radius: 8px;
+      border: 1px solid var(--line);
+      background: var(--bg);
+      color: var(--ink);
+      font: inherit;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      text-align: center;
+    }
+    .wtp-elasticity-slide .wtp-elasticity-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.75em;
+      height: calc(100% - 3.4em);
+      min-height: 0;
+    }
+    .wtp-elasticity-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3em;
+      min-height: 0;
+      background: color-mix(in srgb, var(--bg-soft) 70%, var(--bg));
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 0.45em 0.55em 0.4em;
+    }
+    .wtp-elasticity-panel h3 {
+      margin: 0;
+      font-size: 0.78em;
+      font-weight: 800;
+      color: var(--ink);
+    }
+    .wtp-elasticity-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35em 0.85em;
+      font-size: 0.68em;
+      font-weight: 700;
+      color: var(--muted);
+      line-height: 1.25;
+    }
+    .wtp-elasticity-stats strong {
+      color: var(--accent-2);
+      font-variant-numeric: tabular-nums;
+      font-weight: 800;
+    }
+    .wtp-elasticity-panel .wtp-plot-wrap {
+      flex: 1;
+      min-height: 280px;
+      padding: 0.35em 0.45em 0.2em;
+    }
+    .wtp-elasticity-panel .wtp-plot-wrap canvas {
+      height: 100% !important;
+      min-height: 260px;
+    }
+    .wtp-elasticity-note {
+      margin: 0.35em 0 0;
+      font-size: 0.62em;
+      line-height: 1.3;
+      color: var(--muted);
+    }
+    @media (max-width: 900px) {
+      .two-fig { grid-template-columns: 1fr; }
+      .wtp-elasticity-slide .wtp-elasticity-grid { grid-template-columns: 1fr; }
+      .roadmap-grid { grid-template-columns: 1fr; }
+      .wtp-poll-slide .wtp-qr-lg {
+        width: min(70vw, 360px);
+        height: min(70vw, 360px);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<section class="title-slide">
+  <img class="essec-logo" src="../assets/essec-logo.svg" alt="ESSEC Business School"/>
+  <p class="eyebrow">AIDAMS · Marketing Analytics</p>
+  <h1>Session 3</h1>
+  <p class="subtitle">Demand Foundations</p>
+</section>
+
+<section class="announce-slide">
+  <div class="announce-head">
+    <span class="announce-icon" aria-hidden="true"></span>
+    <h2>Announcements</h2>
+  </div>
+  <ul>
+    <li>Create your groups by <strong>next week</strong>
+      <ul>
+        <li>You will need them for your next assignment</li>
+        <li>Sign up on <strong>Moodle</strong></li>
+      </ul>
+    </li>
+    <li><strong>Assignment 2</strong> is posted
+      <ul>
+        <li>Due <strong>next Monday at midnight</strong></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<section class="section-slide">
+  <p class="eyebrow">Before we start</p>
+  <h1>Quick review · Session 2<br/>Product Analytics</h1>
+</section>
+
+<section>
+  <h2>What is perception — and why does it matter?</h2>
+  <ul>
+    <li><strong>Perception</strong> = the words / associations that come to mind for a brand
+      <ul>
+        <li>Starbucks · Apple · TikTok · H&amp;M …</li>
+      </ul>
+    </li>
+    <li>Why it matters
+      <ul>
+        <li>Check alignment with our intended <strong>positioning</strong> (STP)</li>
+        <li>Understand competitors</li>
+        <li>See whether actions (e.g. a campaign) changed how people see us</li>
+        <li>Spot openings for a new sub-brand — or a need to reposition</li>
+      </ul>
+    </li>
+    <li>Caveat: perception may <strong>not</strong> match reality — so we measure it</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Process of a perceptual study</h2>
+  <ol class="compact-list">
+    <li>Design the questionnaire
+      <ul>
+        <li>Choose brands and descriptive attributes customers actually use</li>
+        <li>Pick a scale (e.g. 1–7)</li>
+      </ul>
+    </li>
+    <li>Build the perceptual table
+      <ul>
+        <li>Collect ratings · average across respondents → brand × attribute matrix</li>
+      </ul>
+    </li>
+    <li>Reduce dimensionality with <strong>PCA</strong>
+      <ul>
+        <li>Many correlated attributes → a few meaningful factors</li>
+      </ul>
+    </li>
+    <li>Design the positioning map
+      <ul>
+        <li>Plot brands (and attributes) on the top factors · interpret gaps &amp; rivals</li>
+      </ul>
+    </li>
+  </ol>
+</section>
+
+<section>
+  <h2>What is PCA?</h2>
+  <div class="two-col">
+    <div>
+      <ul>
+        <li>Broad constructs often live in several correlated variables</li>
+        <li>watery, smooth, bitter, youthful, refreshing, easy to drink
+          → <strong>Tasteful</strong>
+        </li>
+        <li>sophisticated, expensive, premium, to be seen, family, everyday, casual
+          → <strong>Elegance</strong>
+        </li>
+        <li>PCA summarizes many correlated variables into fewer <strong>uncorrelated factors</strong></li>
+        <li>That is how we reduce the dimensionality of high-dimensional survey data</li>
+      </ul>
+    </div>
+    <div>
+      <img src="../session-02/assets/image22.png" alt="Complete positioning map example" class="hero-img"/>
+    </div>
+  </div>
+</section>
+
+<section class="section-slide">
+  <p class="eyebrow">Product Analytics → Demand</p>
+  <h1>From perception maps<br/>to demand foundations</h1>
+</section>
+
+<section>
+  <h2>Remember: three modeling paradigms</h2>
+  <p class="lead">From Session 1 — business questions fall into three groups</p>
+  <div class="cards three paradigm-cards">
+    <div class="card">
+      <h3>Descriptive</h3>
+      <p>Describe and visualize data; find relations.</p>
+      <p class="meta">Methods: visualization, PCA, perceptual maps</p>
+      <p class="meta">Apps: segmentation, positioning, competition</p>
+      <p class="tag">Mostly unsupervised ML</p>
+    </div>
+    <div class="card">
+      <h3>Predictive</h3>
+      <p>Predict outcomes such as purchase / click.</p>
+      <p class="meta">Methods: CART, XGBoost, …</p>
+      <p class="meta">Apps: CTR, targeting, retention</p>
+    </div>
+    <div class="card">
+      <h3>Causal / Inferential</h3>
+      <p>Did marketing decision X cause outcome Y?</p>
+      <p class="meta">Methods: A/B tests, regression</p>
+      <p class="meta">Apps: ad/price effectiveness, budgeting, profit</p>
+    </div>
+  </div>
+  <p class="discuss-prompt">
+    <strong>Discussion:</strong> segmentation and positioning maps belong to <strong>which paradigm</strong> — and why?
+  </p>
+</section>
+
+<section>
+  <h2>Where we go next</h2>
+  <ul>
+    <li>In the <strong>next three sessions</strong> we focus on <strong>causal analytics</strong>
+      <ul>
+        <li>With an emphasis on <strong>price</strong> and <strong>promotion</strong> optimization</li>
+      </ul>
+    </li>
+    <li>Today we start with the building block: <strong>demand foundations</strong>
+      <ul>
+        <li>How demand responds to price · elasticity · profitability</li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<section>
+  <h2>Today’s roadmap</h2>
+  <div class="roadmap-grid">
+    <div class="card">
+      <h3>I · Why demand?</h3>
+      <p>Managerial problem → marketing mix models → demand as WTP</p>
+    </div>
+    <div class="card">
+      <h3>II · Models</h3>
+      <p>Linear vs multiplicative · log-linear form</p>
+    </div>
+    <div class="card">
+      <h3>III · Elasticity</h3>
+      <p>Own-price elasticity · interpretation · approximation</p>
+    </div>
+    <div class="card">
+      <h3>IV · Multi-product</h3>
+      <p>Own vs cross elasticities · cannibalization</p>
+    </div>
+    <div class="card accent">
+      <h3>V · Profit &amp; price</h3>
+      <p>Margin arithmetic · optimal price</p>
+    </div>
+    <div class="card">
+      <h3>VI · Class consulting project</h3>
+    </div>
+  </div>
+</section>
+
+<section class="section-slide">
+  <p class="eyebrow">Demand Foundations</p>
+  <p class="part-label">Part A</p>
+  <h1>Why model demand?</h1>
+</section>
+
+<section>
+  <h2>The managerial question</h2>
+  <ul>
+    <li>What is the relationship between price and sales?
+      <ul>
+        <li>What happens if we increase prices by 10 percent?</li>
+      </ul>
+    </li>
+    <li>What happens if a competitor raises price by 5%?
+      <ul>
+        <li>Do we gain share? How much?</li>
+      </ul>
+    </li>
+    <li>What is the optimal price of our product?
+      <ul>
+        <li>Increase the profit</li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<section>
+  <h2>Marketing mix models (MMM)</h2>
+  <ul>
+    <li>Estimate how marketing tactics affect sales</li>
+    <li>Modern toolkit for price, promo, channels, competitive threats</li>
+    <li>Objectives
+      <ul>
+        <li>Map the mix into a <strong>demand</strong> relationship</li>
+        <li>Fine-tune the 4 Ps for profit / value</li>
+      </ul>
+    </li>
+  </ul>
+  <p class="note">Today we focus on the building blocks — especially price. Empirics come next session.</p>
+</section>
+
+<section>
+  <h2>What is a demand curve?</h2>
+  <div class="wtp-intro-fig" style="max-width: 900px; margin: 0.25em auto 0;">
+    <img src="assets/willingness.png" alt="Willingness-to-pay step demand curve for World Cup final tickets"/>
+  </div>
+  <p class="wtp-intro-q" style="text-align:center; max-width: 36em; margin: 0.5em auto 0;">
+    How much are you willing to pay for one ticket for the Soccer World Cup final 2018 (in U.S. dollars)?
+  </p>
+</section>
+
+<section>
+  <h2>Demand curve shows the willingness to pay of consumers for a product/service</h2>
+  <ul>
+    <li>Ask people about their willingness to pay</li>
+    <li>Sort WTP high and plot against rank</li>
+    <li>At price \(P\), quantity = # people with WTP \(\ge P\)</li>
+  </ul>
+  <p class="lead spaced-block">Let us test it in class</p>
+</section>
+
+<section class="wtp-poll-slide"
+         data-wtp-qr-slide
+         data-wtp-count-live>
+  <div class="wtp-poll-inner">
+    <h2>Your willingness to pay</h2>
+    <p class="wtp-poll-q">Maximum you would pay (€) for a<br/>Champions League final ticket this season</p>
+    <img class="wtp-qr-lg" data-wtp-qr hidden alt="QR code for the in-class WTP poll"/>
+    <div class="wtp-poll-meta">
+      <span><span class="wtp-count" data-wtp-count>0</span> responses</span>
+    </div>
+  </div>
+</section>
+
+<section class="wtp-live-slide"
+         data-wtp-live
+         data-currency="€">
+  <h2>From your WTP to a demand curve</h2>
+  <div class="wtp-plot-only">
+    <div class="wtp-actions">
+      <button type="button" class="primary" data-wtp-refresh>Refresh plot</button>
+    </div>
+    <div class="wtp-plot-wrap">
+      <canvas data-wtp-canvas aria-label="Step demand curve from class WTP responses"></canvas>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Demand as willingness to pay</h2>
+  <div class="two-col">
+    <div>
+      <ul>
+        <li>A demand curve shows the <strong>distribution of consumers’ WTP</strong></li>
+        <li>Consistent with utility maximization · generally <strong>downward sloping</strong></li>
+        <li>Consumers usually buy less when price rises</li>
+        <li>Different people value the same product differently — some more, some less</li>
+      </ul>
+    </div>
+    <div>
+      <div class="wtp-intro-fig">
+        <img src="assets/willingness.png" alt="Willingness-to-pay step demand curve for World Cup final tickets"/>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section-slide">
+  <p class="eyebrow">Demand Foundations</p>
+  <p class="part-label">Part B</p>
+  <h1>Specifying a demand model</h1>
+</section>
+
+<section class="discussion-slide">
+  <h2>What is a mathematical model?</h2>
+  <div class="eq-block eq-big">\[
+  y = f(x_1, x_2, \ldots, x_k)\,;\qquad
+  f(\mathbf{x}) = \beta_0 + \sum_{j=1}^{k} \beta_j x_j + \varepsilon
+  \]</div>
+  <p class="lead fragment">A compact equation that links inputs (price, …) to an outcome (quantity).</p>
+</section>
+
+<section>
+  <h2>Linear demand</h2>
+  <div class="two-col">
+    <div>
+      <p class="formula-label">Formula:</p>
+      <div class="eq-block eq-local">\[ Q = a - bP \]</div>
+      <p class="param-note">\(a\) and \(b\) are the parameters that we estimate</p>
+      <p class="formula" style="text-align:left; margin:0.35em 0;">Example: \(Q = 40 - 5P\)</p>
+      <ul>
+        <li>Same absolute \(\Delta P\) → same absolute \(\Delta Q\)</li>
+        <li>Challenges
+          <ul>
+            <li class="fragment">Can predict negative \(Q\)</li>
+            <li class="fragment">Same absolute effect at high vs low prices — often unrealistic</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div>
+      <img src="assets/linear-demand.png" alt="Linear demand curve with equal absolute price steps" class="hero-img demand-fig"/>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Multiplicative (constant-elasticity) demand</h2>
+  <div class="two-col">
+    <div>
+      <p class="formula-label">Formula:</p>
+      <div class="eq-block eq-local">\[ Q = A\, P^{-\eta} \]</div>
+      <p class="param-note">\(A\) and \(\eta\) are the parameters that we estimate</p>
+      <ul>
+        <li>\(Q\) stays positive for \(P > 0\)</li>
+        <li>Absolute response is smaller at high prices</li>
+        <li>\(\eta > 0\) controls price sensitivity</li>
+      </ul>
+    </div>
+    <div>
+      <img src="assets/log-linear-demand.png" alt="Curved multiplicative demand" class="hero-img demand-fig"/>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>From linear solvers to multiplicative models</h2>
+  <p class="lead">Assume we have a machine that solves <strong>linear</strong> models. How can we use it to solve <strong>multiplicative</strong> models?</p>
+  <img src="assets/linear-model-machine.png" alt="Machine that takes price P and quantity Q as inputs and outputs parameters a and b" class="hero-img wide" style="max-height: min(420px, 52vh); margin-top:0.45em;"/>
+</section>
+
+<section>
+  <h2>Why take logs?</h2>
+  <div class="two-col">
+    <div>
+      <ul>
+        <li>Multiplicative demand becomes <strong>log-linear</strong></li>
+      </ul>
+      <div class="eq-block">\[ \log Q = \alpha - \eta \log P \]</div>
+      <p class="tiny-note">with \(\alpha = \log A\), \(b = \eta\)</p>
+      <ul>
+        <li>Now we can estimate with linear regression</li>
+      </ul>
+    </div>
+    <div>
+      <img src="assets/log-linear-formulation.png" alt="Derivation from multiplicative to log-linear demand" class="hero-img demand-fig"/>
+    </div>
+  </div>
+</section>
+
+<section class="section-slide">
+  <p class="eyebrow">Demand Foundations</p>
+  <p class="part-label">Part C</p>
+  <h1>Price elasticity</h1>
+</section>
+
+<section>
+  <h2>Definition</h2>
+  <p class="lead">The (own) price elasticity of demand is the percentage change in quantity demanded relative to a given percentage change in price.</p>
+  <div class="eq-block">\[
+  E_p = \frac{\%\Delta Q}{\%\Delta P}
+  \]</div>
+  <ul>
+    <li>Unit-free measure of price sensitivity</li>
+    <li>Typically <strong>negative</strong> (why?)</li>
+    <li>Example: \(E_p = -2.8\)
+      <ul>
+        <li>+1% price → about −2.8% unit sales</li>
+      </ul>
+    </li>
+    <li>Works for <em>any</em> demand curve — not only multiplicative</li>
+  </ul>
+</section>
+
+<section>
+  <h2>What elasticity really measures</h2>
+  <div class="fragment">
+    <ul>
+      <li>How easy it is to <strong>substitute away</strong> from the product</li>
+      <li>Drivers: availability of alternatives, quality / branding gaps, awareness, switching costs</li>
+    </ul>
+    <div class="hierarchy-wrap">
+      <div class="hierarchy" aria-label="Substitutability hierarchy">
+        <div class="tier narrow">Tropicana ↔ Minute Maid</div>
+        <div class="tier mid">Orange juice brands</div>
+        <div class="tier">All juices</div>
+        <div class="tier">All beverages</div>
+      </div>
+      <div class="elasticity-arrow" aria-hidden="true">
+        <span>Higher<br/>elasticity</span>
+        <div class="arrow-shaft"></div>
+        <span>Lower<br/>elasticity</span>
+      </div>
+    </div>
+    <p class="tiny-note" style="text-align:center">As we move up toward Tropicana (closer substitutes) → demand becomes more elastic</p>
+  </div>
+</section>
+
+<section>
+  <h2>Elastic vs inelastic</h2>
+  <ul>
+    <li>After a price cut, does revenue rise or fall?
+      <ul>
+        <li>Remember \(R = P \times Q\)</li>
+      </ul>
+    </li>
+  </ul>
+  <div class="cards two compact-elastic">
+    <div class="card">
+      <h3>Inelastic demand</h3>
+      <p>\(-1 \le E_p &lt; 0\)</p>
+      <p class="meta">Quantity responds little to price</p>
+      <p class="meta fragment" data-fragment-index="1"><strong>Price cut → revenue falls</strong></p>
+    </div>
+    <div class="card accent">
+      <h3>Elastic demand</h3>
+      <p>\(E_p &lt; -1\)</p>
+      <p class="meta">Quantity responds a lot to price</p>
+      <p class="meta fragment" data-fragment-index="1"><strong>Price cut → revenue rises</strong></p>
+    </div>
+  </div>
+  <p class="elastic-note fragment" data-fragment-index="1">
+    A cut lowers \(P\) but raises \(Q\) — elasticity tells you which effect wins for revenue.
+  </p>
+</section>
+
+<section>
+  <h2>Survey of price elasticities</h2>
+  <ul>
+    <li>Hitsch, Hortaçsu, and Lin (2019): <em>“Prices and Promotions in U.S. Retail Markets: Evidence from Big Data”</em></li>
+    <li>2,000 brands in more than 17,000 stores</li>
+    <li>Can you think about something with positive price elasticity?</li>
+  </ul>
+  <img src="assets/elasticity-distribution-plot.png" alt="Histogram of own-price elasticity estimates from U.S. retail big data" class="hero-img wide" style="max-height: min(420px, 52vh); margin-top:0.35em;"/>
+</section>
+
+<section>
+  <h2>Special property of multiplicative demand</h2>
+  <ul>
+    <li>In \(Q = A P^{-\eta}\), the parameter \(\eta\) <strong>is</strong> the absolute value of own-price elasticity</li>
+    <li>Elasticity is constant along the curve</li>
+  </ul>
+  <img src="assets/eta-elasticity-derivation.png" alt="Derivation that eta is price elasticity" class="hero-img demand-fig wide"/>
+</section>
+
+<section>
+  <h2>Estimating \(\eta\) (preview)</h2>
+  <div class="eq-block">\[ \log Q = \alpha - \eta \log P + \varepsilon \]</div>
+  <ul>
+    <li>Need data on units and prices (and usually controls)</li>
+    <li>Coefficient on \(\log P\) → elasticity
+      <ul>
+        <li>A great feature for multiplicative demand models!</li>
+      </ul>
+    </li>
+    <li>Full empirical toolkit: <strong>next session</strong></li>
+  </ul>
+</section>
+
+<section>
+  <h2>Approximation for small changes</h2>
+  <div class="eq-block">\[ \%\Delta Q \approx E_p \cdot \%\Delta P \]</div>
+  <ul>
+    <li>Handy for quick what-ifs</li>
+    <li>Better for <strong>small</strong> than large price changes</li>
+    <li>For exact answers, use the demand equation itself</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Exact vs approximate — example</h2>
+  <ul>
+    <li>Suppose \(\eta = 3\) and a <strong>10% price cut</strong></li>
+    <li>Elasticity approximation:
+      <span class="fragment" data-fragment-index="1">\(\%\Delta Q \approx 30\%\)</span>
+    </li>
+    <li>Exact multiplicative response:
+      <div class="eq-block fragment" data-fragment-index="2">\[ \frac{Q_1}{Q_0} = (0.9)^{-3} \approx 1.37 \quad (+37\%) \]</div>
+    </li>
+    <li class="fragment" data-fragment-index="3">Approximation understates the lift for large changes</li>
+  </ul>
+</section>
+
+<section class="section-slide">
+  <p class="eyebrow">Demand Foundations</p>
+  <p class="part-label">Part D</p>
+  <h1>Multi-product demand</h1>
+</section>
+
+<section>
+  <h2>Why multi-product?</h2>
+  <ul>
+    <li>Allow for competing product prices</li>
+    <li>Predict demand for multiple products / groups</li>
+    <li>Capture <strong>cannibalization</strong> inside a brand’s own line</li>
+  </ul>
+</section>
+
+<section>
+  <h2>System of demand equations</h2>
+  <div class="eq-block">\[
+  Q_i = A_i \prod_k P_k^{\beta_{ik}}
+  \]</div>
+  <ul>
+    <li>In logs → a linear system (one equation per product)</li>
+    <li>\(\beta_{ik}\) are elasticities</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Two-product case</h2>
+  <p class="formula-label">Multiplicative form:</p>
+  <div class="eq-block">\[
+  \begin{aligned}
+  Q_1 &= A_1\, P_1^{\beta_{11}} P_2^{\beta_{12}} \\
+  Q_2 &= A_2\, P_1^{\beta_{21}} P_2^{\beta_{22}}
+  \end{aligned}
+  \]</div>
+  <p class="formula-label" style="margin-top:0.55em;">Take logs → log-linear form:</p>
+  <div class="eq-block">\[
+  \begin{aligned}
+  \log Q_1 &= \alpha_1 + \beta_{11}\log P_1 + \beta_{12}\log P_2 \\
+  \log Q_2 &= \alpha_2 + \beta_{21}\log P_1 + \beta_{22}\log P_2
+  \end{aligned}
+  \]</div>
+  <p class="param-note">with \(\alpha_i = \log A_i\)</p>
+</section>
+
+<section>
+  <h2>Own vs cross elasticities</h2>
+  <div class="cards two compact-beta">
+    <div class="card">
+      <h3>Own-price \(\beta_{ii}\)</h3>
+      <p>How \(Q_i\) responds to \(P_i\).</p>
+    </div>
+    <div class="card accent">
+      <h3>Cross-price \(\beta_{ik}\)</h3>
+      <p>How \(Q_i\) responds to \(P_k\) (\(k \neq i\)).</p>
+    </div>
+  </div>
+  <ul class="below-cards">
+    <li>What is the sign of \(\beta_{ii}\)?</li>
+    <li>What is the typical sign of \(\beta_{ik}\)?</li>
+    <li>Are \(\beta_{12}\) and \(\beta_{21}\) similar?</li>
+  </ul>
+</section>
+
+<section class="cross-measure-slide">
+  <h2>What do cross price elasticities measure?</h2>
+  <div class="fragment" data-fragment-index="1">
+    <ul>
+      <li>Extent of substitutability</li>
+      <li>Implications? — Contrast two cases:
+        <ul>
+          <li><strong>Rivals:</strong>
+            <span class="fragment" data-fragment-index="2"> tough competition → pressure on equilibrium prices</span>
+          </li>
+          <li><strong>Own line:</strong>
+            <span class="fragment" data-fragment-index="2"> cannibalization → price / promote jointly, not in isolation</span>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <img src="assets/cereals.png" alt="General Mills cereal portfolio illustrating own-line substitutability" class="cereals-fig"/>
+  </div>
+  <p class="discuss-q fragment" data-fragment-index="3">What does segmentation and positioning do to cross price elasticities?</p>
+</section>
+
+<section>
+  <h2>Predicting demand response in multi-product case</h2>
+  <ul>
+    <li>To predict the price effect on demand for product \(i\), first estimate the parameters of the log-linear demand model
+      <div class="eq-block">\[
+      \log Q_i = \alpha_i + \beta_{i1}\log P_1 + \cdots + \beta_{iK}\log P_K + \varepsilon_i
+      \]</div>
+    </li>
+    <li>Now if prices change such that \(\gamma_j\) = price change of product \(j\)</li>
+    <li>The ratio of unit sales of product \(i\) after versus before the price changes is
+      <div class="eq-block">\[
+      \frac{Q_{i1}}{Q_{i0}} = (1+\gamma_1)^{\beta_{i1}} \cdots (1+\gamma_K)^{\beta_{iK}}
+      \]</div>
+    </li>
+  </ul>
+</section>
+
+<section class="section-slide">
+  <p class="eyebrow">Demand Foundations</p>
+  <p class="part-label">Part E</p>
+  <h1>Profitability of price changes</h1>
+  <p class="subtitle">Using demand models, we can analyze the profitability of any price change</p>
+</section>
+
+<section>
+  <h2>Profitability analysis: general case</h2>
+  <ul class="compact-list">
+    <li>Product \(i\): cost \(C_i\), base price \(P_{i0}\), base quantity \(Q_{i0}\)
+      <div class="eq-block">\[ \pi_{i0} = Q_{i0}\,(P_{i0} - C_i) \]</div>
+    </li>
+    <li>After a price change to \(P_{i1}\) (quantity \(Q_{i1}\) from last slide):
+      <div class="eq-block">\[ \pi_{i1} = Q_{i1}\,(P_{i1} - C_i) \]</div>
+    </li>
+    <li>Profitable only if \(\pi_{i1} > \pi_{i0}\)</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Retail margin</h2>
+  <ul>
+    <li>If the product is sold through retail, retailers usually take a percentage commission
+      <ul>
+        <li>Then profit is:
+          <div class="eq-block">\[ \pi_{i0} = Q_{i0}\big(P_{i0}(1-r_i) - C_i\big) \]</div>
+        </li>
+        <li>\(r_i\) = the retail margin of product \(i\)</li>
+      </ul>
+    </li>
+    <li>If no retail margin is mentioned, assume it is zero</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Promotion myth</h2>
+  <ul>
+    <li>A commonly held belief in retailing
+      <ul>
+        <li>Promotions lead to large changes in sales</li>
+        <li>This proves that price promotions are profitable</li>
+      </ul>
+    </li>
+    <li>Is this statement necessarily true?
+      <ul class="fragment">
+        <li>Price promotions indeed increase sales</li>
+        <li>But sales is not equal to profit</li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<section>
+  <h2>Margin arithmetic</h2>
+  <div class="two-col">
+    <div>
+      <ul>
+        <li>Price change factor \(\gamma\) (e.g. −0.05 for a 5% cut)</li>
+        <li>Profits rise iff
+          <div class="eq-block">\[ \frac{Q_1}{Q_0} > \frac{m}{m+\gamma} \]</div>
+        </li>
+        <li>Gross margin \(m = (P_0 - C)/P_0\)</li>
+      </ul>
+    </div>
+    <div>
+      <img src="assets/profit-breakeven.png" alt="Derivation of breakeven volume condition" class="hero-img demand-fig"/>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>Worked numbers</h2>
+  <ul>
+    <li>\(m = 0.25\), 5% cut (\(\gamma = -0.05\))
+      <ul>
+        <li>Need \(Q_1/Q_0 > 0.25 / 0.20 = 1.25\) → <strong>+25% volume</strong></li>
+      </ul>
+    </li>
+    <li>If \(m = 0.40\), same cut → need only about <strong>+14%</strong> volume</li>
+    <li>Conclusion: cuts are costly unless demand is elastic enough <em>and</em> margin is high enough</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Simple margin arithmetic: Example</h2>
+  <ul>
+    <li>% profit change for a 5% price cut (multiplicative demand model):</li>
+  </ul>
+  <img src="assets/margin-arithmetic-plot.png" alt="% profit change vs elasticity for margins m = 0.4, 0.25, and 0.15" class="hero-img" style="display:block; width:auto; max-width:min(440px, 48vw); max-height:min(440px, 58vh); margin:0.35em auto 0; aspect-ratio:1 / 1; object-fit:contain;"/>
+</section>
+
+<section>
+  <h2>Simple margin arithmetic: Moral</h2>
+  <ul>
+    <li>Price cuts or promotions can be very costly unless
+      <ul>
+        <li>Demand is sufficiently elastic</li>
+        <li>Margin is sufficiently high</li>
+      </ul>
+    </li>
+    <li>But could there be some long-run gains compensating for the short-run profit loss?
+      <ul class="fragment">
+        <li>Price cuts or promotions as loss-leaders to build store traffic?</li>
+        <li>Price cuts or promotions to retain customers?</li>
+        <li>Price cuts or promotions as a necessary evil to compete with other manufacturers or retailers?</li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<section>
+  <h2>Optimal single-product price</h2>
+  <div class="eq-block">\[
+  P^* = \frac{-\eta\, C}{(1-r)\,(1-\eta)}
+  \]</div>
+  <ul>
+    <li>For elastic demand in the multiplicative model</li>
+    <li>Depends on cost, retail margin, and elasticity</li>
+    <li>Multi-product: need joint / equilibrium reasoning (or simulation)</li>
+  </ul>
+  <p class="tiny-note">See the Pricing &amp; Profitability handout for the full derivation (eq. 42).</p>
+</section>
+
+<section class="section-slide">
+  <p class="eyebrow">Demand Foundations</p>
+  <p class="part-label">Part F</p>
+  <h1>In-class consulting</h1>
+</section>
+
+<section>
+  <h2>Your role</h2>
+  <ul>
+    <li>Consultant to a manufacturing firm selling <strong>one</strong> product through retail</li>
+    <li>Major player — no significant competitors</li>
+    <li>Data science team estimated a multiplicative demand model</li>
+    <li>Supply chain: marginal cost \(C = \$0.5\), retail margin \(r = 15\%\)</li>
+  </ul>
+  <div class="case-box">
+    Demand: \(Q = 100\, P^{-2}\)<br/>
+    Notebook: <code>Demand_and_profitability_blank.ipynb</code>
+  </div>
+</section>
+
+<section>
+  <h2>Questions to answer</h2>
+  <ol>
+    <li>What is the price elasticity of demand?</li>
+    <li>At \(P = 1.5\), what are \(Q\) and \(\pi\)?</li>
+    <li>For a <strong>15%</strong> price cut: \(\%\Delta Q\) exact vs approximation (eq. 23). Similar?</li>
+    <li>Same for a <strong>2%</strong> cut. What do you infer?</li>
+    <li>Does a 15% cut from \(P=1.5\) raise manufacturer profit?</li>
+    <li>Find the profit-maximizing price and the profit at that price.</li>
+  </ol>
+</section>
+
+<section>
+  <h2>Assignment 2</h2>
+  <ul>
+    <li>Similar to today’s in-class consulting project — but for a <strong>multi-product</strong> market</li>
+    <li>Three products with given multiplicative demand models (own- and cross-price elasticities)</li>
+    <li>You will do <strong>demand response</strong> and <strong>profitability</strong> analysis for specified price changes</li>
+    <li>Details and submission instructions are on Moodle</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Takeaways</h2>
+  <ul>
+    <li>Demand models connect marketing actions to quantity</li>
+    <li>Multiplicative / log-linear form is flexible and regression-friendly</li>
+    <li>Own- and cross-price elasticities have clear managerial meaning</li>
+    <li>Small-change approximations are useful — and limited</li>
+    <li>Profitability needs <strong>margin arithmetic</strong>, not just sales lift</li>
+    <li>Optimal pricing follows once you know \(\eta\), \(C\), and \(r\)</li>
+  </ul>
+</section>
+
+<section class="wtp-elasticity-slide"
+         data-wtp-elasticity
+         data-currency="€">
+  <div class="wtp-elasticity-head">
+    <h2>Class poll → multiplicative demand &amp; elasticity</h2>
+    <div class="wtp-elasticity-controls">
+      <label>
+        Outliers to drop
+        <input type="number" min="0" max="20" step="1" value="3" data-wtp-outlier-count/>
+      </label>
+      <button type="button" class="primary" data-wtp-elasticity-refresh>Refresh</button>
+    </div>
+  </div>
+  <div class="wtp-elasticity-grid">
+    <div class="wtp-elasticity-panel">
+      <h3>With outliers</h3>
+      <div class="wtp-elasticity-stats">
+        <span>n = <strong data-wtp-n-all>—</strong></span>
+        <span>\(\eta\) = <strong data-wtp-eta-all>—</strong></span>
+        <span>\(E_p\) = <strong data-wtp-ep-all>—</strong></span>
+      </div>
+      <div class="wtp-plot-wrap">
+        <canvas data-wtp-elasticity-all aria-label="Price-quantity plot including outlier WTPs"></canvas>
+      </div>
+    </div>
+    <div class="wtp-elasticity-panel">
+      <h3>Without outliers</h3>
+      <div class="wtp-elasticity-stats">
+        <span>n = <strong data-wtp-n-trim>—</strong></span>
+        <span>\(\eta\) = <strong data-wtp-eta-trim>—</strong></span>
+        <span>\(E_p\) = <strong data-wtp-ep-trim>—</strong></span>
+      </div>
+      <div class="wtp-plot-wrap">
+        <canvas data-wtp-elasticity-trim aria-label="Price-quantity plot excluding outlier WTPs"></canvas>
+      </div>
+    </div>
+  </div>
+  <p class="wtp-elasticity-note" data-wtp-elasticity-note>
+    Fitting \(\log Q = \alpha - \eta \log P\) on the demand curve from your ticket WTP answers.
+  </p>
+</section>
+
+<section class="title-slide">
+  <h1>That’s all for today</h1>
+  <p class="subtitle">Next: Empirical Demand Analysis</p>
+</section>
+
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/markdown/markdown.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/math/math.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="../js/theme.js"></script>
+  <script src="js/wtp-live.js"></script>
+  <script>
+    Reveal.initialize({
+      fragments: true,
+      hash: true,
+      slideNumber: 'c/t',
+      width: 1280,
+      height: 720,
+      margin: 0.06,
+      transition: 'fade',
+      backgroundTransition: 'fade',
+      plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealMath.KaTeX ]
+    });
+  </script>
+</body>
+</html>

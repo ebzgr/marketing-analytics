@@ -16,6 +16,16 @@ Desktop.ini
 # Local env
 .env
 .env.*
+**/credentials.json
+**/client.json
+**/token.json
+**/*secret*
+
+# Local-only Google Forms / WTP live proxy (never commit — uses OAuth tokens)
+session-03/scripts/
+session-03/data/wtp-clear.json
+session-*/scripts/*live*server*
+session-*/**/*credentials*
 
 # Local instructor materials (not for GitHub)
 ../Updated Assignments/
