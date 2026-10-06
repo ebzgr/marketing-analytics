@@ -57,6 +57,8 @@
      .image-grid              3×2 photo grid (object-fit: contain)
      .hero-img / .wide        Single figure
      .essec-logo              Brand mark on title slides
+     .announce-slide          Announcements slide (icon + list)
+     .announce-icon           Megaphone icon (CSS mask)
 
    Chrome
      .theme-toggle            Light/dark switch (bottom-left via js/theme.js)
@@ -901,6 +903,93 @@ html[data-theme="dark"] .essec-logo {
 .reveal .progress {
   color: var(--essec-blue);
   height: 3px;
+}
+
+/* ----- Announcements slide ----- */
+.reveal .slides section.announce-slide {
+  position: relative;
+  overflow: hidden;
+}
+
+.reveal .slides section.announce-slide::before {
+  content: "";
+  position: absolute;
+  inset: -15% auto auto -8%;
+  width: 42%;
+  height: 55%;
+  background:
+    radial-gradient(circle at 30% 40%, color-mix(in srgb, var(--accent) 22%, transparent), transparent 62%),
+    radial-gradient(circle at 70% 20%, color-mix(in srgb, var(--accent-2) 16%, transparent), transparent 55%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+.reveal .slides section.announce-slide > * {
+  position: relative;
+  z-index: 1;
+}
+
+.announce-head {
+  display: flex;
+  align-items: center;
+  gap: 0.55em;
+  margin: 0 0 var(--space-md);
+}
+
+.announce-head h2 {
+  margin: 0;
+}
+
+.announce-icon {
+  flex: 0 0 auto;
+  width: 1.55em;
+  height: 1.55em;
+  border-radius: 18px;
+  background:
+    linear-gradient(145deg, color-mix(in srgb, var(--accent) 88%, #fff), var(--accent));
+  box-shadow:
+    0 8px 22px color-mix(in srgb, var(--accent) 28%, transparent),
+    inset 0 1px 0 color-mix(in srgb, #fff 35%, transparent);
+  display: grid;
+  place-items: center;
+  animation: announce-pop 2.8s ease-in-out infinite;
+}
+
+.announce-icon::before {
+  content: "";
+  width: 0.78em;
+  height: 0.78em;
+  background: #fff;
+  /* Megaphone / bullhorn */
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M3 10v4a1 1 0 0 0 1 1h1.2l1.5 3.2A1.5 1.5 0 0 0 8.1 19h.9a1 1 0 0 0 1-1v-2.1L19 19V5L10 8.2V7a1 1 0 0 0-1-1h-.9a1.5 1.5 0 0 0-1.4.9L5.2 10H4a1 1 0 0 0-1 1zm14.5 1.3a2.7 2.7 0 0 1 0 1.4l1.7.5a4.4 4.4 0 0 0 0-2.4l-1.7.5z'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='%23000' d='M3 10v4a1 1 0 0 0 1 1h1.2l1.5 3.2A1.5 1.5 0 0 0 8.1 19h.9a1 1 0 0 0 1-1v-2.1L19 19V5L10 8.2V7a1 1 0 0 0-1-1h-.9a1.5 1.5 0 0 0-1.4.9L5.2 10H4a1 1 0 0 0-1 1zm14.5 1.3a2.7 2.7 0 0 1 0 1.4l1.7.5a4.4 4.4 0 0 0 0-2.4l-1.7.5z'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+}
+
+.announce-icon.lg {
+  width: 2.35em;
+  height: 2.35em;
+  border-radius: 22px;
+  margin: 0 auto 0.55em;
+}
+
+.announce-icon.lg::before {
+  width: 1.15em;
+  height: 1.15em;
+}
+
+@keyframes announce-pop {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-4px) scale(1.03); }
+}
+
+html[data-theme="dark"] .announce-icon {
+  background: linear-gradient(145deg, color-mix(in srgb, var(--accent) 70%, #fff), var(--accent));
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .announce-icon { animation: none; }
 }
 
 /* ----- Theme toggle (bottom-left) ----- */

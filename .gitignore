@@ -24,6 +24,7 @@ Desktop.ini
 # Local-only Google Forms / WTP live proxy (never commit — uses OAuth tokens)
 session-03/scripts/
 session-03/data/wtp-clear.json
+session-04/scripts/
 session-*/scripts/*live*server*
 session-*/**/*credentials*
 

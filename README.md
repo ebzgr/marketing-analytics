@@ -9,6 +9,7 @@ Web slides for **AIDAMS · Marketing Analytics** (ESSEC).
 | 1 | Introduction & Segmentation | [session-01](https://ebzgr.github.io/marketing-analytics/session-01/) |
 | 2 | Product Analytics | [session-02](https://ebzgr.github.io/marketing-analytics/session-02/) |
 | 3 | Demand Foundations | [session-03](https://ebzgr.github.io/marketing-analytics/session-03/) |
+| 4 | Empirical Demand Analysis | [session-04](https://ebzgr.github.io/marketing-analytics/session-04/) |
 
 Or open `session-XX/index.html` locally.
 
@@ -19,6 +20,7 @@ Or open `session-XX/index.html` locally.
 | `session-01/` | Session 1 deck (Reveal.js) |
 | `session-02/` | Session 2 deck (Reveal.js) |
 | `session-03/` | Session 3 deck (Reveal.js) |
+| `session-04/` | Session 4 deck (Reveal.js) |
 | `css/` | Shared theme |
 | `js/` | Shared scripts |
 | `assets/` | Shared assets (e.g. ESSEC logo) |

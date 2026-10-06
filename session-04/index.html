@@ -1,0 +1,1741 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="referrer" content="strict-origin-when-cross-origin"/>
+  <title>Session 4 · Empirical Demand Analysis · Marketing Analytics</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css"/>
+  <link rel="stylesheet" href="../css/theme.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/monokai.css"/>
+  <style>
+    /* ----- Equations ----- */
+    .eq-block {
+      margin: 0.55em auto;
+      padding: 0.5em 0.85em;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: var(--bg-soft);
+      text-align: center;
+      max-width: 920px;
+    }
+    .eq-block .katex-display { margin: 0.2em 0; }
+    .eq-block.eq-local {
+      margin: 0.3em 0 0.35em;
+      max-width: none;
+      text-align: center;
+    }
+    .eq-block.eq-accent {
+      border-color: color-mix(in srgb, var(--accent-2) 38%, var(--line));
+      background: color-mix(in srgb, var(--accent-2) 8%, var(--bg));
+    }
+    .eq-stack {
+      display: grid;
+      gap: 0.2em;
+    }
+
+    /* ----- Compact text ----- */
+    .compact-list { font-size: 0.84em; }
+    .compact-list > li { margin-bottom: 0.26em; }
+    .compact-list ul { font-size: 0.93em; }
+
+    /* ----- Figures ----- */
+    .demand-fig {
+      max-height: 13em;
+      max-width: 100%;
+      width: auto;
+      background: #fff;
+      padding: 8px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      display: block;
+      margin: 0 auto;
+    }
+    .demand-fig.wide { max-height: 14.5em; }
+    .demand-fig.tall { max-height: 15.5em; }
+    .fig-caption {
+      margin: 0.4em 0 0;
+      font-size: 0.62em;
+      line-height: 1.35;
+      color: var(--muted);
+      text-align: center;
+    }
+    /* ----- Callouts ----- */
+    .case-box {
+      margin-top: 0.5em;
+      padding: 0.65em 0.9em;
+      border-radius: 14px;
+      border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--line));
+      background: color-mix(in srgb, var(--accent) 8%, var(--bg));
+      font-size: 0.78em;
+      line-height: 1.4;
+    }
+    .discuss-prompt {
+      margin-top: 0.4em;
+      padding: 0.5em 0.75em;
+      border-radius: 12px;
+      border: 1px dashed color-mix(in srgb, var(--accent-2) 40%, var(--line));
+      background: color-mix(in srgb, var(--accent-2) 8%, var(--bg));
+      font-size: 0.78em;
+      line-height: 1.35;
+    }
+    .takeaway {
+      margin-top: 0.5em;
+      padding: 0.5em 0.8em;
+      border-radius: 0 10px 10px 0;
+      border-left: 4px solid var(--accent);
+      background: var(--panel);
+      font-size: 0.76em;
+      line-height: 1.4;
+    }
+
+    /* ----- Roadmap / card grids ----- */
+    .roadmap-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.7em;
+      align-items: stretch;
+      margin-top: 0.35em;
+    }
+    .roadmap-grid .card {
+      min-height: 0;
+      margin: 0;
+      height: 100%;
+      box-sizing: border-box;
+      padding: 0.6em 0.75em;
+    }
+    .roadmap-grid .card h3 { font-size: 0.84em; margin-bottom: 0.2em; }
+    .roadmap-grid .card p { font-size: 0.68em; margin-bottom: 0; line-height: 1.35; }
+
+    /* ----- Elasticity headline numbers ----- */
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.6em;
+      margin-top: 0.4em;
+    }
+    .stat {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--bg-soft);
+      padding: 0.45em 0.6em;
+      text-align: center;
+    }
+    .stat .stat-value {
+      display: block;
+      font-size: 1.15em;
+      font-weight: 800;
+      color: var(--accent-2);
+      line-height: 1.1;
+      font-variant-numeric: tabular-nums;
+    }
+    .stat .stat-label {
+      display: block;
+      font-size: 0.6em;
+      font-weight: 700;
+      color: var(--muted);
+      margin-top: 0.15em;
+    }
+
+    /* ----- Density scale for text-heavy slides -----
+       All theme sizes are em-based, so scaling the section font-size shrinks
+       text, figures and spacing together and keeps the slide inside 1280x720. */
+    section.dense { font-size: 0.93em; }
+    section.dense-2 { font-size: 0.86em; }
+    section.dense-3 { font-size: 0.78em; }
+
+    /* Let grid columns shrink below their content's intrinsic width so wide
+       equations and figures cannot push a two-column slide past 1280px. */
+    .two-col { grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); }
+    .two-col > * { min-width: 0; }
+    .two-col.text-top { align-items: start; }
+
+    /* ----- Omitted-variable simulation (slides 21–22) ----- */
+    .ovb-setup {
+      display: grid;
+      grid-template-columns: minmax(0, 1.4fr) minmax(230px, 0.68fr);
+      gap: 0.55em;
+      align-items: start;
+    }
+    .ovb-setup .eq-block { margin: 0.28em 0; }
+    .ovb-panel {
+      margin-top: 0;
+      padding: 0.4em 0.55em 0.45em;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: var(--bg-soft);
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      gap: 0.28em;
+    }
+    .ovb-panel h3 {
+      margin: 0 0 0.05em;
+      font-size: 0.62em;
+      color: var(--ink);
+    }
+    .ovb-field {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.35em;
+      font-size: 0.52em;
+      font-weight: 700;
+      color: var(--muted);
+      line-height: 1.2;
+    }
+    .ovb-field input[type="number"] {
+      width: 3.4em;
+      padding: 0.2em 0.25em;
+      border-radius: 7px;
+      border: 1px solid var(--line);
+      background: var(--bg);
+      color: var(--ink);
+      font: inherit;
+      font-size: 1.15em;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      text-align: center;
+      flex-shrink: 0;
+    }
+    .ovb-rho-row {
+      display: flex;
+      align-items: center;
+      gap: 0.3em;
+      flex: 1;
+      min-width: 0;
+      justify-content: flex-end;
+    }
+    .ovb-rho-row input[type="range"] {
+      width: 7em;
+      accent-color: var(--accent-2);
+    }
+    .ovb-rho-row output {
+      min-width: 2.4em;
+      font-size: 1.15em;
+      font-weight: 800;
+      color: var(--ink);
+      font-variant-numeric: tabular-nums;
+    }
+    .ovb-panel button {
+      padding: 0.32em 0.7em;
+      border-radius: 999px;
+      border: 1px solid color-mix(in srgb, var(--accent-2) 40%, var(--line));
+      background: color-mix(in srgb, var(--accent-2) 16%, var(--bg));
+      color: var(--accent-2);
+      font: inherit;
+      font-size: 0.58em;
+      font-weight: 800;
+      cursor: pointer;
+      margin-top: 0.1em;
+    }
+    .ovb-status {
+      margin: 0;
+      font-size: 0.48em;
+      line-height: 1.25;
+      color: var(--muted);
+    }
+
+    /* ----- Family education example ----- */
+    .family-edu-slide h2 { margin-bottom: 0.3em; }
+    .family-edu-slide .two-col {
+      grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.15fr);
+      gap: 0.7em;
+      align-items: start;
+    }
+    .family-fig {
+      height: 420px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 4px;
+      box-sizing: border-box;
+    }
+    .family-fig canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .family-edu-slide .fig-caption {
+      margin-top: 0.25em;
+      text-align: left;
+    }
+    .ovb-figure {
+      height: 455px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 4px 6px;
+      box-sizing: border-box;
+    }
+    .ovb-figure canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Fragment that does not reserve space until revealed */
+    .fragment.appear-block:not(.visible) {
+      display: none !important;
+    }
+    .fragment.appear-block.visible {
+      display: block;
+    }
+
+    /* ----- Shield of Eden poll ----- */
+    .shield-poll-slide .shield-poll-inner {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      min-height: min(420px, 62vh);
+      gap: 0.45em;
+    }
+    .shield-poll-slide h2 { margin: 0; text-align: center; }
+    .shield-poll-slide .shield-poll-q {
+      margin: 0;
+      font-size: 0.78em;
+      color: var(--muted);
+      max-width: 28em;
+      line-height: 1.35;
+    }
+    .shield-poll-slide .shield-qr {
+      width: min(320px, 42vh);
+      height: auto;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      background: #fff;
+      padding: 0.55em;
+    }
+    .shield-poll-slide .shield-poll-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.75em;
+      font-size: 0.72em;
+      font-weight: 700;
+      color: var(--muted);
+    }
+    .shield-poll-slide .shield-poll-meta .shield-count {
+      color: var(--accent-2);
+      font-variant-numeric: tabular-nums;
+    }
+    .shield-poll-slide .shield-poll-meta a {
+      color: var(--accent-2);
+      text-decoration: underline;
+      font-weight: 700;
+    }
+    .shield-results-slide h2 { margin-bottom: 0.35em; }
+    .shield-results-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.7em;
+      margin-top: 0.2em;
+    }
+    .shield-result-card {
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--bg-soft);
+      padding: 0.65em 0.75em 0.75em;
+      min-height: 11.5em;
+    }
+    .shield-result-card h3 {
+      margin: 0 0 0.45em;
+      font-size: 0.72em;
+      color: var(--ink);
+      line-height: 1.3;
+    }
+    .shield-bar-row {
+      display: grid;
+      grid-template-columns: 2.4em 1fr 2.6em;
+      gap: 0.35em;
+      align-items: center;
+      margin: 0.35em 0;
+      font-size: 0.62em;
+      font-weight: 700;
+    }
+    .shield-bar-track {
+      height: 0.7em;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--line) 70%, var(--bg));
+      overflow: hidden;
+    }
+    .shield-bar-fill {
+      height: 100%;
+      width: 0%;
+      border-radius: inherit;
+      background: var(--accent-2);
+      transition: width 0.35s ease;
+    }
+    .shield-bar-row.no .shield-bar-fill { background: var(--muted); }
+    .shield-bar-row .n {
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      color: var(--muted);
+    }
+    .shield-results-foot {
+      margin-top: 0.65em;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75em;
+      flex-wrap: wrap;
+    }
+    .shield-results-foot .takeaway { margin: 0; flex: 1; }
+    .shield-results-foot button {
+      padding: 0.35em 0.85em;
+      border-radius: 999px;
+      border: 1px solid color-mix(in srgb, var(--accent-2) 40%, var(--line));
+      background: color-mix(in srgb, var(--accent-2) 16%, var(--bg));
+      color: var(--accent-2);
+      font: inherit;
+      font-size: 0.62em;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .shield-brand-slide .two-col {
+      grid-template-columns: minmax(0, 1.2fr) minmax(160px, 0.55fr);
+      align-items: center;
+      gap: 1em;
+    }
+    .shield-brand-logo {
+      width: min(220px, 100%);
+      height: auto;
+      display: block;
+      margin: 0 auto;
+      filter: drop-shadow(0 8px 18px rgba(26, 31, 36, 0.12));
+    }
+
+    /* ----- Shield opener (slide 30) ----- */
+    .reveal .section-slide.shield-theme {
+      position: relative;
+      overflow: hidden;
+      background:
+        radial-gradient(ellipse 90% 70% at 15% 20%, rgba(138, 118, 184, 0.28), transparent 55%),
+        radial-gradient(ellipse 80% 60% at 88% 78%, rgba(106, 143, 111, 0.26), transparent 50%),
+        repeating-linear-gradient(
+          -18deg,
+          transparent 0 22px,
+          rgba(138, 118, 184, 0.045) 22px 23px
+        ),
+        var(--bg);
+    }
+    .reveal .section-slide.shield-theme .shield-interlude-mark {
+      width: min(112px, 16vw);
+      height: auto;
+      margin: 0 auto 0.85em;
+      filter: drop-shadow(0 10px 28px rgba(106, 143, 111, 0.35));
+      animation: shield-logo-pulse 3.2s ease-in-out infinite;
+    }
+    .reveal .section-slide.shield-theme .eyebrow {
+      color: #6a8f6f;
+      letter-spacing: 0.2em;
+    }
+    .reveal .section-slide.shield-theme h1 {
+      max-width: 14em;
+      line-height: 1.12;
+      background: linear-gradient(120deg, var(--ink) 20%, #5a4a8a 55%, #4f734f 95%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+    }
+    .reveal .section-slide.shield-theme .subtitle {
+      margin-top: 0.75em;
+      max-width: 22em;
+      font-size: 0.95em;
+      font-weight: 600;
+      color: var(--muted);
+    }
+    .reveal .section-slide.shield-theme .shield-interlude-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4em;
+      margin-top: 1.15em;
+      padding: 0.35em 0.85em;
+      border-radius: 999px;
+      font-size: 0.58em;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #5a4a8a;
+      background: color-mix(in srgb, #8a76b8 16%, var(--bg));
+      border: 1px solid color-mix(in srgb, #8a76b8 35%, transparent);
+      animation: shield-tag-glow 2.6s ease-in-out infinite;
+    }
+    .shield-results-foot .shield-results-actions {
+      display: flex;
+      gap: 0.45em;
+      flex-wrap: wrap;
+    }
+    .shield-results-foot button[data-shield-delete] {
+      border-color: color-mix(in srgb, #b42318 40%, var(--line));
+      background: color-mix(in srgb, #b42318 12%, var(--bg));
+      color: #b42318;
+    }
+    @keyframes shield-logo-pulse {
+      0%, 100% { transform: scale(1); filter: drop-shadow(0 10px 28px rgba(106, 143, 111, 0.35)); }
+      50% { transform: scale(1.06); filter: drop-shadow(0 14px 36px rgba(138, 118, 184, 0.45)); }
+    }
+    @keyframes shield-tag-glow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(138, 118, 184, 0.15); }
+      50% { box-shadow: 0 0 22px 2px rgba(106, 143, 111, 0.28); }
+    }
+    /* Keep Escape overview tiles normal height / no motion */
+    .reveal.overview .section-slide.shield-theme .shield-interlude-mark,
+    .reveal.overview .section-slide.shield-theme .shield-interlude-tag {
+      animation: none;
+    }
+    html[data-theme="dark"] .reveal .section-slide.shield-theme {
+      background:
+        radial-gradient(ellipse 90% 70% at 15% 20%, rgba(138, 118, 184, 0.35), transparent 55%),
+        radial-gradient(ellipse 80% 60% at 88% 78%, rgba(106, 143, 111, 0.28), transparent 50%),
+        repeating-linear-gradient(
+          -18deg,
+          transparent 0 22px,
+          rgba(138, 118, 184, 0.06) 22px 23px
+        ),
+        var(--bg);
+    }
+    html[data-theme="dark"] .reveal .section-slide.shield-theme h1 {
+      background: linear-gradient(120deg, #f3f5f7 15%, #c4b5e8 55%, #a8c9ab 95%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .reveal ul.shield-steps {
+      list-style: none !important;
+      list-style-type: none !important;
+      padding-left: 0;
+      margin-left: 0;
+      counter-reset: shield-step;
+    }
+    .reveal ul.shield-steps > li {
+      position: relative;
+      list-style: none !important;
+      padding-left: 2.55em;
+      margin-bottom: 0.55em;
+      counter-increment: shield-step;
+      font-size: 1.02em;
+      line-height: 1.35;
+    }
+    .reveal ul.shield-steps > li::marker {
+      content: none;
+      font-size: 0;
+    }
+    .reveal ul.shield-steps > li::before {
+      content: counter(shield-step);
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 1.85em;
+      height: 1.85em;
+      border-radius: 999px;
+      background:
+        linear-gradient(145deg, #9a88c8 0%, #6a8f6f 100%);
+      color: #fff;
+      font-size: 0.82em;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: -0.02em;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+      box-shadow:
+        0 0 0 3px color-mix(in srgb, #8a76b8 22%, transparent),
+        0 6px 14px rgba(90, 74, 138, 0.22);
+    }
+    .shield-then {
+      margin: 0.55em 0 0.25em;
+      font-size: 0.78em;
+      font-weight: 800;
+      color: var(--accent);
+      letter-spacing: 0.02em;
+    }
+
+    @media (max-width: 900px) {
+      .roadmap-grid { grid-template-columns: 1fr; }
+      .stat-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<!-- 1 -->
+<section class="title-slide">
+  <img class="essec-logo" src="../assets/essec-logo.svg" alt="ESSEC Business School"/>
+  <p class="eyebrow">AIDAMS · Marketing Analytics</p>
+  <h1>Session 4</h1>
+  <p class="subtitle">Empirical Demand Analysis</p>
+</section>
+
+<!-- 2 -->
+<section class="announce-slide">
+  <div class="announce-head">
+    <span class="announce-icon" aria-hidden="true"></span>
+    <h2>Announcements</h2>
+  </div>
+  <ul>
+    <li><strong>Assignment 1</strong> and <strong>Assignment 2</strong> are not graded yet</li>
+    <li><strong>Assignment 3</strong> will be posted by the weekend
+      <ul>
+        <li>The deadline will be in <strong>2 weeks</strong></li>
+      </ul>
+    </li>
+    <li><strong>Assignment 3</strong> is a group assignment
+      <ul>
+        <li>Has everybody got a group yet?</li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<!-- 3 -->
+<section class="dense">
+  <h2>Review last session</h2>
+  <p class="lead">We discussed the following topics in the last session</p>
+  <ul class="compact-list">
+    <li><strong>Demand models:</strong> response to change in price
+      <ul>
+        <li>Price elasticity</li>
+        <li>Linear models and log-linear models (multiplicative)</li>
+        <li>Demand models for single and multiple products</li>
+      </ul>
+    </li>
+    <li><strong>Profitability analysis</strong>
+      <ul>
+        <li>General multi-product case</li>
+        <li>Single product
+          <ul>
+            <li>Promotions and optimal pricing</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li><strong>In-class analysis</strong>
+      <ul>
+        <li>Demand response and profitability analysis for a single product manufacturer</li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<!-- 4 -->
+<section>
+  <h2>Today’s agenda</h2>
+  <div class="roadmap-grid">
+    <div class="card">
+      <h3>I · Regression for demand</h3>
+      <p>Deeper on the regression model used to estimate multiplicative demand models</p>
+    </div>
+    <div class="card">
+      <h3>II · Retail demand data</h3>
+      <p>Scanner data · time series, cross-section and panel data</p>
+    </div>
+    <div class="card">
+      <h3>III · More on regression</h3>
+      <p>Unbiased estimators · omitted variable bias</p>
+    </div>
+    <div class="card accent">
+      <h3>IV · In-class consulting</h3>
+      <p>Casino pricing — slot machine demand analysis</p>
+    </div>
+    <div class="card">
+      <h3>V · Base pricing analysis</h3>
+      <p>Case study using IRI data</p>
+    </div>
+    <div class="card">
+      <h3>VI · Assignment 3</h3>
+      <p>Base pricing analysis for the detergent category</p>
+    </div>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="section-slide">
+  <p class="eyebrow">Empirical Demand Analysis</p>
+  <p class="part-label">Part A</p>
+  <h1>Remember from the<br/>last session</h1>
+</section>
+
+<!-- 6 -->
+<section>
+  <h2>Estimating price elasticity for a single product using data</h2>
+  <ul class="compact-list">
+    <li>General approach for a single product case:
+      <ul>
+        <li>Obtain data on sales units and prices</li>
+        <li>Estimate this regression equation to obtain model parameters
+          <ul>
+            <li>Assume constant price elasticity</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+  <div class="eq-block eq-accent">\[ \log(Q) = \alpha - \eta \log(P) + \epsilon \]</div>
+  <ul class="compact-list">
+    <li>What is the elasticity in this model?</li>
+    <li>What is the error term? Why do we need that?</li>
+  </ul>
+</section>
+
+<!-- 7 -->
+<section>
+  <h2>Obtaining price elasticity from data: an example</h2>
+  <ul>
+    <li>Example: Demand for <strong>Philadelphia Cream Cheese, 8 oz</strong></li>
+  </ul>
+  <img src="assets/cream-cheese-scatter.png"
+       alt="Scatter plot of log(P) against log(Q) for Philadelphia Cream Cheese with a fitted downward sloping line"
+       class="demand-fig wide" style="max-height: 13em;"/>
+  <p class="fig-caption">Each point is a store-week: \(\log(Q)\) on the horizontal axis, \(\log(P)\) on the vertical axis.</p>
+</section>
+
+<!-- 8 -->
+<section>
+  <h2>Estimating the log-linear (multiplicative) demand model</h2>
+  <ul class="compact-list">
+    <li>Two product example</li>
+  </ul>
+  <div class="eq-block eq-accent">
+    <div class="eq-stack">
+      <div>\[ \log(Q_1) = \alpha_1 + \beta_{11}\log(P_1) + \beta_{12}\log(P_2) + \epsilon_1 \]</div>
+      <div>\[ \log(Q_2) = \alpha_2 + \beta_{21}\log(P_1) + \beta_{22}\log(P_2) + \epsilon_2 \]</div>
+    </div>
+  </div>
+  <ul class="compact-list">
+    <li>In the case of two products we have <strong>two regression equations</strong>, one for each product</li>
+    <li>\(\log(Q_i)\) is the dependent variable, \(y_i\)</li>
+    <li>\(\log(P_1)\) and \(\log(P_2)\) are the independent variables, \(x_1\) and \(x_2\)</li>
+    <li>Why do we have two different error terms?</li>
+    <li>Do \(\beta_{12}\) and \(\beta_{21}\) have the same values?</li>
+  </ul>
+</section>
+
+<!-- 9 -->
+<section>
+  <h2>Taking the regressions to data</h2>
+  <ul>
+    <li>While running these regressions is simple in principle, in practice:
+      <ul>
+        <li>We need a good understanding of the <strong>sources of variation</strong> in data
+          <ul>
+            <li>Why there are price and demand variations</li>
+          </ul>
+        </li>
+        <li>Control for other sources of <strong>endogeneity</strong> that can bias the estimates of price elasticities:
+          <ul>
+            <li>Variables that are potentially correlated with prices <em>and</em> demand</li>
+            <li>What is endogeneity? What is omitted variable bias in a regression?</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<!-- 10 -->
+<section class="section-slide">
+  <p class="eyebrow">Demand estimation in retail</p>
+  <p class="part-label">Part B</p>
+  <h1>From theory to data</h1>
+</section>
+
+<!-- 11 -->
+<section class="dense-2">
+  <h2>Scanner data</h2>
+  <div class="two-col">
+    <div>
+      <ul class="compact-list">
+        <li><strong>Timeline</strong>
+          <ul>
+            <li>First scan test at Kroger in Cincinnati in 1972</li>
+            <li>IRI’s InfoScan introduced in 1987</li>
+          </ul>
+        </li>
+        <li><strong>What do scanner data capture?</strong>
+          <ul>
+            <li>Sales at the UPC (universal product code) level
+              <ul>
+                <li>Honey Nut Cheerios 25 oz size</li>
+              </ul>
+            </li>
+            <li>Prices and promotions</li>
+          </ul>
+        </li>
+        <li><strong>Aggregation levels</strong>
+          <ul>
+            <li>Market (Raleigh-Durham) · chain/account (Kroger) · store</li>
+          </ul>
+        </li>
+        <li><strong>Time</strong>
+          <ul>
+            <li>Weekly, monthly, …</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div>
+      <img src="assets/scanner-data.jpg" alt="Retail barcode scanner capturing product sales data" class="demand-fig"/>
+    </div>
+  </div>
+</section>
+
+<!-- 12 -->
+<section class="dense">
+  <h2>The two dimensions of scanner data</h2>
+  <ul class="compact-list fragment">
+    <li><strong>Time series</strong> data of sales, prices, etc. in a store, chain (account), or market
+      <ul>
+        <li>Time series data: data of a series of time in one store</li>
+      </ul>
+    </li>
+    <li>Prices, sales, etc. in a <strong>cross-section</strong> of stores, chains (accounts), or markets
+      <ul>
+        <li>Cross-sectional data: one time period at different units/stores</li>
+      </ul>
+    </li>
+    <li>Data with a cross-sectional dimension <em>and</em> a time series dimension are called <strong>panel data</strong></li>
+  </ul>
+  <img src="assets/panel-data-dimensions.png"
+       alt="Table of weekly prices across cities, highlighting one column as time series and one row as cross section"
+       class="demand-fig wide" style="max-height: 9.4em;"/>
+</section>
+
+<!-- 13 -->
+<section>
+  <h2>Time series vs. cross-sectional data</h2>
+  <ul>
+    <li>If you could either use time series data <em>or</em> cross-sectional data for your demand analysis but not both, which would you prefer?</li>
+    <li>Example: You try to estimate the own-price elasticity of demand from either
+      <ul>
+        <li><strong>52 weeks</strong> of price and sales data in <strong>one store</strong></li>
+        <li>Price and sales data for <strong>52 different stores</strong> in <strong>one week</strong></li>
+      </ul>
+    </li>
+  </ul>
+  <p class="discuss-prompt"><strong>Let us discuss each.</strong></p>
+</section>
+
+<!-- 14 -->
+<section>
+  <h2>Panel data</h2>
+  <ul class="compact-list">
+    <li>Panel data has <strong>both</strong> cross-sectional and time-series variation</li>
+    <li>Panel data are an <strong>ideal data source</strong> for data-driven marketing</li>
+    <li>Example: Estimating price elasticities in and across markets
+      <ul>
+        <li><strong>Time series variation</strong> in prices and sales within markets (the cross-sectional units) allows us to estimate price elasticities controlling for the market environment (consumer tastes, competition, etc.)</li>
+        <li><strong>Variation across markets</strong> in prices and sales allows us to examine how environmental factors, such as demographic differences across markets, are related to differences in price elasticities across markets</li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<!-- 15 -->
+<section class="section-slide">
+  <p class="eyebrow">Regression and biases</p>
+  <p class="part-label">Part C</p>
+  <h1>The pitfalls of<br/>regression analysis</h1>
+</section>
+
+<!-- 16 -->
+<section>
+  <h2>An example: Franprix</h2>
+  <ul class="compact-list">
+    <li>You are an analyst at <strong>Franprix</strong>, a French retailer</li>
+    <li>You run a regression on <strong>panel data</strong> of vegetable prices and quantities across stores and weeks</li>
+    <li>The estimated price elasticity is <strong>positive</strong>
+      <ul>
+        <li>When prices are <strong>high</strong>, demand is <strong>high</strong></li>
+        <li>When prices are <strong>low</strong>, demand is <strong>low</strong></li>
+      </ul>
+    </li>
+    <li>Should Franprix raise vegetable prices to sell more?</li>
+  </ul>
+  <p class="discuss-prompt">
+    <strong>What do you think is the issue?</strong>
+  </p>
+</section>
+
+<!-- 17 -->
+<section class="dense-2">
+  <h2>Theoretical assumptions of regression</h2>
+  <ul class="compact-list">
+    <li>Regression analysis is based on some assumptions that might be <strong>violated</strong></li>
+  </ul>
+  <div class="eq-block eq-accent">\[ \log(Q) = \alpha - \eta \log(P) + \epsilon \]</div>
+  <ul class="compact-list">
+    <li>There are two common scenarios that can violate our assumptions:
+      <ul>
+        <li><strong>Reverse causality:</strong> the demand sets the price, not the opposite!
+          <ul>
+            <li>Example: Franprix marking up prices when demand is strong</li>
+          </ul>
+        </li>
+        <li><strong>Omitted variable bias:</strong> happens when we leave out an important factor that affects both our independent variable (e.g., price) and our dependent variable (e.g., sales)
+          <ul>
+            <li>Example: seasonality, weather, or promotions for vegetables</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li>These data patterns will <strong>bias</strong> our estimated \(\eta\)
+      <ul>
+        <li>Increasing the number of data points would <em>not</em> solve this issue</li>
+        <li>We need to control for all the variables we have access to</li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<!-- 18 -->
+<section>
+  <h2>A famous question: the return to education</h2>
+  <ul class="compact-list">
+    <li>One of the most famous questions in economics:
+      <ul>
+        <li>What is the causal effect of an extra year of schooling on wages?</li>
+      </ul>
+    </li>
+    <li>A simple regression looks like</li>
+  </ul>
+  <div class="eq-block eq-accent">\[ \log(\text{wage}) = \alpha + \beta \cdot \text{education} + \epsilon \]</div>
+  <ul class="compact-list">
+    <li>A naïve OLS estimate of \(\beta\) is typically around <strong>0.08–0.10</strong>
+      <ul>
+        <li>About an <strong>8–10%</strong> higher wage per extra year of schooling (Card, 1999)</li>
+      </ul>
+    </li>
+    <li>But is that the true causal return to education?</li>
+  </ul>
+  <p class="discuss-prompt">
+    <strong>Discuss:</strong> what might bias this estimate?
+  </p>
+</section>
+
+<!-- 19 -->
+<section class="family-edu-slide" data-family-edu>
+  <h2>Example: rich vs. poor families</h2>
+  <div class="two-col text-top">
+    <div>
+      <ul class="compact-list">
+        <li>Assume two types of families
+          <ul>
+            <li><strong>Rich</strong> families: higher income and higher education</li>
+            <li><strong>Poor</strong> families: lower income and lower education</li>
+          </ul>
+        </li>
+        <li>Compare two regressions
+          <ul>
+            <li><strong>Pooled:</strong> ignore family type</li>
+            <li><strong>Separate regressions</strong> for rich vs. poor</li>
+          </ul>
+        </li>
+      </ul>
+      <p class="discuss-prompt" style="margin-top:0.45em">
+        <strong>Discuss:</strong> which slope is the return to education within a family type?
+      </p>
+    </div>
+    <div>
+      <div class="family-fig">
+        <canvas data-family-plot
+                aria-label="Scatter of years of education versus income for rich and poor families, with pooled and within-group regression lines"></canvas>
+      </div>
+      <p class="fig-caption" data-family-note></p>
+    </div>
+  </div>
+</section>
+
+<!-- 20 -->
+<section>
+  <h2>Another example</h2>
+  <ul class="compact-list">
+    <li>We estimate demand for a product. The competitor’s price, \(P_2\), frequently moves in the <strong>same direction</strong> as the product price, \(P_1\)</li>
+    <li>Do we obtain unbiased estimates (own and cross-price elasticities) when we estimate</li>
+  </ul>
+  <div class="eq-block">\[ \log(Q_1) = \alpha_1 + \beta_1 \log(P_1) + \beta_2 \log(P_2) + \epsilon \]</div>
+  <ul class="compact-list">
+    <li>Do we obtain an unbiased own-price elasticity when we <strong>omit</strong> the competitor’s price from the regression?</li>
+  </ul>
+  <div class="eq-block eq-accent">\[ \log(Q_1) = \alpha_1 + \beta_1 \log(P_1) + \tilde{\epsilon} \]</div>
+</section>
+
+<!-- 21 -->
+<section class="dense-3" data-ovb-setup>
+  <h2>A numerical simulation example</h2>
+  <div class="ovb-setup">
+  <div>
+  <ul class="compact-list">
+    <li>Simulate data from the regression</li>
+  </ul>
+  <div class="eq-block eq-accent" data-ovb-equation></div>
+  <ul class="compact-list">
+    <li><strong>Four simulation scenarios</strong>
+      <ul>
+        <li>We randomly generate independent variables \(x_1\) and \(x_2\) that are either <strong>correlated</strong> or <strong>uncorrelated</strong></li>
+        <li>Then we run the regression and either <strong>include \(x_2\)</strong> or <strong>remove it</strong> from the regression</li>
+        <li>In total, <strong>four different scenarios</strong></li>
+        <li>In all scenarios our goal is to estimate the coefficient of \(x_1\) (equal to <strong>−2</strong>)</li>
+      </ul>
+    </li>
+    <li>Plot histogram of regression coefficients across <strong>1,000</strong> simulated data sets
+      <ul>
+        <li>If the estimator of the regression coefficient is unbiased, the average of the estimates across all data sets (pink vertical line on the next slide) should be almost identical to the true coefficient</li>
+      </ul>
+    </li>
+  </ul>
+  </div>
+  <div class="ovb-panel">
+    <h3>Run the simulation</h3>
+    <label class="ovb-field"><span>Coefficient of \(x_2\)</span>
+      <input type="number" data-ovb-beta2 min="-5" max="5" step="0.1" value="1"/>
+    </label>
+    <label class="ovb-field"><span>Corr(\(x_1,x_2\))</span>
+      <span class="ovb-rho-row">
+        <input type="range" data-ovb-rho min="-0.95" max="0.95" step="0.05" value="0.5"/>
+        <output data-ovb-rho-out>0.50</output>
+      </span>
+    </label>
+    <button type="button" data-ovb-run>Run simulation</button>
+    <p class="ovb-status" data-ovb-status></p>
+  </div>
+  </div>
+</section>
+
+<!-- 22 -->
+<section data-ovb-results>
+  <h2>Simulation results</h2>
+  <div class="ovb-figure">
+    <canvas data-ovb-plot
+            aria-label="Four histograms of the estimated coefficient on x1. Unbiased except when x2 is omitted and correlated with x1."></canvas>
+  </div>
+  <p class="fig-caption" data-ovb-caption>Pink line = average estimate across 1,000 data sets · dashed line = true coefficient (−2). The left column keeps \(x_1\) and \(x_2\) uncorrelated.</p>
+</section>
+
+<!-- 23 -->
+<section>
+  <h2>Unbiased and biased estimates</h2>
+  <ul class="compact-list">
+    <li>Remember a key assumption in regression analysis:
+      <ul>
+        <li>All independent variables are uncorrelated with the error terms: \(cov(x_k, \epsilon) = 0\)</li>
+      </ul>
+    </li>
+    <li>If satisfied, the <strong>OLS estimator is unbiased</strong></li>
+    <li>In the previous example the competitor’s price is correlated with the own price
+      <ul>
+        <li>Intuition and the simulations reveal a systematically <strong>biased</strong> own-price elasticity estimator</li>
+        <li>Why? — Because the own price is correlated with the error term, if the competitor’s price is omitted</li>
+        <li>Original equation: \(y = 0 - 2x_1 + 1x_2 + \epsilon\)</li>
+        <li>Omitted regression: \(y = 0 + \beta x_1 + \tilde{\epsilon}\)</li>
+        <li>Thus, we have: \(\tilde{\epsilon} = 1x_2 + \epsilon\)
+          <ul>
+            <li>If \(x_1\) and \(x_2\) are correlated, \(x_1\) and \(\tilde{\epsilon}\) are correlated</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<!-- 24 -->
+<section>
+  <h2>Omitted variable bias</h2>
+  <ul class="compact-list">
+    <li>Omitted variable bias occurs if <strong>both</strong> of these conditions are met:
+      <ol>
+        <li>A relevant independent variable that affects the outcome is <strong>omitted</strong> from the estimated regression model</li>
+        <li>The omitted variable is <strong>correlated with an included variable</strong></li>
+      </ol>
+    </li>
+    <li>Omitted variable bias presents one of the most severe pitfalls in the application of statistics to real-world problems
+      <ul>
+        <li>Return on education example</li>
+      </ul>
+    </li>
+    <li>Generally, <strong>no test</strong> for omitted variable bias exists unless we have data on the omitted variables
+      <ul>
+        <li>Include all potentially related variables in the regression analysis</li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<!-- 25 -->
+<section>
+  <h2>Omitted variable bias in cross-sectional data</h2>
+  <ul class="compact-list">
+    <li>Example: Goal is to estimate a demand model using data on sales and prices from stores in different geographies or markets</li>
+    <li>Using data from different markets can be useful
+      <ul>
+        <li>Price variation across markets may be higher than within markets → more variation, better estimation</li>
+      </ul>
+    </li>
+    <li>But markets often <strong>differ</strong> across other dimensions:
+      <ul>
+        <li>Consumer tastes, demographics, competition, distribution</li>
+      </ul>
+    </li>
+  </ul>
+  <p class="takeaway">
+    <strong>Problem:</strong> prices might systematically differ across markets according to differences in consumer tastes, demographics, etc.
+  </p>
+</section>
+
+<!-- 26 -->
+<section>
+  <h2>Another example</h2>
+  <div class="two-col">
+    <div>
+      <ul class="compact-list">
+        <li>Assume we have price, quantity sold from <strong>2 different locations</strong>
+          <ul>
+            <li>The level of demand is higher in market 2 than in market 1, and accordingly the product tends to be sold at higher prices in market 2 than in market 1</li>
+            <li>The price elasticity, however, is <strong>identical</strong> across markets</li>
+            <li>What happens if we run a regression in this setting?
+              <ul>
+                <li>What do we get as the price elasticity?</li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div>
+      <img src="assets/two-markets-pooled.png"
+           alt="Scatter of log(P) against log(Q) for two markets with an upward sloping pooled regression line"
+           class="demand-fig"/>
+    </div>
+  </div>
+</section>
+
+<!-- 27 -->
+<section>
+  <h2>Potential solutions</h2>
+  <div class="two-col text-top">
+    <div>
+      <ul class="compact-list">
+        <li>Suggest a simple solution to solve this issue</li>
+        <li class="fragment" data-fragment-index="1">Run a separate regression, <strong>one for each store</strong></li>
+        <li class="fragment" data-fragment-index="1"><strong>Pros</strong>
+          <ul>
+            <li class="fragment" data-fragment-index="2">Solves the issue of omitted variable bias</li>
+          </ul>
+        </li>
+        <li class="fragment" data-fragment-index="1"><strong>Cons</strong>
+          <ul>
+            <li class="fragment" data-fragment-index="2">What if we have <strong>10,000</strong> stores? We cannot run this many regressions</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div>
+      <img src="assets/two-markets-pooled.png"
+           alt="Scatter of log(P) against log(Q) for two markets with an upward sloping pooled regression line"
+           class="demand-fig"/>
+    </div>
+  </div>
+</section>
+
+<!-- 28 -->
+<section>
+  <h2>Solution</h2>
+  <div class="two-col">
+    <div>
+      <ul class="compact-list">
+        <li>Control for systematic differences in demand across markets using <strong>dummy variables</strong> for each market (apart from market 1, chosen as the base category)</li>
+      </ul>
+      <div class="eq-block eq-accent eq-local">\[ \log(Q) = \alpha + \delta_m D_m - \eta \log(P) + \epsilon \]</div>
+      <ul class="compact-list">
+        <li>The dummies allow for <strong>different intercepts</strong> (positions of the demand curves) across markets</li>
+        <li>The dummy variables for each cross-sectional unit (markets) are called <strong>fixed effects</strong></li>
+      </ul>
+    </div>
+    <div>
+      <img src="assets/two-markets-fixed-effects.png"
+           alt="Same scatter with separate downward sloping demand curves fitted within each market"
+           class="demand-fig"/>
+    </div>
+  </div>
+</section>
+
+<!-- 29 -->
+<section>
+  <h2>Omitted variables: Lessons</h2>
+  <ul class="compact-list">
+    <li>To be able to estimate unbiased price elasticities, the variation in prices in the data should <strong>not</strong> be driven by variation in demand conditions that cannot be controlled for</li>
+    <li>Special care should be taken if the demand estimation is performed using <strong>cross-sectional data</strong></li>
+    <li>Omitted variable bias can be avoided by running <strong>experiments</strong>
+      <ul>
+        <li>Experiments are the gold standard for causal measurement</li>
+        <li>More on experiments later in this course</li>
+        <li>But experiments may be harder to run on price (compared to say advertising)</li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<!-- 29 / Reveal 30 -->
+<section class="section-slide shield-theme">
+  <img class="shield-interlude-mark" src="assets/shield-of-eden-logo.svg" alt=""/>
+  <p class="eyebrow">Potential class assignment</p>
+  <h1>An assignment on our<br/>online behavior</h1>
+  <p class="subtitle">Turn your everyday browsing into a live experiment — about attention, habits, and you</p>
+  <span class="shield-interlude-tag">Know yourself through assignment</span>
+</section>
+
+<!-- 30 / Reveal 31 -->
+<section class="dense">
+  <h2>Why study online behavior?</h2>
+  <ul class="compact-list">
+    <li>User online behavior is — and will be even more — an important topic
+      <ul>
+        <li>Are there distinct ways people spend their attention online, and do these groups differ in well-being?
+          <ul>
+            <li>“Focused deep readers,” “fragmented switchers,” “night-time scrollers,” and “utilitarian users”</li>
+          </ul>
+        </li>
+        <li>Does scrolling cause bad moods, or do bad moods cause scrolling?</li>
+        <li>Which sites have their hooks on us? Predict whether a user returns to a site within 2 hours of leaving it — a measure of habit strength</li>
+      </ul>
+    </li>
+    <li>A great practice for the future — and a fun exercise to know ourselves ✨🔍🧠</li>
+  </ul>
+</section>
+
+<!-- 31 / Reveal 32 -->
+<section class="shield-brand-slide">
+  <h2>We do the assignment using Shield of Eden</h2>
+  <div class="two-col">
+    <ul class="compact-list">
+      <li>A platform we are building at <strong>ESSEC</strong>
+        <ul>
+          <li>Protect individuals against manipulative marketing techniques</li>
+          <li>Empower research on business optimization and mental &amp; social well-being</li>
+        </ul>
+      </li>
+      <li>By fostering research and empowering individuals against manipulative marketing, we hope to change the attention economy</li>
+      <li>You will be the <strong>first group</strong> to test the tool</li>
+    </ul>
+    <div>
+      <img class="shield-brand-logo" src="assets/shield-of-eden-logo.svg" alt="Shield of Eden logo"/>
+    </div>
+  </div>
+</section>
+
+<!-- 32 / Reveal 33 -->
+<section>
+  <h2>How it is done</h2>
+  <ul class="compact-list shield-steps">
+    <li>You install the extension on your computer</li>
+    <li>Browse the internet as you do regularly</li>
+    <li>After <strong>1 month</strong>, we explore the data gathered for the assignment</li>
+  </ul>
+  <p class="shield-then">Then</p>
+  <ul class="compact-list">
+    <li>We will answer cool, interesting questions about ourselves</li>
+    <li>We can also bet on whether you can guess something about yourselves
+      <ul>
+        <li>Am I among the top-half browsers?</li>
+        <li>Do I spend more time than average on YouTube?</li>
+        <li>Do I go to social media when I do not feel good?</li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<!-- 33 / Reveal 34 -->
+<section>
+  <h2>Notes on privacy</h2>
+  <ul class="compact-list">
+    <li>The platform is <strong>private and anonymous</strong>
+      <ul>
+        <li>It does not save any personal information</li>
+        <li>We even delete your email after sign-up</li>
+        <li>Only you know which data is yours</li>
+      </ul>
+    </li>
+    <li>You can always disable data gathering</li>
+    <li>You can also delete any data you do not want to share</li>
+  </ul>
+</section>
+
+<!-- 34 / Reveal 35 -->
+<section>
+  <h2>We need enough people</h2>
+  <ul class="compact-list">
+    <li>We can only do this if enough of you agree to participate</li>
+    <li>You need to share your <strong>anonymous</strong> data</li>
+    <li>You need to have (and use) a <strong>Chrome</strong> browser</li>
+  </ul>
+  <p class="discuss-prompt">
+    <strong>Quick poll next:</strong> Chrome use · willingness to share data · rewarding contributors with coins
+  </p>
+</section>
+
+<!-- 35 / Reveal 36 -->
+<section class="shield-poll-slide"
+         data-shield-poll
+         data-form-url=""
+         data-responses-api="http://127.0.0.1:8791/api/shield-poll">
+  <div class="shield-poll-inner">
+    <h2>In-class poll</h2>
+    <p class="shield-poll-q">Scan the QR code, answer three short Yes/No questions, then come back to the slides</p>
+    <img class="shield-qr" data-shield-qr alt="QR code for the Shield of Eden participation poll" hidden/>
+    <div class="shield-poll-meta">
+      <span><span class="shield-count" data-shield-count>0</span> responses</span>
+      <a data-shield-form-link href="#" target="_blank" rel="noopener">Open form</a>
+    </div>
+  </div>
+</section>
+
+<!-- 36 / Reveal 37 -->
+<section class="shield-results-slide" data-shield-results>
+  <h2>Poll results</h2>
+  <div class="shield-results-grid">
+    <div class="shield-result-card" data-shield-q="chrome">
+      <h3>1. Using / willing to use Chrome?</h3>
+      <div class="shield-bar-row yes"><span>Yes</span><div class="shield-bar-track"><div class="shield-bar-fill" data-bar="yes"></div></div><span class="n" data-n="yes">0</span></div>
+      <div class="shield-bar-row no"><span>No</span><div class="shield-bar-track"><div class="shield-bar-fill" data-bar="no"></div></div><span class="n" data-n="no">0</span></div>
+    </div>
+    <div class="shield-result-card" data-shield-q="share">
+      <h3>2. Willing to share data?</h3>
+      <div class="shield-bar-row yes"><span>Yes</span><div class="shield-bar-track"><div class="shield-bar-fill" data-bar="yes"></div></div><span class="n" data-n="yes">0</span></div>
+      <div class="shield-bar-row no"><span>No</span><div class="shield-bar-track"><div class="shield-bar-fill" data-bar="no"></div></div><span class="n" data-n="no">0</span></div>
+    </div>
+    <div class="shield-result-card" data-shield-q="reward">
+      <h3>3. Reward coins for sharing?</h3>
+      <div class="shield-bar-row yes"><span>Yes</span><div class="shield-bar-track"><div class="shield-bar-fill" data-bar="yes"></div></div><span class="n" data-n="yes">0</span></div>
+      <div class="shield-bar-row no"><span>No</span><div class="shield-bar-track"><div class="shield-bar-fill" data-bar="no"></div></div><span class="n" data-n="no">0</span></div>
+    </div>
+  </div>
+  <div class="shield-results-foot">
+    <p class="takeaway">
+      <strong>Eligible to run the experiment:</strong>
+      <span data-shield-eligible>0</span> people said Yes to Chrome <em>and</em> Yes to sharing data
+      · <span data-shield-total>0</span> total responses
+    </p>
+    <div class="shield-results-actions">
+      <button type="button" data-shield-refresh>Refresh results</button>
+      <button type="button" data-shield-delete>Delete results</button>
+    </div>
+  </div>
+</section>
+
+<!-- 37 -->
+<section class="section-slide">
+  <p class="eyebrow">In-class consulting project</p>
+  <p class="part-label">Part D</p>
+  <h1>Slot management for<br/>a casino chain</h1>
+</section>
+
+<!-- 30 -->
+<section>
+  <h2>Slot management for a casino chain</h2>
+  <ul class="compact-list">
+    <li><strong>Goal:</strong> to improve or maximize the profitability of slot machines in a casino</li>
+    <li><strong>Situation:</strong> a large casino chain wants to use a data-driven analytics approach to pricing
+      <ul>
+        <li>Historically, pricing has been ad-hoc (decided by local managers)</li>
+      </ul>
+    </li>
+    <li><strong>What is your role as the consultant?</strong>
+      <ul>
+        <li>Perform demand and pricing analysis to advise the casino chain on improving profits through a better pricing strategy</li>
+      </ul>
+    </li>
+    <li><strong>What data do you have?</strong>
+      <ul>
+        <li>Slot machine usage/demand for over two thousand slot machines from a casino chain from Feb 2007 to May 2008 (16 months)</li>
+      </ul>
+    </li>
+  </ul>
+  <div class="case-box">
+    <strong>Data:</strong> a panel data set saved in <code>casino.csv</code><br/>
+    Case explanation in <code>casino.pdf</code>
+  </div>
+</section>
+
+<!-- 31 -->
+<section class="section-slide">
+  <p class="eyebrow">Case study</p>
+  <p class="part-label">Part E</p>
+  <h1>Base pricing analysis</h1>
+</section>
+
+<!-- 32 -->
+<section>
+  <h2>Base pricing analysis</h2>
+  <ul>
+    <li><strong>Base price</strong> = non-promoted price (“everyday” shelf price)</li>
+    <li>Purpose of base pricing analysis
+      <ul>
+        <li>Understand competitive influence of prices on sales</li>
+        <li>Adjust / fine-tune base prices</li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<!-- 33 -->
+<section class="dense-3">
+  <h2>Case study: Data-driven base pricing</h2>
+  <div class="two-col">
+    <div>
+      <ul class="compact-list">
+        <li>A <strong>CPG</strong> (consumer packaged goods) manufacturer approaches IRI
+          <ul>
+            <li>Company sells a national brand</li>
+            <li>Product line: 16 oz, 24 oz, and 32 oz bottle size (32 oz size has recently been added)</li>
+          </ul>
+        </li>
+        <li>Key problems faced by the brand manager
+          <ul>
+            <li>Price the different sizes separately or engage in <strong>product line pricing</strong>?</li>
+            <li>Is there <strong>cannibalization</strong> across product sizes (worry about new 32 oz size)?</li>
+            <li>Worry about <strong>private label (PL)</strong> competition — is it possible to assess the extent of the competitive threat?</li>
+          </ul>
+        </li>
+        <li>Are the current base price points <strong>optimal</strong>, or should we change our prices?</li>
+      </ul>
+    </div>
+    <div>
+      <img src="assets/iri-case-brand.jpg" alt="IRI and the case study brand product line" class="demand-fig tall"/>
+    </div>
+  </div>
+</section>
+
+<!-- 34 -->
+<section>
+  <h2>Base pricing approach</h2>
+  <div class="flow-diagram">
+    <div class="flow-node">Scanner data</div>
+    <div class="flow-v"></div>
+    <div class="flow-node">Demand analysis</div>
+    <div class="flow-v"></div>
+    <div class="flow-node">Price elasticities</div>
+    <div class="flow-branch">
+      <div class="flow-leaf"><div class="flow-node">Cannibalization</div></div>
+      <div class="flow-leaf"><div class="flow-node">Competition</div></div>
+      <div class="flow-leaf"><div class="flow-node">Price simulation</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- 35 -->
+<section class="dense">
+  <h2>Data source</h2>
+  <ul class="compact-list">
+    <li><strong>IRI’s InfoScan database</strong>
+      <ul>
+        <li>About 1,000 stores across the U.S. used in this study</li>
+        <li>52 weeks</li>
+        <li>Prices and sales units of the three branded bottle sizes and the main private label products</li>
+      </ul>
+    </li>
+    <li>Focus on <strong>base prices</strong> and <strong>base unit sales</strong>
+      <ul>
+        <li>Collected in weeks <em>without</em> promotional activity</li>
+        <li>Promotions (details later): temporary price reductions (TPR’s), display, featured product</li>
+      </ul>
+    </li>
+    <li><strong>ACV:</strong> all commodity volume
+      <ul>
+        <li>Defined as the store revenue from all products sold in $ million (per annum)</li>
+        <li>Includes sales in all categories and departments (produce, milk, health and beauty, etc.), not just the products in the demand model</li>
+        <li>Proxy for <strong>store size</strong></li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<!-- 36 -->
+<section>
+  <h2>Data inspection: Variation in base prices</h2>
+  <div class="two-col">
+    <div>
+      <ul>
+        <li>Graph shows:
+          <ul>
+            <li>Average base price across all store-weeks</li>
+            <li>95% range of base prices</li>
+          </ul>
+        </li>
+        <li>Why is it important to have price variation?</li>
+      </ul>
+      <p class="takeaway">
+        There is substantial price variation to work with — a precondition for estimating demand.
+      </p>
+    </div>
+    <div>
+      <img src="assets/base-price-variation.png"
+           alt="Average base price and 95 percent range for 16 oz, 24 oz, 32 oz and two private label sizes"
+           class="demand-fig"/>
+    </div>
+  </div>
+</section>
+
+<!-- 37 -->
+<section>
+  <h2>Results of base pricing analysis: Elasticities</h2>
+  <div class="two-col">
+    <div>
+      <ul class="compact-list">
+        <li>How responsive is sales volume to <strong>own price</strong> changes?
+          <ul>
+            <li>Own price elasticities</li>
+          </ul>
+        </li>
+        <li>Note
+          <ul>
+            <li>Here, IRI does not report standard errors of estimates</li>
+            <li>Always question marketing consultants about <strong>statistical precision</strong> of results</li>
+            <li>Why is it important to have standard deviation?</li>
+          </ul>
+        </li>
+      </ul>
+      <div class="stat-row">
+        <div class="stat"><span class="stat-value">−0.95</span><span class="stat-label">16 oz</span></div>
+        <div class="stat"><span class="stat-value">−1.43</span><span class="stat-label">24 oz</span></div>
+        <div class="stat"><span class="stat-value">−1.24</span><span class="stat-label">32 oz</span></div>
+      </div>
+    </div>
+    <div>
+      <img src="assets/own-price-elasticities.png"
+           alt="Bar chart of own price elasticities: 16 oz −0.95, 24 oz −1.43, 32 oz −1.24"
+           class="demand-fig"/>
+    </div>
+  </div>
+</section>
+
+<!-- 38 -->
+<section>
+  <h2>Results of base pricing analysis: Elasticities (2)</h2>
+  <div class="two-col">
+    <div>
+      <ul>
+        <li>How responsive is the sale of a product to the prices of <strong>other products in the same brand</strong>?
+          <ul>
+            <li>Is there any evidence of <strong>cannibalization</strong>?</li>
+            <li>Consequences?</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div>
+      <img src="assets/cross-elasticities-line.png"
+           alt="Cross price elasticities within the product line across 16 oz, 24 oz and 32 oz sizes"
+           class="demand-fig"/>
+    </div>
+  </div>
+</section>
+
+<!-- 39 -->
+<section>
+  <h2>Results of base pricing analysis: Elasticities (3)</h2>
+  <div class="two-col">
+    <div>
+      <ul>
+        <li>How responsive is the sale of a product to the prices of <strong>PL products</strong>?
+          <ul>
+            <li>How severe is the competitive effect?</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div>
+      <img src="assets/cross-elasticities-pl.png"
+           alt="Cross price elasticities with respect to private label 24 oz and 32 oz prices, nearly all zero"
+           class="demand-fig"/>
+    </div>
+  </div>
+</section>
+
+<!-- 40 -->
+<section class="dense">
+  <h2>Base price simulations</h2>
+  <ul class="compact-list">
+    <li><strong>Goal:</strong> predict profit for each package size, \(k\), in the product line
+      <ul>
+        <li>\(P\) is retail price, \(C\) is variable cost, and \(r\) is retail margin</li>
+      </ul>
+    </li>
+  </ul>
+  <div class="eq-block eq-accent eq-local">\[ profit_k = Q_k\big(P_k(1-r) - C_k\big) \]</div>
+  <ul class="compact-list">
+    <li>Total profit from product line (if we drop the 32 oz pack size)</li>
+  </ul>
+  <div class="eq-block eq-local">\[ total\ profit = profit(16\ oz) + profit(24\ oz) \]</div>
+  <ul class="compact-list">
+    <li>What do we need to conduct base price simulations:
+      <ul>
+        <li><strong>Data:</strong> current base prices across all markets · retailer margin · variable cost (per unit or case)</li>
+        <li><strong>Prediction</strong> of unit sales conditional on own and private label prices — log-linear demand model</li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<!-- 41 -->
+<section>
+  <h2>Profits for different 16 oz and 24 oz price combinations</h2>
+  <div class="two-col">
+    <div>
+      <ul class="compact-list">
+        <li>Profits highest if <strong>both prices are increased by 10%</strong>
+          <ul>
+            <li>Based on competition and cannibalization analysis, why is this happening?</li>
+          </ul>
+        </li>
+        <li>Why not increase prices even further?
+          <ul>
+            <li>Statistical reliability of the model decreases when proposed prices are very different from prices in the data</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div>
+      <img src="assets/base-price-profit-surface.jpg"
+           alt="Three dimensional profit surface over 16 oz and 24 oz base price indices"
+           class="demand-fig"/>
+    </div>
+  </div>
+</section>
+
+<!-- 42 -->
+<section class="dense">
+  <h2>Base pricing: Lessons</h2>
+  <ul class="compact-list">
+    <li><strong>Goals of a base pricing analysis</strong>
+      <ul>
+        <li>Understand how the prices of the products in the category influence demand for the products that we sell</li>
+        <li>Do the prices of competing products influence our own sales — <strong>competition</strong>?</li>
+        <li>Do the prices of other products in our product line influence our own sales — <strong>cannibalization</strong>?</li>
+      </ul>
+    </li>
+    <li><strong>Data-driven approach to base pricing</strong>
+      <ul>
+        <li>Use data on past prices and sales</li>
+        <li>Use regression analysis to estimate a demand model</li>
+      </ul>
+    </li>
+    <li><strong>Use base pricing analysis to predict product line profits</strong>
+      <ul>
+        <li>Can we improve pricing?</li>
+        <li>How should we adjust the prices in our product line?</li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<!-- 43 -->
+<section class="section-slide">
+  <p class="eyebrow">Assignment 3</p>
+  <p class="part-label">Part F</p>
+  <h1>Base pricing analysis for<br/>the detergent category</h1>
+</section>
+
+<!-- 44 -->
+<section>
+  <h2>Assignment 3</h2>
+  <ul class="compact-list">
+    <li><strong>Goal:</strong>
+      <ul>
+        <li>Conduct base pricing analysis for P&amp;G’s <strong>Tide</strong> laundry detergent brand</li>
+        <li>Examine <strong>cannibalization</strong> within the Tide product line</li>
+        <li>Examine <strong>competitive threat</strong> from Wisk</li>
+        <li>Make pricing recommendations</li>
+      </ul>
+    </li>
+    <li><strong>Approach</strong>
+      <ul>
+        <li>Estimate log-linear demand model using scanner data</li>
+        <li>Use profitability analysis to make recommendations on price change</li>
+      </ul>
+    </li>
+    <li>Combine techniques learnt in the price analytics module:
+      <ul>
+        <li>Casino pricing · IRI case study · profitability and demand exercise</li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<!-- 45 -->
+<section class="dense-3">
+  <h2>Summary</h2>
+  <ul class="compact-list">
+    <li><strong>Regression models</strong> are used to estimate multiplicative demand models
+      <ul>
+        <li>Using panel data with both cross-sectional and time series variation can help</li>
+        <li>Need to control for all factors that can bias price elasticity estimates</li>
+      </ul>
+    </li>
+    <li><strong>Omitted variable bias</strong>
+      <ul>
+        <li>Sources of bias and solutions</li>
+      </ul>
+    </li>
+    <li><strong>In-class consulting work on casino pricing</strong>
+      <ul>
+        <li>Data driven pricing analysis</li>
+        <li>Showcases the breadth of the applicability of data driven demand models</li>
+      </ul>
+    </li>
+    <li><strong>Base pricing analysis</strong> — understand how the prices of the products in the category influence demand for the products that we sell
+      <ul>
+        <li>Quantify competition and cannibalization</li>
+        <li>Use regression estimates and profitability analysis to manage product lines in competitive markets</li>
+        <li>Case study using IRI data</li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<!-- 46 -->
+<section class="title-slide">
+  <h1>That’s all folks</h1>
+  <p class="subtitle">Next: Promotion Analytics</p>
+</section>
+
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/markdown/markdown.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/math/math.js"></script>
+  <script src="../js/theme.js"></script>
+  <script src="js/ovb-sim.js"></script>
+  <script src="js/family-edu.js"></script>
+  <script src="js/shield-poll.js"></script>
+  <script>
+    Reveal.initialize({
+      fragments: true,
+      hash: true,
+      slideNumber: 'c/t',
+      width: 1280,
+      height: 720,
+      margin: 0.06,
+      transition: 'fade',
+      backgroundTransition: 'fade',
+      plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealMath.KaTeX ]
+    }).then(function () {
+      if (window.startOvbSimulation) window.startOvbSimulation();
+      if (window.startFamilyEdu) window.startFamilyEdu();
+      if (window.startShieldPoll) window.startShieldPoll();
+    });
+  </script>
+</body>
+</html>
