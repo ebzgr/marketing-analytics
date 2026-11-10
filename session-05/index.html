@@ -1,0 +1,1907 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="referrer" content="strict-origin-when-cross-origin"/>
+  <title>Session 5 · Promotion Analytics · Marketing Analytics</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reset.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.css"/>
+  <link rel="stylesheet" href="../css/theme.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/monokai.css"/>
+  <style>
+    /* ----- Equations ----- */
+    .eq-block {
+      margin: 0.55em auto;
+      padding: 0.5em 0.85em;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: var(--bg-soft);
+      text-align: center;
+      max-width: 920px;
+    }
+    .eq-block .katex-display { margin: 0.2em 0; }
+    .eq-block.eq-local {
+      margin: 0.3em 0 0.35em;
+      max-width: none;
+    }
+    .eq-block.eq-accent {
+      border-color: color-mix(in srgb, var(--accent-2) 38%, var(--line));
+      background: color-mix(in srgb, var(--accent-2) 8%, var(--bg));
+    }
+    .eq-block.eq-sm { font-size: 0.8em; }
+    .eq-block.eq-xs { font-size: 0.7em; max-width: none; }
+    .eq-stack {
+      display: grid;
+      gap: 0.2em;
+    }
+
+    /* ----- Compact text ----- */
+    .compact-list { font-size: 0.84em; }
+    .compact-list > li { margin-bottom: 0.26em; }
+    .compact-list ul { font-size: 0.93em; }
+
+    /* ----- Figures ----- */
+    .demand-fig {
+      max-height: 13em;
+      max-width: 100%;
+      width: auto;
+      background: #fff;
+      padding: 8px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      display: block;
+      margin: 0 auto;
+    }
+    .demand-fig.wide { max-height: 14.5em; }
+    .demand-fig.tall { max-height: 15.5em; }
+    /* Fill the slide so absolutely positioned children anchor to the slide corners. */
+    .reveal .slides section.full-height { height: 100%; }
+    .corner-fig {
+      position: absolute;
+      right: 48px;
+      bottom: 90px;
+      max-height: 3.6em;
+      max-width: 55%;
+    }
+    .feedback-fig {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      min-height: 14em;
+    }
+    .feedback-fig .demand-fig.tall {
+      max-height: 17.5em;
+      width: 100%;
+      object-fit: contain;
+    }
+    .reveal p.fig-caption {
+      margin: 0.4em 0 0;
+      font-size: 0.62em;
+      line-height: 1.35;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    /* ----- Callouts ----- */
+    .case-box {
+      margin-top: 0.5em;
+      padding: 0.65em 0.9em;
+      border-radius: 14px;
+      border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--line));
+      background: color-mix(in srgb, var(--accent) 8%, var(--bg));
+      font-size: 0.78em;
+      line-height: 1.4;
+    }
+    .discuss-prompt {
+      margin-top: 0.4em;
+      padding: 0.5em 0.75em;
+      border-radius: 12px;
+      border: 1px dashed color-mix(in srgb, var(--accent-2) 40%, var(--line));
+      background: color-mix(in srgb, var(--accent-2) 8%, var(--bg));
+      font-size: 0.78em;
+      line-height: 1.35;
+    }
+    .takeaway {
+      margin-top: 0.5em;
+      padding: 0.5em 0.8em;
+      border-radius: 0 10px 10px 0;
+      border-left: 4px solid var(--accent);
+      background: var(--panel);
+      font-size: 0.76em;
+      line-height: 1.4;
+    }
+
+    /* ----- Roadmap / card grids ----- */
+    .roadmap-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.7em;
+      align-items: stretch;
+      margin-top: 0.35em;
+    }
+    .roadmap-grid .card {
+      min-height: 0;
+      margin: 0;
+      height: 100%;
+      box-sizing: border-box;
+      padding: 0.6em 0.75em;
+    }
+    .roadmap-grid .card h3 { font-size: 0.84em; margin-bottom: 0.2em; }
+    .roadmap-grid .card p { font-size: 0.68em; margin-bottom: 0; line-height: 1.35; }
+    .roadmap-grid .card ul { font-size: 0.66em; margin: 0; }
+    .roadmap-grid .card li { margin: 0.12em 0; }
+
+    /* ----- Headline numbers ----- */
+    .stat-row {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 0.6em;
+      margin-top: 0.4em;
+    }
+    .stat {
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--bg-soft);
+      padding: 0.45em 0.6em;
+      text-align: center;
+    }
+    .stat .stat-value {
+      display: block;
+      font-size: 1.15em;
+      font-weight: 800;
+      color: var(--accent-2);
+      line-height: 1.1;
+      font-variant-numeric: tabular-nums;
+    }
+    .stat .stat-label {
+      display: block;
+      font-size: 0.6em;
+      font-weight: 700;
+      color: var(--muted);
+      margin-top: 0.15em;
+    }
+
+    /* ----- Density scale for text-heavy slides -----
+       All theme sizes are em-based, so scaling the section font-size shrinks
+       text, figures and spacing together and keeps the slide inside 1280x720. */
+    section.dense { font-size: 0.93em; }
+    section.dense-2 { font-size: 0.86em; }
+    section.dense-3 { font-size: 0.78em; }
+
+    /* Let grid columns shrink below their content's intrinsic width so wide
+       equations and figures cannot push a two-column slide past 1280px. */
+    .two-col { grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); }
+    .two-col > * { min-width: 0; }
+    .two-col.text-top { align-items: start; }
+    .two-col.wide-right { grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr); }
+    .two-col.narrow-right { grid-template-columns: minmax(0, 1.5fr) minmax(0, 0.5fr); }
+
+    .cards { align-items: start; }
+    .cards .card { min-height: 0; }
+    .cards .card ul { font-size: 0.78em; }
+
+    /* ----- Generative AI statement ----- */
+    .statement-quote {
+      margin: 0.2em 0 0.5em;
+      padding: 0.6em 0.9em;
+      border-radius: 0 12px 12px 0;
+      border-left: 4px solid var(--accent-2);
+      background: var(--bg-soft);
+      font-size: 0.74em;
+      line-height: 1.45;
+      color: var(--ink);
+    }
+    .statement-quote ul { font-size: 1em; margin: 0.3em 0; }
+    .statement-quote p { font-size: 1em; margin: 0 0 0.3em; }
+    .statement-quote p:last-child { margin-bottom: 0; }
+
+    /* ----- Data tables ----- */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.68em;
+      line-height: 1.3;
+      margin: 0.3em 0 0.5em;
+    }
+    .data-table th,
+    .data-table td {
+      border: 1px solid var(--line);
+      padding: 0.32em 0.6em;
+      color: var(--ink);
+      text-align: center;
+      vertical-align: middle;
+    }
+    .data-table thead th {
+      background: color-mix(in srgb, var(--accent-2) 14%, var(--bg));
+      font-weight: 700;
+    }
+    .data-table tbody tr:nth-child(even) td { background: var(--bg-soft); }
+    .data-table .total td { font-weight: 700; border-top: 2px solid var(--muted); }
+    .data-table td.key {
+      font-weight: 700;
+      color: var(--accent-2);
+      font-variant-numeric: tabular-nums;
+    }
+    .data-table td.left,
+    .data-table th.left { text-align: left; }
+    .data-table td.blank { background: color-mix(in srgb, var(--accent) 6%, var(--bg)) !important; }
+    .data-table td.mono {
+      font-family: var(--font-mono);
+      color: var(--accent-2);
+      text-align: left;
+      white-space: nowrap;
+    }
+    .data-table .sub td.left { padding-left: 1.4em; color: var(--muted); }
+    .data-table .realloc td {
+      background: transparent !important;
+      border-left-color: transparent;
+      border-right-color: transparent;
+      color: var(--muted);
+      font-size: 0.92em;
+    }
+    .data-table .realloc .arrow { color: var(--accent); font-weight: 700; }
+
+    /* ----- Trade promotion menu ----- */
+    .allow-grid {
+      display: grid;
+      grid-template-columns: minmax(0, 13em) minmax(0, 1fr);
+      gap: 0.38em 0.9em;
+      align-items: center;
+      margin-top: 0.5em;
+      font-size: 0.74em;
+    }
+    .allow-grid .allow-name {
+      padding: 0.4em 0.7em;
+      border: 1.5px solid var(--accent-2);
+      border-radius: 8px;
+      background: var(--bg-soft);
+      font-weight: 700;
+      text-align: center;
+    }
+    .allow-grid .allow-note { color: var(--muted); line-height: 1.35; }
+    .allow-grid .allow-gap { grid-column: 1 / -1; height: 0.35em; }
+    .allow-grid .allow-group {
+      grid-column: 1 / -1;
+      font-size: 0.78em;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: -0.15em;
+    }
+
+    /* ----- Manufacturer planning diagram ----- */
+    .plan {
+      display: grid;
+      grid-template-columns: 8.5em minmax(0, 1fr) minmax(0, 1fr);
+      gap: 0 0.9em;
+      font-size: 0.72em;
+      margin-top: 0.2em;
+    }
+    .plan .plan-label {
+      grid-column: 1;
+      align-self: center;
+      color: var(--muted);
+      font-size: 0.9em;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+    .plan .plan-node {
+      padding: 0.45em 0.8em;
+      border: 1.5px solid var(--accent-2);
+      border-radius: 8px;
+      background: var(--bg-soft);
+      font-weight: 700;
+      text-align: center;
+      line-height: 1.3;
+    }
+    .plan .plan-node.budget { grid-column: 2 / 4; }
+    .plan .plan-node.promo {
+      border-color: var(--accent);
+      background: color-mix(in srgb, var(--accent) 8%, var(--bg));
+    }
+    .plan .plan-node small { display: block; font-weight: 600; color: var(--muted); }
+    .plan .plan-arrow {
+      height: 1.1em;
+      position: relative;
+    }
+    .plan .plan-arrow::before {
+      content: "";
+      position: absolute;
+      left: 50%;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--accent-2);
+      transform: translateX(-50%);
+    }
+    .plan .plan-notes {
+      font-size: 1em;
+      margin: 0.1em 0 0.3em;
+      padding-left: 1.1em;
+    }
+    .plan .plan-notes li { margin: 0.1em 0; }
+    .plan .plan-calendar {
+      grid-column: 2;
+      display: grid;
+      gap: 0.35em;
+      font-size: 0.9em;
+    }
+    .plan .plan-calendar div {
+      padding: 0.35em 0.65em;
+      border-radius: 8px;
+      background: var(--panel);
+      border: 1px solid var(--line);
+      line-height: 1.3;
+    }
+    .plan .plan-calendar strong {
+      display: block;
+      text-decoration: underline;
+      margin-bottom: 0.1em;
+    }
+
+    /* ----- BDI/CDI quadrant ----- */
+    .quadrant-wrap {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      grid-template-rows: minmax(0, 1fr) auto;
+      gap: 0.3em 0.45em;
+      width: min(100%, 470px);
+      margin: 0 auto;
+      font-size: 0.7em;
+    }
+    .quadrant-y {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: flex-end;
+      font-weight: 700;
+      color: var(--muted);
+    }
+    .quadrant-y .axis { color: var(--accent-2); font-size: 1.1em; }
+    .quadrant {
+      position: relative;
+      aspect-ratio: 1.25;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-template-rows: 1fr 1fr;
+      border: 2px solid var(--muted);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .quadrant > div { border: 1px solid var(--line); }
+    .quadrant > div:nth-child(1),
+    .quadrant > div:nth-child(4) { background: color-mix(in srgb, var(--accent-2) 7%, var(--bg)); }
+    .quadrant > div:nth-child(2),
+    .quadrant > div:nth-child(3) { background: color-mix(in srgb, var(--accent) 6%, var(--bg)); }
+    .quadrant .mkt {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      width: 1.9em;
+      height: 1.9em;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 1.15em;
+      color: #fff;
+      background: var(--accent-2);
+      box-shadow: 0 3px 10px rgba(26, 31, 36, 0.18);
+    }
+    .quadrant-x {
+      grid-column: 2;
+      display: flex;
+      justify-content: space-between;
+      font-weight: 700;
+      color: var(--muted);
+    }
+    .quadrant-x .axis { color: var(--accent-2); font-size: 1.1em; }
+
+    /* ----- Baseline weights widget ----- */
+    .weights-widget {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+      gap: 0.9em;
+      align-items: end;
+      margin-top: 0.3em;
+    }
+    .weight-bars {
+      display: grid;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 0.35em;
+      height: 6.2em;
+      align-items: stretch;
+    }
+    .weight-bar {
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr) auto;
+      text-align: center;
+      font-size: 0.56em;
+      font-weight: 700;
+      color: var(--muted);
+      font-variant-numeric: tabular-nums;
+    }
+    .weight-track {
+      position: relative;
+      border-bottom: 2px solid var(--muted);
+    }
+    .weight-fill {
+      position: absolute;
+      left: 8%;
+      right: 8%;
+      bottom: 0;
+      border-radius: 5px 5px 0 0;
+      background: var(--accent-2);
+      transition: height 0.2s ease;
+    }
+    .weight-lbl { margin-top: 0.2em; color: var(--ink); }
+    .weights-controls {
+      display: grid;
+      gap: 0.3em;
+      font-size: 0.62em;
+      color: var(--muted);
+    }
+    .weights-controls label {
+      display: flex;
+      align-items: center;
+      gap: 0.5em;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .weights-controls input[type="range"] { flex: 1; accent-color: var(--accent-2); }
+    .weights-controls output {
+      min-width: 2.4em;
+      font-weight: 800;
+      color: var(--accent-2);
+      font-variant-numeric: tabular-nums;
+    }
+    .weights-controls p { font-size: 1em; color: var(--muted); margin: 0; line-height: 1.35; }
+
+    /* ----- Seasonal baseline demo ----- */
+    .season-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 13.5em);
+      gap: 0.7em;
+      align-items: stretch;
+    }
+    .season-fig {
+      height: 450px;
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 4px 6px;
+      box-sizing: border-box;
+    }
+    .season-fig canvas {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .season-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4em;
+      padding: 0.55em 0.65em;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: var(--bg-soft);
+    }
+    .season-theta {
+      display: flex;
+      align-items: center;
+      gap: 0.45em;
+      font-size: 0.72em;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .season-theta input[type="range"] { flex: 1; min-width: 0; accent-color: var(--accent-2); }
+    .season-theta output {
+      min-width: 2.3em;
+      font-weight: 800;
+      color: var(--accent-2);
+      font-variant-numeric: tabular-nums;
+    }
+    .reveal .season-panel p.season-hint {
+      font-size: 0.56em;
+      line-height: 1.35;
+      color: var(--muted);
+      margin: 0;
+    }
+    .season-panel .stat { padding: 0.3em 0.5em; }
+    .season-panel .stat .stat-value { font-size: 1em; }
+    .season-panel .stat.simple .stat-value { color: var(--accent); }
+
+    /* ----- Worked baseline example ----- */
+    .bx-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 11.5em);
+      gap: 0.7em;
+      align-items: start;
+    }
+    .data-table.bx-table {
+      font-size: 0.6em;
+      margin: 0.2em 0;
+      font-variant-numeric: tabular-nums;
+    }
+    .data-table.bx-table td,
+    .data-table.bx-table th { padding: 0.25em 0.5em; }
+    .data-table.bx-table td.live { color: var(--accent-2); font-weight: 700; }
+    .bx-eq { margin-top: 0.5em; }
+
+    /* ----- Sample promotion data ----- */
+    .sample-tables {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.9em;
+    }
+    .data-table.sample-table {
+      font-size: 0.6em;
+      margin: 0.2em 0 0.4em;
+      font-variant-numeric: tabular-nums;
+    }
+    .data-table.sample-table td,
+    .data-table.sample-table th { padding: 0.22em 0.5em; }
+    .data-table.sample-table tr.promo td {
+      background: color-mix(in srgb, var(--accent) 14%, var(--bg)) !important;
+      font-weight: 700;
+    }
+
+    /* ----- Lift factor calculator ----- */
+    .lift-calc {
+      display: grid;
+      grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+      gap: 0.9em;
+      align-items: start;
+    }
+    .lift-panel {
+      padding: 0.55em 0.75em 0.6em;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: var(--bg-soft);
+    }
+    .lift-panel h3 { font-size: 0.66em; margin: 0 0 0.35em; color: var(--ink); }
+    .lift-panel h3:not(:first-child) { margin-top: 0.6em; }
+    .lift-field {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5em;
+      margin: 0.22em 0;
+      font-size: 0.6em;
+      font-weight: 700;
+      color: var(--muted);
+    }
+    .lift-field input {
+      width: 5em;
+      padding: 0.2em 0.3em;
+      border-radius: 7px;
+      border: 1px solid var(--line);
+      background: var(--bg);
+      color: var(--ink);
+      font: inherit;
+      font-size: 1.1em;
+      font-weight: 800;
+      text-align: center;
+      font-variant-numeric: tabular-nums;
+    }
+    .lift-calc .stat-row { margin-top: 0.9em; gap: 0.8em; }
+    .reveal .lift-calc p.takeaway { margin-top: 0.9em; }
+    .lift-result {
+      text-align: center;
+      padding: 0.5em 0.6em;
+      border-radius: 14px;
+      border: 1px solid color-mix(in srgb, var(--accent-2) 38%, var(--line));
+      background: color-mix(in srgb, var(--accent-2) 8%, var(--bg));
+    }
+    .lift-result .lift-big {
+      display: block;
+      font-size: 2em;
+      font-weight: 800;
+      color: var(--accent-2);
+      line-height: 1.05;
+      font-variant-numeric: tabular-nums;
+    }
+    .lift-result .lift-cap {
+      font-size: 0.6em;
+      font-weight: 700;
+      color: var(--muted);
+    }
+
+    /* ----- Code ----- */
+    .reveal pre {
+      width: 100%;
+      margin: 0.4em 0 0.5em;
+      font-size: 0.68em;
+      box-shadow: none;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .reveal pre code { max-height: none; padding: 0.7em 0.9em; border-radius: 10px; }
+
+    @media (max-width: 900px) {
+      .roadmap-grid,
+      .stat-row,
+      .lift-calc,
+      .weights-widget { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<!-- 1 -->
+<section class="title-slide">
+  <img class="essec-logo" src="../assets/essec-logo.svg" alt="ESSEC Business School"/>
+  <p class="eyebrow">AIDAMS · Marketing Analytics</p>
+  <h1>Session 5</h1>
+  <p class="subtitle">Promotion Analytics</p>
+</section>
+
+<!-- 2 -->
+<section class="announce-slide">
+  <div class="announce-head">
+    <span class="announce-icon" aria-hidden="true"></span>
+    <h2>Announcements</h2>
+  </div>
+  <ul>
+    <li><strong>Assignments 1</strong> and <strong>2</strong> are graded
+      <ul>
+        <li>We will discuss them today</li>
+        <li>Let me know during the break if you have any questions</li>
+      </ul>
+    </li>
+    <li><strong>Assignment 4</strong> will be posted today
+      <ul>
+        <li>It is a group assignment</li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<!-- Assignment feedback: general -->
+<section>
+  <h2>Assignments: General feedback</h2>
+  <ul>
+    <li>The <strong>AI statement</strong> is important — you will lose points for not having it
+      <ul>
+        <li>You should state that you have <strong>not uploaded class materials</strong> to it</li>
+      </ul>
+    </li>
+    <li><strong>Do not over-explain</strong> — in the age of AI, conciseness is important</li>
+    <li><strong>Do not use methods you do not know</strong>
+      <ul>
+        <li>What is the Kaiser rule in dimension reduction?</li>
+        <li>Why is it important not to do that?</li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<!-- Assignment 1 feedback (1) -->
+<section class="dense-2">
+  <h2>Assignment 1: Frequent issues</h2>
+  <div class="two-col text-top">
+    <ul class="compact-list">
+      <li><strong>Q5: Naming of factors</strong>
+        <ul>
+          <li>Names are not directional (e.g., “Autonomy” and “Price/Promotion Focus”)</li>
+          <li>Names are characteristics of the store (e.g., “Quality of service and respect”)</li>
+        </ul>
+      </li>
+      <li><strong>Q7: Number of segments and segmentation</strong>
+        <ul>
+          <li>Segmentation using k-means instead of PC1 and PC2</li>
+          <li>Segments with a single member</li>
+        </ul>
+      </li>
+      <li><strong>Q8: Characteristics of segments</strong>
+        <ul>
+          <li>Being in the middle of the map does not mean not caring</li>
+          <li>Characteristics based on the original variables instead of PC1 and PC2</li>
+        </ul>
+      </li>
+    </ul>
+    <div class="feedback-fig">
+      <img src="assets/assignment1-perceptual-map.png"
+           alt="Perceptual map of the 30 consumers on service orientation (PC1) and price sensitivity (PC2), with the five attribute vectors"
+           class="demand-fig tall"/>
+    </div>
+  </div>
+</section>
+
+<!-- Assignment 1 feedback (2) -->
+<section class="dense-2">
+  <h2>Assignment 1: Frequent issues (2)</h2>
+  <div class="two-col text-top">
+    <ul class="compact-list">
+      <li><strong>Q9: Profitability</strong>
+        <ul>
+          <li>Profitability formula</li>
+          <li>Hidden assumptions AI makes</li>
+        </ul>
+      </li>
+      <li><strong>Q10: K-means segmentation</strong>
+        <ul>
+          <li>You should always find the <strong>optimal number of segments</strong></li>
+          <li>Mostly the same as the map — but it is OK if not exactly the same</li>
+        </ul>
+      </li>
+      <li><strong>Q11: K-means vs. positioning map</strong>
+        <ul>
+          <li><strong>K-means:</strong> easy, clear, and possible in high-dimensional settings</li>
+          <li><strong>Positioning map:</strong> gives more information and better understanding, but not always possible</li>
+          <li>We need to ease our quantitative minds!</li>
+        </ul>
+      </li>
+    </ul>
+    <div class="feedback-fig">
+      <img src="assets/assignment1-perceptual-map.png"
+           alt="Perceptual map of the 30 consumers on service orientation (PC1) and price sensitivity (PC2), with the five attribute vectors"
+           class="demand-fig tall"/>
+    </div>
+  </div>
+</section>
+
+<!-- Assignment 2 feedback -->
+<section class="dense">
+  <h2>Assignment 2: Feedback</h2>
+  <div class="two-col text-top">
+    <ul class="compact-list">
+      <li>You mostly did a <strong>great job</strong>
+        <ul>
+          <li>Which means I need to make the assignment more challenging :D</li>
+        </ul>
+      </li>
+      <li><strong>Q3-b:</strong> you should discuss <em>why</em> demand for product 1 has decreased</li>
+      <li><strong>Q4-b:</strong> you should discuss the <strong>profit margin</strong> in your discussion</li>
+      <li>What is the difference between product 1 and products 2 and 3?
+        <ul>
+          <li>What does it tell us about the brand or their customer base?</li>
+          <li>What does the answer to the above tell us about potential price and profitability dynamics?</li>
+        </ul>
+      </li>
+    </ul>
+    <div class="feedback-fig">
+      <img src="assets/assignment2-demand-system.png"
+           alt="Assignment 2 demand system: Q1 = A1 P1^-2.5 P2^1.5 P3^1.2, Q2 = A2 P1^0.7 P2^-1.5 P3^0.5, Q3 = A3 P1^0.7 P2^0.4 P3^-1.2"
+           class="demand-fig" style="max-height: 7em;"/>
+    </div>
+  </div>
+</section>
+
+<!-- 5 -->
+<section class="dense">
+  <h2>Review last session</h2>
+  <p class="lead">We discussed the following topics in the last session</p>
+  <ul class="compact-list">
+    <li><strong>Regression for demand:</strong> estimating multiplicative (log-linear) demand models
+      <ul>
+        <li>Scanner data · time series, cross-section and panel data</li>
+      </ul>
+    </li>
+    <li><strong>Pitfalls of regression</strong>
+      <ul>
+        <li>Reverse causality and omitted variable bias</li>
+        <li>Fixed effects to control for differences across markets</li>
+      </ul>
+    </li>
+    <li><strong>In-class consulting:</strong> slot machine pricing for a casino chain</li>
+    <li><strong>Base pricing analysis</strong>
+      <ul>
+        <li>IRI case study: own and cross-price elasticities, cannibalization and competition</li>
+        <li>Assignment 3: base pricing for the detergent category</li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<!-- 6 -->
+<section>
+  <h2>Today’s agenda</h2>
+  <div class="roadmap-grid">
+    <div class="card">
+      <h3>I · Overview of promotions</h3>
+      <p>Retail and trade promotions · effects on consumer behavior · promotion planning process</p>
+    </div>
+    <div class="card">
+      <h3>II · BDI/CDI analysis</h3>
+      <p>Comparing brand and category strength across markets</p>
+    </div>
+    <div class="card">
+      <h3>III · ROI &amp; lift factors</h3>
+      <p>Return on marketing investment · ROI-based promotions management</p>
+    </div>
+    <div class="card">
+      <h3>IV · Sales prediction</h3>
+      <p>Forecasting sales from log-linear demand models</p>
+    </div>
+    <div class="card accent">
+      <h3>V · Economics of trade promotions</h3>
+      <p>Forward buying · seasonality · in-class ROI exercise</p>
+    </div>
+    <div class="card">
+      <h3>VI · Assignment 4</h3>
+      <p>Promotion effects for Hellmann’s mayonnaise</p>
+    </div>
+  </div>
+</section>
+
+<!-- 7 -->
+<section class="section-slide">
+  <p class="eyebrow">Promotion analytics</p>
+  <p class="part-label">Part A</p>
+  <h1>Overview of promotions</h1>
+</section>
+
+<!-- 8 -->
+<section>
+  <h2>Retail promotions</h2>
+  <div class="two-col">
+    <div>
+      <ul class="compact-list">
+        <li><strong>TPR’s</strong> — temporary price reductions</li>
+        <li><strong>Display advertising</strong>
+          <ul>
+            <li>End-of-aisle display</li>
+            <li>In-aisle display</li>
+            <li>On-shelf display</li>
+            <li>Front-of-the-store display</li>
+          </ul>
+        </li>
+        <li><strong>Feature advertising</strong>
+          <ul>
+            <li>Inserts in local newspapers</li>
+            <li>Circulars distributed around the store</li>
+          </ul>
+        </li>
+      </ul>
+      <p class="takeaway">Often, TPR’s are accompanied by display and/or feature advertising.</p>
+    </div>
+    <div>
+      <img src="assets/retail-promotion-examples.png"
+           alt="An end-of-aisle display in a supermarket and a Jewel-Osco weekly circular"
+           class="demand-fig tall"/>
+    </div>
+  </div>
+</section>
+
+<!-- 9 -->
+<section>
+  <h2>Are promotions effective?</h2>
+  <p class="lead">Cheerios 15 oz prices and sales at the store level</p>
+  <img src="assets/cheerios-price-sales.png"
+       alt="Weekly price and unit sales of Cheerios 15 oz in 1996: every price cut coincides with a sales spike"
+       class="demand-fig" style="max-height: 11em;"/>
+  <p class="discuss-prompt">
+    <strong>Discuss:</strong> do you see a sign of discount effectiveness reduction after a discount?
+  </p>
+</section>
+
+<!-- 10 -->
+<section class="dense-2">
+  <h2>Sales effect of promotions</h2>
+  <ul class="compact-list">
+    <li>Sales spikes at the time of promotional events are common across many brands and categories
+      <ul>
+        <li>Interactions between TPR’s, feature, and display</li>
+        <li>Example: price effect enhanced by display</li>
+      </ul>
+    </li>
+    <li>Possible sources of the increase in sales volume:
+      <ul>
+        <li class="fragment"><strong>Increase in category consumption</strong>
+          <ul>
+            <li>Increase in number of consumers</li>
+            <li>Increase in household consumption of consumers already purchasing in the category</li>
+          </ul>
+        </li>
+        <li class="fragment"><strong>Brand switching</strong></li>
+        <li class="fragment"><strong>Stock-piling</strong> (purchase acceleration)</li>
+      </ul>
+    </li>
+    <li>For many brands and categories:
+      <ul>
+        <li>Strong brand switching effects</li>
+        <li>Marketing research during the last decade also points to strong purchase acceleration effects</li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<!-- 11 -->
+<section>
+  <h2>Purchase acceleration (stock-piling)</h2>
+  <ul class="compact-list">
+    <li>What is purchase acceleration?
+      <ul>
+        <li>Buying from deal to deal</li>
+        <li>A household buys several units or a large pack size when a product (brand) is promoted</li>
+        <li>The consumer holds inventory of the product at home</li>
+        <li>Consume off inventory until the next deal</li>
+      </ul>
+    </li>
+    <li>This works for <strong>storable products</strong>, such as ketchup or frozen meals</li>
+  </ul>
+  <p class="discuss-prompt">
+    <strong>Key question:</strong> is purchase acceleration a good or a bad thing for the retailer’s bottom line? Pros and cons?
+  </p>
+</section>
+
+<!-- 12 -->
+<section class="dense-2">
+  <h2>Purchase acceleration: pros</h2>
+  <ul class="compact-list">
+    <li>Purchase acceleration may allow firms to <strong>price discriminate</strong> across households</li>
+    <li>Example
+      <ul>
+        <li>Two groups of consumers with different willingness to pay (WTP)
+          <ul>
+            <li>Group 1 (price sensitive): WTP = $2.69</li>
+            <li>Group 2 (insensitive): WTP = $3.99</li>
+          </ul>
+        </li>
+        <li>Cannot price discriminate if the retailer offers only one price</li>
+        <li>But price discrimination over time (<strong>inter-temporal price discrimination</strong>) is feasible if:
+          <ul>
+            <li>Group 1 has a low “cost” of holding inventory and monitors price promotions (e.g., looks at feature ads)</li>
+            <li>Group 2 does not watch out for deals</li>
+          </ul>
+        </li>
+        <li>Group 1 consumers buy at the deal price, and then consume off inventory until the next deal</li>
+        <li>Group 2 consumers buy mostly at the regular price</li>
+      </ul>
+    </li>
+  </ul>
+  <p class="takeaway">Same story with newspaper coupons! Why?</p>
+</section>
+
+<!-- 13 -->
+<section>
+  <h2>Purchase acceleration: cons</h2>
+  <ul>
+    <li>Households may be similar in their willingness to pay and simply <strong>shift</strong> their purchases from the future to the present when a product is promoted
+      <ul>
+        <li>The sales increase today is <strong>borrowed from tomorrow</strong></li>
+        <li>The volume could have been sold at a higher price</li>
+        <li>The promotion will be costly to the retailer</li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<!-- 14 -->
+<section class="dense-2 full-height">
+  <h2>Other promotion effects</h2>
+  <ul class="compact-list">
+    <li>Do promotions lead to increased consumption of a product in future, i.e., create <strong>customer loyalty</strong>?
+      <ul>
+        <li>Yes, according to a large body of marketing research</li>
+      </ul>
+    </li>
+    <li>Do promotions become <strong>less effective</strong> if used more frequently?
+      <ul>
+        <li>Almost certainly yes</li>
+        <li>But difficult to incorporate into current promotion planning methods</li>
+      </ul>
+    </li>
+    <li>Do promotions <strong>degrade the brand image</strong> in the long run?
+      <ul>
+        <li>Unresolved</li>
+        <li>People form expectations about your brand
+          <ul>
+            <li>Do not buy if there is no sale!</li>
+            <li>A cheap brand is a bad brand</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+  <img src="assets/jcpenney-coupons.png"
+       alt="CNN Business headline, March 2022: JCPenney and Tide tried to get rid of coupons. It was a disaster"
+       class="demand-fig corner-fig"/>
+</section>
+
+<!-- 15 -->
+<section>
+  <h2>Trade promotions</h2>
+  <ul>
+    <li>Trade promotions are incentives given by the <strong>manufacturer</strong> to the <strong>retailer</strong>
+      <ul>
+        <li>Incentives to promote products to consumers</li>
+      </ul>
+    </li>
+  </ul>
+  <div class="allow-grid">
+    <div class="allow-name">Off-invoice allowance</div>
+    <div class="allow-note">Example: $10.00 off a 12/64 oz case of Tide, May 2 – June 6</div>
+    <div class="allow-name">Display allowance</div>
+    <div class="allow-note"></div>
+    <div class="allow-name">Advertising allowance</div>
+    <div class="allow-note"></div>
+    <div class="allow-name">Scan back</div>
+    <div class="allow-note">Deal only on cases sold during the promotion period</div>
+    <div class="allow-gap"></div>
+    <div class="allow-name">MDF’s (market development funds)</div>
+    <div class="allow-note">“Street money” — negotiated between manufacturer and retailer</div>
+    <div class="allow-name">Slotting allowance</div>
+    <div class="allow-note">Get (or keep) the product on the shelf</div>
+  </div>
+</section>
+
+<!-- 16 -->
+<section>
+  <h2>Planning process: Manufacturer</h2>
+  <div class="plan">
+    <span class="plan-label" style="grid-row: 1 / 4;">High-level budget allocation</span>
+    <div class="plan-node budget">Promotion budget</div>
+
+    <div class="plan-arrow"></div>
+    <div class="plan-arrow"></div>
+
+    <div class="plan-node promo">Consumer promotions<small>advertising, coupons</small></div>
+    <div class="plan-node promo">Trade promotions</div>
+
+    <span class="plan-label"></span>
+    <div class="plan-arrow"></div>
+    <div class="plan-arrow"></div>
+
+    <span class="plan-label"></span>
+    <ul class="plan-notes">
+      <li>Choose among a menu of promotions</li>
+      <li>Summarize the promotion plan in a detailed <strong>promotion calendar</strong></li>
+    </ul>
+    <ul class="plan-notes">
+      <li>Allocation of MDF’s across markets and accounts</li>
+    </ul>
+
+    <span class="plan-label">Some or all of the promotion calendar can be market-specific</span>
+    <div class="plan-calendar">
+      <div>
+        <strong>April 11 – May 1</strong>
+        Free-standing insert (FSI) · local TV promotion · $9.50 per 12/16 oz case allowance · $14.00 per 12/32 oz case allowance
+      </div>
+      <div>
+        <strong>May 23 – June 5</strong>
+        $9.50 per 12/16 oz case allowance · $14.00 per 12/32 oz case allowance
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 17 -->
+<section class="dense">
+  <h2>Planning process: Retailer</h2>
+  <div class="two-col">
+    <div>
+      <ul class="compact-list">
+        <li><strong>Choice of products or categories to promote</strong></li>
+        <li><strong>Considerations</strong>
+          <ul>
+            <li>Allowances or MDF’s available for a product</li>
+            <li>Cannibalization of other products in the category</li>
+            <li>Does the product increase store traffic?</li>
+          </ul>
+        </li>
+        <li><strong>Event planning</strong>
+          <ul>
+            <li>Timing of promotions</li>
+            <li>Choose TPR’s, feature and display support</li>
+          </ul>
+        </li>
+        <li><strong>Loss leaders</strong>
+          <ul>
+            <li>Products that increase store traffic if promoted</li>
+            <li>May increase store profits even if category profits decrease due to the promotion</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+    <div>
+      <img src="assets/costco-rotisserie-chicken.png"
+           alt="Costco's $4.99 rotisserie chicken"
+           class="demand-fig"/>
+      <p class="fig-caption">A classic loss leader: Costco’s $4.99 rotisserie chicken</p>
+    </div>
+  </div>
+</section>
+
+<!-- 18 -->
+<section class="section-slide">
+  <p class="eyebrow">Promotion analysis</p>
+  <p class="part-label">Part B</p>
+  <h1>BDI &amp; CDI</h1>
+</section>
+
+<!-- 19 -->
+<section>
+  <h2>Promotions management: BDI/CDI analysis</h2>
+  <ul class="compact-list">
+    <li>Major task facing manufacturers:
+      <ul>
+        <li>Allocate the promotion budget across <strong>markets</strong> and <strong>accounts</strong> (retailers)</li>
+      </ul>
+    </li>
+    <li>What metrics are available to guide a brand manager in this task?
+      <ul>
+        <li>BDI and CDI measures have long been used for promotional budget allocation
+          <ul>
+            <li><strong>BDI</strong> — brand development index</li>
+            <li><strong>CDI</strong> — category development index</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+    <li>Simple measures to compare the “strength” of a brand or category across markets or accounts
+      <ul>
+        <li>BDI’s and CDI’s can be calculated using scanner data</li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<!-- 20 -->
+<section>
+  <h2>Definitions</h2>
+  <div class="eq-block eq-accent eq-sm">
+    <div class="eq-stack">
+      <div>\[ \mathrm{BDI}_m = 100 \cdot \frac{\text{unit sales in market } m \,/\, \text{population in } m}{\text{France unit sales} \,/\, \text{France population}} \]</div>
+      <div>\[ \phantom{\mathrm{BDI}_m} = 100 \cdot \frac{\%\text{ of product's total France sales in market } m}{\%\text{ of France population in market } m} \]</div>
+    </div>
+  </div>
+  <div class="eq-block eq-accent eq-sm">\[ \mathrm{CDI}_m = 100 \cdot \frac{\%\text{ of category's total France sales in market } m}{\%\text{ of France population in market } m} \]</div>
+  <ul class="compact-list">
+    <li>Notes
+      <ul>
+        <li>Can be applied to <strong>accounts</strong> instead of markets</li>
+        <li>Substitute any other country for “France”</li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<!-- 21 -->
+<section>
+  <h2>BDI calculation: Example</h2>
+  <table class="data-table">
+    <thead>
+      <tr>
+        <th>Market</th><th>Sales (mil)</th><th>Population (mil)</th>
+        <th>Sales %</th>
+        <th>Population %</th>
+        <th>BDI</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>A</strong></td><td>40</td><td>40</td><td><span class="fragment" data-fragment-index="1">20</span></td><td><span class="fragment" data-fragment-index="2">13.3</span></td><td class="key"><span class="fragment" data-fragment-index="3">150</span></td></tr>
+      <tr><td><strong>B</strong></td><td>10</td><td>5</td><td><span class="fragment" data-fragment-index="1">5</span></td><td><span class="fragment" data-fragment-index="2">1.7</span></td><td class="key"><span class="fragment" data-fragment-index="3">300</span></td></tr>
+      <tr><td><strong>C</strong></td><td>50</td><td>75</td><td><span class="fragment" data-fragment-index="1">25</span></td><td><span class="fragment" data-fragment-index="2">25</span></td><td class="key"><span class="fragment" data-fragment-index="3">100</span></td></tr>
+      <tr><td><strong>D</strong></td><td>100</td><td>180</td><td><span class="fragment" data-fragment-index="1">50</span></td><td><span class="fragment" data-fragment-index="2">60</span></td><td class="key"><span class="fragment" data-fragment-index="3">83.3</span></td></tr>
+      <tr class="total"><td>Total</td><td>200</td><td>300</td><td><span class="fragment" data-fragment-index="1">100</span></td><td><span class="fragment" data-fragment-index="2">100</span></td><td class="key"><span class="fragment" data-fragment-index="3">100</span></td></tr>
+    </tbody>
+  </table>
+  <ul class="compact-list">
+    <li>Note the difference between the BDI and the share of total sales in each market</li>
+    <li>What is the intuition behind BDI and CDI?
+      <ul>
+        <li class="fragment" data-fragment-index="4">BDI measures brand “strength” taking market size into account</li>
+        <li class="fragment" data-fragment-index="5">CDI measures category consumption taking market size into account</li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<!-- 22 -->
+<section>
+  <h2>BDI/CDI analysis — quadrant analysis</h2>
+  <div class="two-col wide-right">
+    <div>
+      <ul class="compact-list">
+        <li>Plot each market by its <strong>BDI</strong> (horizontal) and <strong>CDI</strong> (vertical)</li>
+        <li>High CDI, low BDI: the category sells well but our brand does not</li>
+        <li>High BDI, low CDI: our brand is strong in a small category</li>
+      </ul>
+      <p class="discuss-prompt">
+        <strong>Discuss:</strong> how should we change our promotion spending in markets A–D?
+      </p>
+    </div>
+    <div class="quadrant-wrap">
+      <div class="quadrant-y"><span>High</span><span class="axis">CDI</span><span>Low</span></div>
+      <div class="quadrant" role="img" aria-label="Quadrant chart: market D has low BDI and high CDI, B has high BDI and high CDI, C sits near the centre, A has high BDI and low CDI">
+        <div></div><div></div><div></div><div></div>
+        <span class="mkt" style="left: 22%; top: 22%;">D</span>
+        <span class="mkt" style="left: 86%; top: 15%;">B</span>
+        <span class="mkt" style="left: 58%; top: 44%;">C</span>
+        <span class="mkt" style="left: 78%; top: 76%;">A</span>
+      </div>
+      <div class="quadrant-x"><span>Low</span><span class="axis">BDI</span><span>High</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 23 -->
+<section class="dense">
+  <h2>BDI/CDI analysis: limitations</h2>
+  <ul class="compact-list">
+    <li><strong>Proposal:</strong> increase promotion spending in market D to grab a larger share of the category
+      <ul>
+        <li>Is this a sensible proposal?</li>
+      </ul>
+    </li>
+    <li>Consider two scenarios:
+      <ol>
+        <li>Low BDI in market D is a consequence of <strong>insufficient trade spending</strong> in market D</li>
+        <li>Our brand doesn’t sell well in market D, and historically trade spending has been <strong>less effective</strong> than in other markets</li>
+      </ol>
+    </li>
+    <li class="fragment">An increase in trade spending may make sense in scenario 1, but not in scenario 2</li>
+  </ul>
+  <p class="takeaway fragment">
+    <strong>Fundamental problem:</strong> BDI and CDI describe the current market situation — they tell us nothing about the profitability consequences, or the return, of increasing or decreasing promotional spending.
+  </p>
+</section>
+
+<!-- 24 -->
+<section class="section-slide">
+  <p class="eyebrow">Promotion analysis</p>
+  <p class="part-label">Part C</p>
+  <h1>ROI measurement</h1>
+</section>
+
+<!-- 25 -->
+<section>
+  <h2>ROI — return on marketing investment</h2>
+  <ul class="compact-list">
+    <li>Central concept in data-driven marketing</li>
+    <li>ROI measures the return from an <strong>incremental</strong> marketing investment, such as increased trade or consumer promotional spending</li>
+  </ul>
+  <div class="eq-block eq-accent">\[ ROI = \frac{\Delta\, Profit}{Investment} = \frac{(P - C)\,\Delta Q - Investment}{Investment} \]</div>
+  <ul class="compact-list">
+    <li>\(\Delta Q\) is the incremental volume generated by the marketing investment</li>
+    <li>ROI provides a direct link between marketing and <strong>shareholder value</strong>
+      <ul>
+        <li>Do promotions increase or decrease profits?</li>
+        <li>What types of promotions are most profitable?</li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<!-- 26 -->
+<section>
+  <h2>Making resource allocation decisions using ROI’s</h2>
+  <p class="lead">Example: total promotion budget is <strong>$20 m</strong>, split between trade and consumer promotions</p>
+  <table class="data-table" style="max-width: 900px; margin-left: auto; margin-right: auto;">
+    <thead>
+      <tr><th>Trade / consumer spending ($ m)</th><th>Trade / consumer ROI</th><th>Change in profits ($ m)</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>10 / 10</td><td>20% / 5%</td><td></td></tr>
+      <tr class="realloc fragment" data-fragment-index="1"><td><span class="arrow">↓</span> Reallocate +3 / −3</td><td></td><td>\(3 \cdot 0.20 - 3 \cdot 0.05 = 0.45\)</td></tr>
+      <tr class="fragment" data-fragment-index="1"><td>13 / 7</td><td>15% / 11%</td><td></td></tr>
+      <tr class="realloc fragment" data-fragment-index="2"><td><span class="arrow">↓</span> Reallocate +1 / −1</td><td></td><td>\(1 \cdot 0.15 - 1 \cdot 0.11 = 0.04\)</td></tr>
+      <tr class="fragment" data-fragment-index="2"><td>14 / 6</td><td class="key">13% / 13%</td><td></td></tr>
+    </tbody>
+  </table>
+  <ul class="compact-list">
+    <li><strong>Equalize ROI’s</strong> across types of promotions</li>
+    <li>Optimal ROI level?</li>
+  </ul>
+</section>
+
+<!-- 27 -->
+<section>
+  <h2>Calculating ROI’s</h2>
+  <ul>
+    <li><strong>Central difficulty:</strong> what is the incremental volume, \(\Delta Q\), generated by a marketing investment?</li>
+    <li>Approach
+      <ul>
+        <li>Use data on sales generated by marketing investments (such as promotions)</li>
+        <li>Use tools such as regression analysis to predict the incremental volume for a proposed marketing investment</li>
+      </ul>
+    </li>
+    <li>ROI-based marketing is impossible without data and statistical tools to analyze the data</li>
+  </ul>
+  <p class="takeaway">This is why the ROI / data-driven marketing revolution occurred only in the last 15–20 years.</p>
+</section>
+
+<!-- 28 -->
+<section class="dense">
+  <h2>ROI-based promotions management</h2>
+  <ul class="compact-list">
+    <li>Key concepts
+      <ul>
+        <li>Incremental effect on sales generated by a promotion</li>
+        <li>Promotional sales lift</li>
+      </ul>
+    </li>
+    <li><strong>Lift factor</strong></li>
+  </ul>
+  <div class="eq-block eq-accent">\[ \text{Lift factor} = \frac{\text{Actual sales}}{\text{Baseline sales}} \]</div>
+  <ul class="compact-list">
+    <li><strong>Baseline sales:</strong> sales that would have occurred without the promotional event</li>
+    <li>How can we calculate incremental sales using the lift factor?</li>
+  </ul>
+  <div class="eq-block fragment">\[ \begin{aligned} \Delta Q &= \text{Lift factor} \times \text{baseline sales} - \text{baseline sales} \\ &= (\text{Lift factor} - 1) \times \text{baseline sales} \end{aligned} \]</div>
+</section>
+
+<!-- 29 -->
+<section>
+  <h2>Predicting lift factors: A simple approach</h2>
+  <ul>
+    <li>How can we calculate the lift factor?
+      <ul>
+        <li>Infer <strong>baseline sales</strong> (hypothetical sales in the absence of a promotion) from realized sales in non-promoted periods</li>
+        <li>Calculate realized (historical) lift factors</li>
+        <li>Use the <strong>average</strong> of realized lift factors to predict the future lift from a promotional event</li>
+      </ul>
+    </li>
+    <li>Example: Cheerios promotions</li>
+  </ul>
+</section>
+
+<!-- 30 -->
+<section>
+  <h2>Lift factor calculation — a simple approach</h2>
+  <div class="two-col" style="grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);">
+    <img src="assets/cheerios-lift-factor.png"
+         alt="Cheerios 15 oz weekly price, unit sales with the mean of non-promoted weeks (43.7 units), and the resulting weekly lift factor"
+         class="demand-fig" style="max-height: 15.8em;"/>
+    <div>
+      <ul class="compact-list">
+        <li>Baseline = mean sales in non-promoted weeks: <strong>43.7</strong> units</li>
+        <li>Lift factor = weekly sales ÷ 43.7</li>
+        <li>What are the cons of this approach?</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 31 -->
+<section class="dense-2" data-baseline-weights>
+  <h2>Measuring baseline sales</h2>
+  <ul class="compact-list">
+    <li>The previous example uses a simple average of sales in non-promoted weeks to predict sales in the absence of a promotion</li>
+    <li><strong>Baseline equivalent units</strong>
+      <ul>
+        <li>Supplied in scanner data sets</li>
+        <li>Weighted average of non-promoted sales (in equivalent units) adjacent to a promotion period</li>
+      </ul>
+    </li>
+  </ul>
+  <div class="eq-block eq-accent eq-xs">\[ \begin{aligned} Q_t^{\text{baseline}} &= \frac{1-\theta}{1-\theta^{L}}\sum_{i=1}^{L}\theta^{\,i-1}\,\frac{Q_{t-i}+Q_{t+i}}{2} \\ &= \frac{1-\theta}{1-\theta^{L}}\left(\frac{Q_{t-1}+Q_{t+1}}{2} + \theta\,\frac{Q_{t-2}+Q_{t+2}}{2} + \cdots + \theta^{L-1}\,\frac{Q_{t-L}+Q_{t+L}}{2}\right) \end{aligned} \]</div>
+  <div class="weights-widget">
+    <div class="weight-bars" data-weight-bars aria-label="Weight theta to the power i minus one for periods 1 to 6 away from t"></div>
+    <div class="weights-controls">
+      <p>Weight \(\theta^{\,i-1}\) is smaller for sales further away from \(t\) (periods from \(t\) on the horizontal axis). The factor \(\frac{1-\theta}{1-\theta^{L}}\) makes the weights add up to 1.</p>
+      <label>\(\theta\) <input type="range" data-theta min="0.05" max="0.95" step="0.05" value="0.5"/> <output data-theta-out>0.50</output></label>
+      <p data-weight-note></p>
+    </div>
+  </div>
+</section>
+
+<!-- Seasonal baseline demo -->
+<section class="dense-2" data-season-baseline>
+  <h2>Try it: baseline and lift factors with seasonality</h2>
+  <div class="season-layout">
+    <div class="season-fig">
+      <canvas data-season-plot
+              aria-label="Simulated weekly sales with seasonal demand and promotion spikes, the estimated baseline for the chosen theta, the simple-average baseline, and the resulting lift factors per promotion week"></canvas>
+    </div>
+    <div class="season-panel">
+      <label class="season-theta">\(\theta\) <input type="range" data-theta min="0.05" max="0.95" step="0.05" value="0.5"/> <output data-theta-out>0.50</output></label>
+      <p class="season-hint">Small \(\theta\): only the nearest weeks count, so the baseline follows the seasonal trend. Large \(\theta\): weeks further away count too.</p>
+      <div class="stat"><span class="stat-value" data-season-out="trueLift">–</span><span class="stat-label">True average lift</span></div>
+      <div class="stat"><span class="stat-value" data-season-out="weightedLift">–</span><span class="stat-label">Estimated · weighted baseline</span></div>
+      <div class="stat simple"><span class="stat-value" data-season-out="simpleLift">–</span><span class="stat-label">Estimated · simple average</span></div>
+      <p class="season-hint" data-season-error></p>
+    </div>
+  </div>
+  <p class="fig-caption">Simulated data: seasonal demand × promotion lift × noise. The weighted baseline uses up to 6 non-promoted weeks on each side of week \(t\). Next: the calculation for the week 24 promotion.</p>
+</section>
+
+<!-- Worked baseline example -->
+<section class="dense-2" data-baseline-example data-week="24">
+  <h2>Worked example: baseline sales for one promotion week</h2>
+  <p class="lead">The week \(t = 24\) promotion from the previous slide sold \(Q_t =\) <strong data-bx-out="qt"></strong>. Its nearest non-promoted weeks <span data-bx-out="skipped"></span>:</p>
+  <div class="bx-layout">
+    <table class="data-table bx-table">
+      <thead>
+        <tr><th>\(i\)</th><th>Weeks \(t-i,\ t+i\)</th><th>\(Q_{t-i}\)</th><th>\(Q_{t+i}\)</th><th>\(\frac{Q_{t-i}+Q_{t+i}}{2}\)</th><th>Weight \(\theta^{\,i-1}\)</th><th>Weight × average</th></tr>
+      </thead>
+      <tbody data-bx-rows></tbody>
+    </table>
+    <div class="season-panel">
+      <label class="season-theta">\(\theta\) <input type="range" data-theta min="0.05" max="0.95" step="0.05" value="0.5"/> <output data-theta-out>0.50</output></label>
+      <div class="stat"><span class="stat-value" data-bx-out="baseline">–</span><span class="stat-label">Baseline sales</span></div>
+      <div class="stat"><span class="stat-value" data-bx-out="lift">–</span><span class="stat-label">Lift factor = \(Q_t\) / baseline</span></div>
+      <p class="season-hint" data-bx-out="truth"></p>
+    </div>
+  </div>
+  <div class="eq-block eq-accent eq-xs bx-eq" data-bx-eq></div>
+  <p class="fig-caption">\(L = 6\) weeks on each side, as in the demo on the previous slide. The factor \(\frac{1-\theta}{1-\theta^{6}}\) equals 1 / (sum of the weights), so the baseline is a weighted average of the six pairs.</p>
+</section>
+
+<!-- 32 -->
+<section>
+  <h2>Simple approach to predicting lift factors: Pros and cons</h2>
+  <div class="cards two">
+    <div class="card">
+      <h3>Pros</h3>
+      <ul>
+        <li>Easy to explain</li>
+        <li>No complicated statistical analysis required</li>
+      </ul>
+    </div>
+    <div class="card accent">
+      <h3>Cons</h3>
+      <ul>
+        <li>Lift factors are difficult to decompose into the components of the promotion:
+          <ul>
+            <li>Percent price reduction</li>
+            <li>Display coverage across stores or accounts</li>
+            <li>Feature coverage across accounts</li>
+          </ul>
+        </li>
+        <li>Could look at very specific events (e.g., 15% TPR with 80% display and feature coverage)
+          <ul>
+            <li>But this leaves few observations, so lift factor estimates are not reliable</li>
+          </ul>
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- 33 -->
+<section>
+  <h2>Predicting lift factors using regression analysis</h2>
+  <ul>
+    <li>Use the log-linear (multiplicative) demand model and account for the effect of price <em>and</em> the characteristics of a promotion</li>
+    <li>Example:</li>
+  </ul>
+  <div class="eq-block eq-accent">\[ \log(Q) = \alpha - \eta \log(P) + \underbrace{\beta_D \cdot D}_{\text{display effect}} + \underbrace{\beta_F \cdot F}_{\text{feature effect}} + \varepsilon \]</div>
+  <ul class="compact-list">
+    <li>Note
+      <ul>
+        <li>For simplicity, the demand model does not include competitive price and promotion effects (but you know how to add them)</li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<!-- 34 -->
+<section class="dense-2">
+  <h2>Feature and display effects at the account or market level</h2>
+  <ul class="compact-list">
+    <li>At the <strong>store level</strong>, \(D\) and \(F\) are dummy variables
+      <ul>
+        <li>\(D = 1\) means that the product is on display and \(F = 1\) means the product is featured in the chain’s circular</li>
+        <li>No logs needed — we are not measuring a display or feature elasticity</li>
+      </ul>
+    </li>
+    <li>At the <strong>account (chain) or market level</strong>:
+      <ul>
+        <li>Not all stores will have a display for the product — by design or by accident</li>
+        <li>Not all chains will feature the product in the circular</li>
+      </ul>
+    </li>
+    <li>At the account/market level, \(D\) and \(F\) are <strong>between 0 and 1</strong>
+      <ul>
+        <li>Measures of the ACV-weighted percentage of stores that display or feature the product</li>
+        <li><strong>%ACV on display</strong> and <strong>%ACV on feature</strong></li>
+        <li>Example: \(D = 0.85\) and \(F = 1\): 85% of stores display and all stores (100%) feature the product (where stores are weighted by size)</li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<!-- Sample promotion data -->
+<section class="dense-2" data-sample-data>
+  <h2>What does the data look like?</h2>
+  <p class="lead">Weekly data for one product at one account: first 24 of 52 weeks (same data as the seasonality example)</p>
+  <div class="sample-tables">
+    <table class="data-table sample-table">
+      <thead><tr><th>Week</th><th>Quantity \(Q\)</th><th>Price \(P\)</th><th>Display \(D\)</th><th>Feature \(F\)</th></tr></thead>
+      <tbody data-sample-rows="1-12"></tbody>
+    </table>
+    <table class="data-table sample-table">
+      <thead><tr><th>Week</th><th>Quantity \(Q\)</th><th>Price \(P\)</th><th>Display \(D\)</th><th>Feature \(F\)</th></tr></thead>
+      <tbody data-sample-rows="13-24"></tbody>
+    </table>
+  </div>
+  <div class="eq-block eq-accent eq-xs">\[ \log(Q) = \alpha - \eta \log(P) + \beta_D \cdot D + \beta_F \cdot F + \varepsilon \]</div>
+  <p class="fig-caption">Highlighted rows are promotion weeks. \(D\) and \(F\) are %ACV on display and on feature (between 0 and 1).</p>
+</section>
+
+<!-- 35 -->
+<section>
+  <h2>Calculating lift factors from the regression estimates</h2>
+  <ul class="compact-list">
+    <li>\(P\) is the current base (non-promoted) price</li>
+    <li>We use the log-linear demand model to predict the corresponding <strong>baseline sales</strong>:</li>
+  </ul>
+  <div class="eq-block">\[ \begin{aligned} \log(Q) &= \alpha - \eta \log(P) + \beta_D \cdot 0 + \beta_F \cdot 0 \\ &= \alpha - \eta \log(P) \end{aligned} \]</div>
+  <ul class="compact-list">
+    <li>Next we need to predict sales, \(Q'\), during a promotion</li>
+    <li><strong>Promotional event</strong>
+      <ul>
+        <li>TPR: \(P' = (1-\gamma)P\)</li>
+        <li>Display and feature coverage: \(D\) and \(F\)</li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<!-- 36 -->
+<section class="dense">
+  <h2>From the regression to the lift factor</h2>
+  <div class="eq-block eq-accent eq-xs">\[
+    \def\arraystretch{1.4}
+    \begin{array}{rl}
+      \text{Promotional sales:} & \log(Q') = \alpha - \eta \log\big((1-\gamma)P\big) + \beta_D \cdot D + \beta_F \cdot F \\
+      \text{Baseline sales:} & \log(Q) = \alpha - \eta \log(P) \\ \hline
+      \text{Difference:} & \log(Q') - \log(Q) = -\eta\big[\log\big((1-\gamma)P\big) - \log(P)\big] + \beta_D \cdot D + \beta_F \cdot F \\
+      & \log\!\left(\dfrac{Q'}{Q}\right) = -\eta \log(1-\gamma) + \beta_D \cdot D + \beta_F \cdot F \\ \hline
+      \text{Exponentiate:} & \text{Lift factor} = \dfrac{Q'}{Q} = \exp\big(-\eta \log(1-\gamma) + \beta_D \cdot D + \beta_F \cdot F\big)
+    \end{array}
+  \]</div>
+  <ul class="compact-list">
+    <li>Shows how to interpret the coefficients \(\beta_D\) and \(\beta_F\):
+      <ul>
+        <li>Example: \(\gamma = 0,\ F = 0,\ D = 1 \Rightarrow \text{Lift factor} = \exp(\beta_D)\)</li>
+        <li>\(\beta_D\) is the log of the lift factor under full display coverage</li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<!-- 37 -->
+<section class="dense" data-lift-calc>
+  <h2>Try it: lift factor of a promotional event</h2>
+  <div class="lift-calc">
+    <div class="lift-panel">
+      <h3>Regression estimates</h3>
+      <label class="lift-field"><span>Price elasticity \(\eta\)</span>
+        <input type="number" data-lift-input="eta" min="0" max="10" step="0.1" value="2"/>
+      </label>
+      <label class="lift-field"><span>Display effect \(\beta_D\)</span>
+        <input type="number" data-lift-input="betaD" min="-3" max="3" step="0.05" value="0.5"/>
+      </label>
+      <label class="lift-field"><span>Feature effect \(\beta_F\)</span>
+        <input type="number" data-lift-input="betaF" min="-3" max="3" step="0.05" value="0.3"/>
+      </label>
+      <h3>Promotional event</h3>
+      <label class="lift-field"><span>TPR depth \(\gamma\) (%)</span>
+        <input type="number" data-lift-input="gamma" min="0" max="90" step="1" value="15"/>
+      </label>
+      <label class="lift-field"><span>%ACV on display \(D\)</span>
+        <input type="number" data-lift-input="display" min="0" max="100" step="5" value="85"/>
+      </label>
+      <label class="lift-field"><span>%ACV on feature \(F\)</span>
+        <input type="number" data-lift-input="feature" min="0" max="100" step="5" value="100"/>
+      </label>
+      <label class="lift-field"><span>Baseline sales (units)</span>
+        <input type="number" data-lift-input="baseline" min="0" max="1000000" step="100" value="1000"/>
+      </label>
+    </div>
+    <div>
+      <div class="lift-result">
+        <span class="lift-big" data-lift-out="lift">–</span>
+        <span class="lift-cap">Lift factor \(= (1-\gamma)^{-\eta} \cdot e^{\beta_D D} \cdot e^{\beta_F F}\)</span>
+      </div>
+      <div class="stat-row">
+        <div class="stat"><span class="stat-value" data-lift-out="price">–</span><span class="stat-label">Price cut</span></div>
+        <div class="stat"><span class="stat-value" data-lift-out="display">–</span><span class="stat-label">Display</span></div>
+        <div class="stat"><span class="stat-value" data-lift-out="feature">–</span><span class="stat-label">Feature</span></div>
+      </div>
+      <p class="takeaway">
+        Incremental volume ΔQ = (lift − 1) × baseline = <strong data-lift-out="dq">–</strong> units
+      </p>
+      <p class="fig-caption">The coefficients are illustrative. In the log-linear model the effects multiply.</p>
+    </div>
+  </div>
+</section>
+
+<!-- 38 -->
+<section class="section-slide">
+  <p class="eyebrow">Sales prediction</p>
+  <p class="part-label">Part D</p>
+  <h1>Forecasting sales from<br/>log-linear demand models</h1>
+</section>
+
+<!-- 39 -->
+<section class="dense">
+  <h2>Predicting sales from the log-linear demand model</h2>
+  <ul class="compact-list">
+    <li>At a given price, display, and feature, the expected (or average) quantity sold is:</li>
+  </ul>
+  <div class="eq-block eq-sm">\[ \begin{aligned} \log(Q) &= \alpha - \eta \log(P) + \beta_D D + \beta_F F + \epsilon \\ E(Q) &= E\big[\exp(\alpha - \eta \log(P) + \beta_D D + \beta_F F + \epsilon)\big] \\ &= \exp(\alpha - \eta \log(P) + \beta_D D + \beta_F F) \cdot E\big(\exp(\epsilon)\big) \end{aligned} \]</div>
+  <ul class="compact-list">
+    <li>What is the expectation of the error term, \(E(\epsilon)\)?</li>
+    <li class="fragment" data-fragment-index="1">What is \(E(e^{\epsilon})\)?</li>
+  </ul>
+  <div class="eq-block eq-accent eq-sm fragment" data-fragment-index="2">\[ E\big(\exp(\epsilon)\big) = \exp\!\left(\frac{\sigma^2}{2}\right) \]</div>
+  <ul class="compact-list fragment" data-fragment-index="2">
+    <li>where \(\sigma^2\) is the empirical variance of the error term estimated from the regression</li>
+    <li>Note: if \(\epsilon\) comes from a normal distribution, \(\exp(\epsilon)\) is <strong>log-normal</strong></li>
+  </ul>
+</section>
+
+<!-- 40 -->
+<section class="dense">
+  <h2>Predicting sales from the log-linear demand model (2)</h2>
+  <ul class="compact-list">
+    <li>Our goal is to estimate expected demand as</li>
+  </ul>
+  <div class="eq-block eq-accent eq-sm">\[ E(Q) = \exp(\alpha - \eta \log(P) + \beta_D D + \beta_F F) \cdot \exp\!\left(\frac{\sigma^2}{2}\right) \]</div>
+  <ul class="compact-list">
+    <li>After you run a regression in Python, you can obtain the variance of the error term, \(\sigma^2\), as</li>
+  </ul>
+  <pre><code class="language-python" data-trim>
+model = sm.OLS(y, X)                     # Create the OLS model
+results = model.fit()                    # Fit the model
+sigma_squared = results.scale            # Variance of the error term
+multiplier = np.exp(sigma_squared / 2)   # Correction for E(exp(epsilon))
+  </code></pre>
+  <p class="discuss-prompt">
+    <strong>Question:</strong> how would we predict expected demand for a new price / promotion from the regression results now?
+  </p>
+</section>
+
+<!-- 41 -->
+<section class="section-slide">
+  <p class="eyebrow">Promotion analysis</p>
+  <p class="part-label">Part E</p>
+  <h1>Principles of the economics<br/>of trade promotions</h1>
+</section>
+
+<!-- 42 -->
+<section class="dense">
+  <h2>Principles of the economics of trade promotions</h2>
+  <ul class="compact-list">
+    <li>Abraham and Lodish (<em>Harvard Business Review</em>, 1990) discuss a particular and highly important cost of trade promotions</li>
+    <li>An analysis of trade promotions for all brands in 65 different product categories suggests only <strong>16 percent</strong> of the promotions are profitable</li>
+    <li>Why? — <strong>Forward buying</strong>
+      <ul>
+        <li>Retailers buy extra inventory at lower cost</li>
+      </ul>
+    </li>
+  </ul>
+  <p class="takeaway">
+    <strong>Lesson:</strong> include the foregone contribution from forward buying as an additional event cost in the ROI calculation.
+  </p>
+  <p class="discuss-prompt">
+    <strong>Question:</strong> what contracts or incentives can a manufacturer use to prevent forward buying by the retailer?
+  </p>
+</section>
+
+<!-- 43 -->
+<section class="dense-3">
+  <h2>In-class exercise</h2>
+  <ul class="compact-list">
+    <li>Complete the numbers in the promotions-ROI exercise (of a beer company)</li>
+    <li>What is the ROI of this promotion at a <strong>50% margin</strong>?</li>
+  </ul>
+  <div class="two-col wide-right" style="grid-template-columns: minmax(0, 1.55fr) minmax(0, 0.75fr);">
+    <table class="data-table">
+      <thead>
+        <tr><th class="left"></th><th>Cases</th><th>Gross dollars</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="left"><strong>Baseline</strong> (sales that would have occurred during the four-week promotion period even without the promotion)</td><td>400</td><td class="blank"><span class="fragment" data-fragment-index="1">$4,000</span></td></tr>
+        <tr><td class="left"><strong>Incremental sales to consumer</strong></td><td></td><td></td></tr>
+        <tr class="sub"><td class="left">Due to one week of feature</td><td>100</td><td class="blank"><span class="fragment" data-fragment-index="1">$1,000</span></td></tr>
+        <tr class="sub"><td class="left">Due to 50% of stores with three weeks of display and price reduction</td><td>250</td><td class="blank"><span class="fragment" data-fragment-index="1">$2,500</span></td></tr>
+        <tr class="sub"><td class="left">Due to 50% of stores with four weeks of price reduction only</td><td>80</td><td class="blank"><span class="fragment" data-fragment-index="1">$800</span></td></tr>
+        <tr><td class="left"><strong>Total</strong> incremental</td><td>430</td><td class="blank"><span class="fragment" data-fragment-index="1">$4,300</span></td></tr>
+        <tr><td class="left"><strong>Ten weeks of forward buying</strong> by retailers</td><td>1,000</td><td class="blank"><span class="fragment" data-fragment-index="1">$10,000</span></td></tr>
+        <tr><td class="left"><strong>Total sales during promotion</strong></td><td>1,830</td><td class="blank"><span class="fragment" data-fragment-index="1">$18,300</span></td></tr>
+        <tr><td class="left"><strong>Cost of promotion</strong> ((baseline + forward buying) × 15% discount)</td><td></td><td class="blank"><span class="fragment" data-fragment-index="1">$2,100</span></td></tr>
+        <tr><td class="left"><strong>Cost of incremental sales</strong> (promotion cost ÷ total incremental sales)</td><td></td><td class="blank"><span class="fragment" data-fragment-index="1">$0.49 <small>(= 2,100 / 4,300)</small></span></td></tr>
+      </tbody>
+    </table>
+    <div>
+      <div class="case-box" style="margin-top: 0.3em;">
+        <strong>Assumptions</strong>
+        <ul style="font-size: 1em; margin: 0.3em 0 0;">
+          <li>Four-week period</li>
+          <li>Base sales are 100 cases per week</li>
+          <li>List price is $10 per case</li>
+          <li>15% off-invoice offered for four weeks</li>
+          <li>Calculate ROI if margin is 50%</li>
+        </ul>
+      </div>
+      <div class="eq-block eq-accent eq-xs">\[ ROI = \frac{\text{margin} \cdot \text{incr. sales} - \text{cost}}{\text{cost of promotion}} \]</div>
+      <div class="eq-block eq-xs fragment" data-fragment-index="1">\[ ROI = \frac{0.5 \cdot 4{,}300 - 2{,}100}{2{,}100} \approx 2.4\% \]</div>
+    </div>
+  </div>
+</section>
+
+<!-- 44 -->
+<section>
+  <h2>Economics of trade promotions</h2>
+  <ul>
+    <li>This approach can be used after running log-linear demand models on price and promotions data
+      <ul>
+        <li>Use Python functions or Excel formulae to automatically
+          <ul>
+            <li>Calculate the event <strong>lift factor</strong> from the regression estimates and the event structure</li>
+            <li>Calculate the event <strong>ROI</strong> from the lift factor and the margin and cost data</li>
+          </ul>
+        </li>
+        <li>Allows you to easily evaluate
+          <ul>
+            <li>ROI’s corresponding to different events</li>
+            <li>ROI’s across accounts or markets</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<!-- 45 -->
+<section class="dense">
+  <h2>Seasonality</h2>
+  <div class="two-col">
+    <div>
+      <ul class="compact-list">
+        <li>Many products and categories exhibit seasonal trends
+          <ul>
+            <li>Seasons of the year such as fall and winter
+              <ul>
+                <li>Long periods when demand is higher or lower than average</li>
+              </ul>
+            </li>
+            <li>Specific calendar events
+              <ul>
+                <li>Christmas</li>
+                <li>Independence Day — beer, soft drinks, and ketchup</li>
+              </ul>
+            </li>
+          </ul>
+        </li>
+        <li>Many promotions occur in specific seasons or around specific calendar events</li>
+      </ul>
+      <p class="discuss-prompt">
+        <strong>Discuss:</strong> what happens to lift factor estimates if we do not control for seasonality?
+      </p>
+    </div>
+    <div>
+      <img src="assets/seasonality-lift.png"
+           alt="Weekly sales around a promotion in the week of June 28 (Independence Day): sales jump to about 1,300 against a baseline near 400"
+           class="demand-fig"/>
+      <p class="fig-caption">Promotion in the week before Independence Day — what is the correct promotional lift factor?</p>
+    </div>
+  </div>
+</section>
+
+<!-- 46 -->
+<section>
+  <h2>Controlling for seasonality in a demand model</h2>
+  <ul>
+    <li><strong>Dummy variables</strong> for specific calendar events or time of the year
+      <ul>
+        <li>Dummy variables for one or two weeks before Independence Day</li>
+        <li>Christmas holiday season dummy</li>
+        <li>Month dummies</li>
+      </ul>
+    </li>
+    <li>Possible but rarely used
+      <ul>
+        <li>Include average regional <strong>temperature</strong> as an independent variable
+          <ul>
+            <li>Useful for controlling seasonality for drinks, ice cream, etc.</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<!-- 47 -->
+<section class="section-slide">
+  <p class="eyebrow">Assignment 4</p>
+  <p class="part-label">Part F</p>
+  <h1>Promotion effects and the economics of trade promotions for Hellmann’s mayonnaise</h1>
+</section>
+
+<!-- 48 -->
+<section class="dense">
+  <h2>Assignment 4</h2>
+  <p class="lead">Hellmann’s mayo 32 oz at two accounts in Chicago</p>
+  <div class="two-col narrow-right">
+    <table class="data-table" style="font-size: 0.72em;">
+      <thead>
+        <tr><th class="left">Variable</th><th class="left">Description</th></tr>
+      </thead>
+      <tbody>
+        <tr><td class="mono">account</td><td class="left">Supermarket chain (Dominick’s / Jewel-Osco)</td></tr>
+        <tr><td class="mono">product</td><td class="left">Hellmann’s mayo 32 oz</td></tr>
+        <tr><td class="mono">week</td><td class="left">1–88 weeks</td></tr>
+        <tr><td class="mono">sales_units</td><td class="left">Unit sales</td></tr>
+        <tr><td class="mono">sales_dollars</td><td class="left">Dollar sales</td></tr>
+        <tr><td class="mono">feature_pctacv</td><td class="left">% of stores featuring Hellmann’s mayo (%ACV on feature)</td></tr>
+        <tr><td class="mono">display_pctacv</td><td class="left">% of stores displaying Hellmann’s mayo (%ACV on display)</td></tr>
+      </tbody>
+    </table>
+    <img src="assets/hellmanns-mayo.png" alt="Jar of Hellmann's Real Mayonnaise" class="demand-fig" style="max-height: 9em;"/>
+  </div>
+  <ul class="compact-list">
+    <li><strong>Two parts</strong>
+      <ul>
+        <li>Part I — ROI calculations when you have been given incremental sales (no data)</li>
+        <li>Part II — Calculate lift from regressions and then perform ROI analysis</li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<!-- 49 -->
+<section>
+  <h2>Assignment 4: Economics of trade promotions</h2>
+  <ul class="compact-list">
+    <li><strong>Goal in both parts:</strong> use the principles of the economics of trade promotions</li>
+    <li><strong>Notes for Part II</strong>
+      <ul>
+        <li>Use the Excel table given with the assignment and fill in the correct lift and cost numbers</li>
+        <li>Use Excel formulas to automatically
+          <ul>
+            <li>Calculate the event lift factor from the regression estimates and the event structure</li>
+            <li>Calculate the event ROI from the lift factor and the margin and cost data</li>
+          </ul>
+        </li>
+        <li>Allows you to easily evaluate
+          <ul>
+            <li>ROI’s corresponding to different events</li>
+            <li>ROI’s across accounts or markets</li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<!-- 51 -->
+<section class="title-slide">
+  <h1>That’s all folks</h1>
+  <p class="subtitle">See you next session</p>
+</section>
+
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/dist/reveal.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/notes/notes.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/markdown/markdown.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/highlight/highlight.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.1.0/plugin/math/math.js"></script>
+  <script src="../js/theme.js"></script>
+  <script src="js/promo-tools.js"></script>
+  <script>
+    Reveal.initialize({
+      fragments: true,
+      hash: true,
+      slideNumber: 'c/t',
+      width: 1280,
+      height: 720,
+      margin: 0.06,
+      transition: 'fade',
+      backgroundTransition: 'fade',
+      // Dollar amounts appear in the text, so "$" must not act as a math delimiter.
+      katex: {
+        delimiters: [
+          { left: '\\[', right: '\\]', display: true },
+          { left: '\\(', right: '\\)', display: false }
+        ]
+      },
+      plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealMath.KaTeX ]
+    }).then(function () {
+      if (window.startPromoTools) window.startPromoTools();
+    });
+  </script>
+</body>
+</html>
