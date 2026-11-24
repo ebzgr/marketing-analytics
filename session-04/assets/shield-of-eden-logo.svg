@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Shield of Eden">
+  <circle cx="50" cy="50" r="40" fill="#8a76b8"/>
+  <path d="M10 50 H33 A22 22 0 0 0 47 57.8 V89.9 A40 40 0 0 1 10 50 Z" fill="#6a8f6f" stroke="#dfe9d8" stroke-width="4"/>
+  <path d="M90 50 H67 A22 22 0 0 1 53 57.8 V89.9 A40 40 0 0 0 90 50 Z" fill="#6a8f6f" stroke="#dfe9d8" stroke-width="4"/>
+</svg>

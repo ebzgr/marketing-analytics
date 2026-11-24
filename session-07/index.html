@@ -1,0 +1,1579 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="referrer" content="strict-origin-when-cross-origin"/>
+  <title>Session 7 · Advertising Analytics · Marketing Analytics</title>
+  <link rel="stylesheet" href="../vendor/reveal.js-5.1.0/dist/reset.css"/>
+  <link rel="stylesheet" href="../vendor/reveal.js-5.1.0/dist/reveal.css"/>
+  <link rel="stylesheet" href="../vendor/fonts/source-sans-3.css"/>
+  <link rel="stylesheet" href="../css/theme.css"/>
+  <style>
+    /* ----- Equations ----- */
+    .eq-block {
+      margin: 0.55em auto;
+      padding: 0.5em 0.85em;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: var(--bg-soft);
+      text-align: center;
+      max-width: 920px;
+    }
+    .eq-block .katex-display { margin: 0.2em 0; }
+    .eq-block.eq-accent {
+      border-color: color-mix(in srgb, var(--accent-2) 38%, var(--line));
+      background: color-mix(in srgb, var(--accent-2) 8%, var(--bg));
+    }
+    .eq-block.eq-sm { font-size: 0.8em; }
+    .eq-block.eq-xs { font-size: 0.7em; max-width: none; }
+
+    /* ----- Compact text ----- */
+    .compact-list { font-size: 0.84em; }
+    .compact-list > li { margin-bottom: 0.26em; }
+    .compact-list ul { font-size: 0.93em; }
+
+    /* ----- Figures ----- */
+    .demand-fig {
+      max-height: 13em;
+      max-width: 100%;
+      width: auto;
+      background: #fff;
+      padding: 8px;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      display: block;
+      margin: 0 auto;
+    }
+    .demand-fig.tall { max-height: 15.5em; }
+    .reveal p.fig-caption {
+      margin: 0.4em 0 0;
+      font-size: 0.62em;
+      line-height: 1.35;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    /* ----- Callouts ----- */
+    .discuss-prompt {
+      margin-top: 0.4em;
+      padding: 0.5em 0.75em;
+      border-radius: 12px;
+      border: 1px dashed color-mix(in srgb, var(--accent-2) 40%, var(--line));
+      background: color-mix(in srgb, var(--accent-2) 8%, var(--bg));
+      font-size: 0.78em;
+      line-height: 1.35;
+    }
+    .takeaway {
+      margin-top: 0.5em;
+      padding: 0.5em 0.8em;
+      border-radius: 0 10px 10px 0;
+      border-left: 4px solid var(--accent);
+      background: var(--panel);
+      font-size: 0.76em;
+      line-height: 1.4;
+    }
+    .reveal p.big-claim {
+      margin: 0.6em auto;
+      max-width: 22em;
+      text-align: center;
+      font-size: 1.15em;
+      font-weight: 800;
+      color: var(--accent-2);
+    }
+
+    /* ----- Roadmap / card grids ----- */
+    .roadmap-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.7em;
+      align-items: stretch;
+      margin-top: 0.35em;
+    }
+    .roadmap-grid .card { min-height: 0; margin: 0; height: 100%; box-sizing: border-box; padding: 0.6em 0.75em; }
+    .roadmap-grid .card h3 { font-size: 0.84em; margin-bottom: 0.2em; }
+    .roadmap-grid .card p { font-size: 0.68em; margin-bottom: 0; line-height: 1.35; }
+
+    .cards { align-items: start; }
+    .cards .card { min-height: 0; }
+    .cards .card ul { font-size: 0.74em; }
+    /* Equal-height card rows ("stretch" is reserved by Reveal.js, which resizes such elements) */
+    .cards.eq { align-items: stretch; }
+    .cards.four { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 0.55em; }
+    .cards.four .card { padding: 0.55em 0.65em; }
+    .cards.four .card ul { font-size: 0.64em; padding-left: 1em; }
+
+    /* ----- Density scale for text-heavy slides ----- */
+    section.dense { font-size: 0.93em; }
+    section.dense-2 { font-size: 0.86em; }
+    section.dense-3 { font-size: 0.78em; }
+
+    .two-col { grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.85fr); }
+    .two-col > * { min-width: 0; }
+    .two-col.text-top { align-items: start; }
+    .two-col.even { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+    .two-col.wide-right { grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); }
+
+    /* ----- Data tables ----- */
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.68em;
+      line-height: 1.3;
+      margin: 0.3em 0 0.5em;
+      font-variant-numeric: tabular-nums;
+    }
+    .data-table th,
+    .data-table td {
+      border: 1px solid var(--line);
+      padding: 0.32em 0.6em;
+      color: var(--ink);
+      text-align: center;
+      vertical-align: middle;
+    }
+    .data-table thead th {
+      background: color-mix(in srgb, var(--accent-2) 14%, var(--bg));
+      font-weight: 700;
+    }
+    .data-table tbody tr:nth-child(even) td { background: var(--bg-soft); }
+    .data-table td.left, .data-table th.left { text-align: left; }
+    .data-table td.mono { font-family: var(--font-mono); font-size: 0.92em; color: var(--accent-2); font-weight: 700; }
+
+    /* ----- Stat tiles ----- */
+    .stat-row { display: grid; gap: 0.6em; margin: 0.4em 0; }
+    .stat-row.two { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .stat-row.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .stat-row.four { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .stat { border: 1px solid var(--line); border-radius: 12px; background: var(--bg-soft); padding: 0.4em 0.6em; text-align: center; }
+    .stat .stat-value { display: block; font-size: 1.25em; font-weight: 800; color: var(--accent-2); line-height: 1.1; font-variant-numeric: tabular-nums; }
+    .stat.warm .stat-value { color: var(--accent); }
+    .stat .stat-label { display: block; font-size: 0.56em; font-weight: 700; color: var(--muted); margin-top: 0.2em; line-height: 1.3; }
+
+    /* ----- Breathing room: any block that follows a card grid, widget, table or equation ----- */
+    .reveal .slides section > :is(.cards, .rtb-flow, .widget, .two-col, .stat-row, .funnel, .eq-block, .roadmap-grid, .ax, .data-table, .flow-diagram)
+      + :is(.takeaway, .discuss-prompt, p, ul, ol, .cards, .eq-block, .widget, .stat-row, .data-table, .rtb-flow) { margin-top: 0.9em; }
+
+    /* ----- Session 7 additions: fit line, new-data circles, mini charts, boosting ----- */
+    .chart .fit.ink { stroke: var(--ink); }
+    .chart .pt.ghost.new { stroke: var(--accent-2); opacity: 1; stroke-width: 2; }
+    .flex-row { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.6em; margin: 0.2em 0 0.7em; }
+    .two-col > .card { min-height: 0; }
+    .acc-why .card { padding: 0.5em 0.75em; }
+    .acc-why .card h3 { font-size: 0.85em; margin-bottom: 0.15em; }
+    .reveal .acc-why .card p { font-size: 0.7em; margin: 0; }
+    .reveal p.k-title { font-size: 0.6em; font-weight: 800; margin: 0 0 0.2em; }
+    .k-title span { color: var(--muted); font-weight: 600; }
+    .data-table tr.new-row td { background: color-mix(in srgb, var(--accent) 14%, var(--bg)) !important; font-weight: 700; }
+    [data-boost] .readout { grid-template-columns: repeat(3, minmax(0, 1fr)); align-self: stretch; }
+
+    /* ----- k-fold cross-validation diagram ----- */
+    .kfold { display: grid; gap: 0.3em; margin: 0.2em 0 0.4em; }
+    .kf-row { display: grid; grid-template-columns: 4.2em repeat(5, minmax(0, 1fr)) 4.2em; gap: 0.25em; align-items: center; }
+    .kf-row b { display: grid; place-items: center; height: 1.5em; border-radius: 6px; background: color-mix(in srgb, var(--accent-2) 55%, var(--bg)); color: #fff; font-size: 0.66em; }
+    .kf-row b.va { background: var(--accent); }
+    .kf-lab { font-size: 0.6em; font-weight: 700; color: var(--muted); }
+    .kf-score { font-size: 0.62em; font-weight: 800; color: var(--accent); text-align: right; }
+    .kf-key { display: inline-block; width: 0.9em; height: 0.9em; border-radius: 3px; vertical-align: -0.1em; }
+    .kf-key.tr { background: color-mix(in srgb, var(--accent-2) 55%, var(--bg)); }
+    .kf-key.va { background: var(--accent); }
+
+    /* ----- Feedback / survey slide ----- */
+    .reveal .survey-slide { text-align: center !important; }
+    .reveal .survey-slide h2 { margin-bottom: 0.3em; }
+    .survey-qr {
+      display: block;
+      width: 300px;
+      height: 300px;
+      margin: 0 auto 0.8em;
+      padding: 12px;
+      background: #fff;
+      border-radius: 16px;
+      border: 1px solid var(--line);
+      box-sizing: border-box;
+    }
+    .qr-placeholder {
+      display: grid;
+      place-items: center;
+      border: 3px dashed var(--muted);
+      background: var(--bg-soft);
+      color: var(--muted);
+      font-size: 0.8em;
+      font-weight: 700;
+      line-height: 1.3;
+    }
+
+    /* ----- Feedback results ----- */
+    .res-load { display: flex; align-items: center; gap: 0.6em; margin-bottom: 0.6em; flex-wrap: wrap; }
+    .res-btn { display: inline-block; padding: 0.3em 0.9em; border-radius: 10px; background: var(--accent-2); color: var(--tag-ink); font-size: 0.6em; font-weight: 800; cursor: pointer; }
+    .res-status { font-size: 0.56em; color: var(--muted); font-weight: 600; }
+    .res-status.error { color: var(--accent); }
+    .reveal p.fb-count { margin: -0.2em 0 0.4em; font-size: 0.85em; font-weight: 700; color: var(--muted); }
+    .fb-count-n { display: inline-block; min-width: 1.6em; font-size: 1.5em; font-weight: 800; color: var(--accent-2); font-variant-numeric: tabular-nums; }
+    .fb-count-n.bump { animation: fb-bump 0.5s ease-out; }
+    @keyframes fb-bump { 0% { transform: scale(1.5); color: var(--accent); } 100% { transform: scale(1); } }
+    .fb-clear-panel { display: flex; align-items: center; gap: 0.5em; flex-wrap: wrap; margin: -0.2em 0 0.6em; padding: 0.4em 0.6em; border-radius: 10px; border: 1.5px solid color-mix(in srgb, #dc2626 50%, var(--line)); background: color-mix(in srgb, #dc2626 8%, var(--bg)); font-size: 0.6em; }
+    .fb-clear-panel[hidden] { display: none; }
+    .fb-clear-panel input { font: inherit; padding: 0.25em 0.5em; border-radius: 6px; border: 1px solid var(--line); background: var(--bg); color: var(--ink); width: 11em; }
+    .fb-clear-panel .w-btn { font-size: 1em; }
+    .w-btn.fb-danger-solid { background: #dc2626; border-color: #dc2626; color: #fff; }
+    .w-btn.fb-danger { color: #dc2626; border-color: color-mix(in srgb, #dc2626 45%, var(--line)); }
+    .reveal p.res-empty { font-size: 0.66em; color: var(--muted); text-align: center; padding: 1.5em 0; }
+    .fb-wide { max-width: 980px; margin: 0 auto; }
+    .fb-lik-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr) 2.4em; gap: 0.6em; align-items: center; margin: 0.35em 0; font-size: 0.66em; }
+    .fb-lik-lab { font-weight: 700; line-height: 1.25; }
+    .fb-lik-bar { display: flex; height: 1.7em; border-radius: 8px; overflow: hidden; background: var(--panel); }
+    .fb-lik-seg { display: grid; place-items: center; color: #fff; font-size: 0.82em; font-weight: 800; transition: width 0.3s ease; }
+    .fb-lik-seg.s1, .fb-key-sw.s1 { background: #b45309; }
+    .fb-lik-seg.s2, .fb-key-sw.s2 { background: #d9894a; }
+    .fb-lik-seg.s3, .fb-key-sw.s3 { background: #94a3b8; }
+    .fb-lik-seg.s4, .fb-key-sw.s4 { background: #4fa69b; }
+    .fb-lik-seg.s5, .fb-key-sw.s5 { background: #0f766e; }
+    .fb-lik-mean { text-align: right; font-weight: 800; color: var(--accent-2); font-variant-numeric: tabular-nums; }
+    .fb-lik-key { display: flex; flex-wrap: wrap; gap: 0.9em; margin-top: 0.5em; font-size: 0.56em; color: var(--muted); font-weight: 700; }
+    .fb-key-item { display: inline-flex; align-items: center; gap: 0.35em; }
+    .fb-key-sw { display: inline-block; width: 0.9em; height: 0.9em; border-radius: 3px; }
+    .fb-key-mean { margin-left: auto; }
+    .fb-bar-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 5.2em; gap: 0.5em; align-items: center; margin: 0.3em 0; font-size: 0.64em; }
+    .fb-bar-lab { font-weight: 700; line-height: 1.25; }
+    .fb-bar-track { height: 1.2em; border-radius: 0 6px 6px 0; background: var(--panel); overflow: hidden; }
+    .fb-bar-fill { display: block; height: 100%; background: var(--accent-2); transition: width 0.3s ease; }
+    .fb-bar-row.flag .fb-bar-fill { background: var(--accent); }
+    .fb-bar-val { text-align: right; font-weight: 800; font-variant-numeric: tabular-nums; }
+    .fb-hist { display: grid; grid-template-columns: repeat(11, minmax(0, 1fr)); gap: 0.35em; align-items: end; height: 8.5em; margin-top: 0.6em; }
+    .fb-hist-col { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
+    .fb-hist-bar { width: 100%; background: var(--accent-2); border-radius: 6px 6px 0 0; min-height: 2px; transition: height 0.3s ease; }
+    .fb-hist-n { font-size: 0.55em; font-weight: 800; color: var(--muted); }
+    .fb-hist-x { font-size: 0.6em; font-weight: 700; color: var(--muted); margin-top: 0.2em; }
+
+    /* ----- Question / answer tiles (question fades out, answer fades in, same spot) ----- */
+    .stat.qa { display: grid; align-items: center; }
+    .stat.qa > div { grid-area: 1 / 1; }
+    .qa-q { display: block; font-size: 0.82em; font-weight: 800; color: var(--ink); line-height: 1.3; }
+
+    /* ----- Targeting trio ----- */
+    .target-card .q { display: block; font-size: 0.66em; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.3em; }
+    .target-icon { width: 1.6em; height: 1.6em; color: var(--accent-2); margin-bottom: 0.15em; }
+
+    /* ----- Programmatic flow ----- */
+    .rtb-flow { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 0.4em; align-items: stretch; margin-top: 0.3em; }
+    .rtb-step {
+      position: relative;
+      padding: 0.45em 0.55em 0.5em;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: var(--bg-soft);
+    }
+    .rtb-step > b { display: block; font-size: 0.66em; color: var(--accent-2); margin-bottom: 0.15em; }
+    .rtb-step > span { display: block; font-size: 0.58em; line-height: 1.35; color: var(--muted); }
+    .rtb-step > .step-num {
+      display: inline-grid; place-items: center; width: 1.5em; height: 1.5em; border-radius: 999px;
+      background: var(--accent-2); color: var(--tag-ink); font-size: 0.6em; font-weight: 800; margin-bottom: 0.3em;
+    }
+
+    /* ----- Widgets: shared ----- */
+    .widget { display: grid; gap: 0.8em; align-items: start; }
+    .widget.cols-2 { grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr); }
+    .widget.cols-2e { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+    .panel {
+      display: flex;
+      flex-direction: column;
+      gap: 0.4em;
+      padding: 0.55em 0.7em;
+      border-radius: 12px;
+      border: 1px solid var(--line);
+      background: var(--bg-soft);
+    }
+    .panel label { display: flex; align-items: center; gap: 0.5em; font-size: 0.7em; font-weight: 700; color: var(--ink); }
+    .panel label > span:first-child { min-width: 8.2em; }
+    .panel input[type="range"] { flex: 1; min-width: 0; accent-color: var(--accent-2); }
+    .panel output { min-width: 3.6em; text-align: right; font-weight: 800; color: var(--accent-2); font-variant-numeric: tabular-nums; }
+    .panel input[type="number"] {
+      width: 5.5em; font: inherit; padding: 0.1em 0.3em; border-radius: 6px; border: 1px solid var(--line);
+      background: var(--bg); color: var(--accent); font-weight: 800; text-align: right;
+    }
+    .reveal .panel p { font-size: 0.6em; line-height: 1.35; color: var(--muted); margin: 0; }
+    .panel-title { font-size: 0.56em; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+    .btn-row { display: flex; flex-wrap: wrap; gap: 0.35em; }
+    .w-btn {
+      font: inherit;
+      font-size: 0.6em;
+      font-weight: 800;
+      padding: 0.3em 0.85em;
+      border-radius: 8px;
+      border: 1.5px solid var(--accent-2);
+      background: var(--accent-2);
+      color: var(--tag-ink);
+      cursor: pointer;
+    }
+    .w-btn.ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+    .w-btn.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+    .w-btn:disabled { opacity: 0.4; cursor: default; }
+    .readout { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.4em; }
+    .readout .stat .stat-value { font-size: 1.05em; }
+
+    .chart { width: 100%; height: auto; display: block; background: var(--bg-soft); border: 1px solid var(--line); border-radius: 12px; }
+    .chart .grid { stroke: var(--line); stroke-width: 1; }
+    .chart .axis { stroke: var(--muted); stroke-width: 1.2; }
+    .chart .tick, .chart .lbl { fill: var(--muted); font-size: 12px; font-family: var(--font-sans); }
+    .chart .lbl { font-weight: 700; }
+    .chart .pt { fill: var(--accent); stroke: var(--bg-soft); stroke-width: 1.5; }
+    .chart .pt.alt { fill: var(--accent-2); }
+    .chart .pt.ghost { fill: none; stroke: var(--muted); stroke-width: 1.4; opacity: 0.7; }
+    .chart .fit { fill: none; stroke: var(--accent-2); stroke-width: 3; }
+    .chart .truth { fill: none; stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 5 5; }
+    .chart .curve-a { fill: none; stroke: var(--accent-2); stroke-width: 2.5; }
+    .chart .curve-b { fill: none; stroke: var(--accent); stroke-width: 2.5; }
+    .chart .area-a { fill: color-mix(in srgb, var(--accent-2) 22%, transparent); }
+    .chart .area-b { fill: color-mix(in srgb, var(--accent) 22%, transparent); }
+    .chart .marker { fill: var(--accent); stroke: var(--bg); stroke-width: 2; }
+    .chart .thresh { stroke: var(--ink); stroke-width: 2; stroke-dasharray: 6 4; }
+    .chart .diag { stroke: var(--muted); stroke-width: 1; stroke-dasharray: 4 4; }
+    .chart .val { fill: var(--ink); font-size: 13px; font-weight: 800; font-family: var(--font-sans); }
+    .chart .region { stroke: var(--bg-soft); stroke-width: 2; }
+    .chart .split { stroke: var(--ink); stroke-width: 2.5; }
+    .chart .leaf-lbl { font-size: 14px; font-weight: 800; font-family: var(--font-sans); fill: var(--ink); paint-order: stroke; stroke: var(--bg-soft); stroke-width: 4px; }
+
+    /* ----- Live auction ----- */
+    .ax { display: grid; grid-template-columns: 15em minmax(0, 1fr) 11.5em; gap: 0.8em; align-items: start; }
+    .ax-label { display: block; font-size: 0.5em; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin: 0 0 0.35em; }
+    .ax-imp {
+      position: relative;
+      min-height: 0;
+      padding: 0.5em 0.6em;
+      border-radius: 14px;
+      border: 1.5px solid color-mix(in srgb, var(--accent-2) 55%, var(--line));
+      background: color-mix(in srgb, var(--accent-2) 8%, var(--bg));
+      box-shadow: 0 8px 24px color-mix(in srgb, var(--accent-2) 14%, transparent);
+    }
+    .ax-imp.enter { animation: ax-in 0.45s ease-out; }
+    @keyframes ax-in { from { opacity: 0; transform: translateX(-40px) scale(0.92); } to { opacity: 1; transform: none; } }
+    .ax-user { display: flex; align-items: center; gap: 0.45em; margin-bottom: 0.35em; }
+    .ax-emoji { font-size: 1.5em; line-height: 1; }
+    .ax-user b { display: block; font-size: 0.7em; }
+    .ax-user small { display: block; font-size: 0.56em; color: var(--muted); font-weight: 700; }
+    .ax-chips { display: flex; flex-wrap: wrap; gap: 0.25em; }
+    .ax-chips .chip { font-size: 0.5em; }
+    .ax-queue { display: grid; gap: 0.3em; }
+    .ax-q {
+      display: flex; align-items: center; gap: 0.4em;
+      padding: 0.2em 0.5em; border-radius: 10px; border: 1px dashed var(--line);
+      background: var(--bg-soft); font-size: 0.56em; color: var(--muted); font-weight: 700;
+    }
+    .ax-q span:first-child { font-size: 1.3em; }
+    .ax-lanes { display: grid; gap: 0.45em; }
+    .ax-lane {
+      display: grid;
+      grid-template-columns: 2.4em minmax(0, 1fr);
+      gap: 0.55em;
+      align-items: center;
+      padding: 0.45em 0.6em;
+      border-radius: 14px;
+      border: 1.5px solid var(--line);
+      background: var(--bg-soft);
+      transition: border-color 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+    }
+    .ax-lane.win {
+      border-color: var(--accent);
+      background: color-mix(in srgb, var(--accent) 10%, var(--bg));
+      box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent), 0 10px 26px color-mix(in srgb, var(--accent) 22%, transparent);
+    }
+    .ax-avatar { display: grid; place-items: center; width: 2.2em; height: 2.2em; border-radius: 999px; background: var(--panel); font-size: 0.95em; position: relative; }
+    .ax-lane.win .ax-avatar::after { content: "👑"; position: absolute; top: -0.85em; font-size: 0.8em; animation: ax-pop 0.4s ease-out; }
+    @keyframes ax-pop { from { transform: scale(0) rotate(-30deg); } to { transform: scale(1) rotate(0); } }
+    .ax-head { display: flex; align-items: baseline; justify-content: space-between; gap: 0.5em; font-size: 0.66em; white-space: nowrap; }
+    .ax-head b { font-size: 1.05em; }
+    .ax-head span { color: var(--muted); font-weight: 700; }
+    .ax-calc { font-size: 0.6em; color: var(--muted); margin: 0.15em 0 0.25em; font-variant-numeric: tabular-nums; }
+    .ax-calc strong { color: var(--accent-2); }
+    .ax-bar { display: flex; align-items: center; gap: 0.5em; }
+    .ax-track { flex: 1; height: 0.8em; border-radius: 999px; background: var(--panel); overflow: hidden; }
+    .ax-fill { display: block; height: 100%; width: 0; border-radius: 999px; background: var(--accent-2); transition: width 0.55s cubic-bezier(0.22, 1, 0.36, 1); }
+    .ax-lane.win .ax-fill { background: var(--accent); }
+    .ax-bid { min-width: 4.6em; text-align: right; font-size: 0.66em; font-weight: 800; font-variant-numeric: tabular-nums; }
+    .ax-phone {
+      position: relative;
+      height: 11.6em;
+      border-radius: 22px;
+      border: 5px solid var(--ink);
+      background: var(--bg);
+      padding: 0.6em 0.5em 0.5em;
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+    .ax-app { display: flex; align-items: center; gap: 0.35em; font-size: 0.56em; font-weight: 800; margin-bottom: 0.5em; }
+    .ax-line { height: 0.45em; border-radius: 4px; background: var(--panel); margin: 0.35em 0; }
+    .ax-line.short { width: 60%; }
+    .ax-ad {
+      position: absolute; left: 0.45em; right: 0.45em; bottom: 0.45em;
+      padding: 0.4em 0.45em; border-radius: 10px;
+      background: color-mix(in srgb, var(--accent) 14%, var(--bg));
+      border: 1.5px solid var(--accent);
+      font-size: 0.54em; font-weight: 800; line-height: 1.3;
+      animation: ax-up 0.4s ease-out;
+    }
+    .ax-ad small { display: block; font-weight: 700; color: var(--muted); }
+    @keyframes ax-up { from { transform: translateY(120%); } to { transform: none; } }
+    .ax-result {
+      position: absolute; left: 50%; top: 42%; transform: translate(-50%, -50%);
+      padding: 0.3em 0.7em; border-radius: 999px; white-space: nowrap;
+      font-size: 0.62em; font-weight: 800; animation: ax-pop 0.35s ease-out;
+    }
+    .ax-result.click { background: var(--accent-2); color: var(--tag-ink); box-shadow: 0 0 24px color-mix(in srgb, var(--accent-2) 60%, transparent); }
+    .ax-result.miss { background: var(--panel); color: var(--muted); }
+    .ax-bottom { display: grid; grid-template-columns: minmax(0, 0.72fr) minmax(0, 1.28fr); gap: 0.8em; align-items: start; margin-top: 0.6em; }
+    .ax-controls { gap: 0.5em; }
+    .ax-data .panel-title { align-self: center; margin-right: 0.2em; }
+    .data-table.ax-score { font-size: 0.56em; margin: 0; }
+    .data-table.ax-score td, .data-table.ax-score th { padding: 0.22em 0.45em; white-space: nowrap; }
+    .data-table.ax-score td.pos { color: var(--accent-2); font-weight: 800; }
+    .data-table.ax-score td.neg { color: var(--accent); font-weight: 800; }
+    .data-table.ax-score tr.you td { font-weight: 700; }
+    @media (prefers-reduced-motion: reduce) {
+      .ax-imp.enter, .ax-ad, .ax-result, .ax-lane.win .ax-avatar::after { animation: none; }
+    }
+
+    /* ----- Funnel ----- */
+    .funnel { display: grid; gap: 0.3em; justify-items: center; }
+    .funnel-row { display: grid; grid-template-columns: minmax(0, 1fr) 15em; gap: 0.8em; align-items: center; width: 100%; }
+    .funnel-bar {
+      justify-self: center;
+      padding: 0.35em 0;
+      border-radius: 8px;
+      color: #fff;
+      font-size: 0.66em;
+      font-weight: 800;
+      text-align: center;
+    }
+    .funnel-q { font-size: 0.6em; color: var(--muted); font-style: italic; }
+    .funnel-q b { font-style: normal; color: var(--ink); }
+
+    /* ----- Data split bar ----- */
+    .split-bar { display: grid; grid-template-columns: 60fr 20fr 20fr; height: 2.2em; border-radius: 10px; overflow: hidden; margin: 0.4em 0 0.9em; font-size: 0.66em; font-weight: 800; color: #fff; }
+    .split-bar div { display: grid; place-items: center; }
+    .split-bar .tr { background: var(--accent-2); }
+    .split-bar .va { background: color-mix(in srgb, var(--accent-2) 55%, var(--accent)); }
+    .split-bar .te { background: var(--accent); }
+
+    /* ----- Tree diagram ----- */
+    .tree-svg { width: 100%; height: auto; display: block; }
+    .tree-svg .edge { stroke: var(--muted); stroke-width: 2; fill: none; }
+    .tree-svg .node rect { fill: var(--bg-soft); stroke: var(--accent-2); stroke-width: 2; }
+    .tree-svg .leaf rect { fill: color-mix(in srgb, var(--accent) 14%, var(--bg)); stroke: var(--accent); stroke-width: 2; }
+    .tree-svg text { font-family: var(--font-sans); font-size: 17px; fill: var(--ink); font-weight: 700; }
+    .tree-svg .yes { fill: var(--muted); font-size: 13px; font-weight: 600; }
+
+    /* ----- Confusion matrix in ROC widget ----- */
+    .cm { width: 100%; border-collapse: collapse; font-size: 0.56em; font-variant-numeric: tabular-nums; }
+    .cm th, .cm td { border: 1px solid var(--line); padding: 0.25em 0.4em; text-align: center; color: var(--ink); }
+    .cm th { background: var(--panel); font-weight: 700; }
+    .cm td.ok { background: color-mix(in srgb, var(--accent-2) 16%, transparent); font-weight: 800; color: var(--accent-2); }
+    .cm td.bad { background: color-mix(in srgb, var(--accent) 12%, transparent); font-weight: 800; color: var(--accent); }
+
+    /* ----- Variable table groups ----- */
+    .tag-pill { display: inline-block; padding: 0.05em 0.5em; border-radius: 999px; font-size: 0.85em; font-weight: 800; color: var(--tag-ink); }
+    .tag-pill.ctx { background: var(--accent-2); }
+    .tag-pill.beh { background: var(--accent); }
+    .tag-pill.both { background: var(--muted); }
+
+    @media (max-width: 900px) {
+      .flex-row, .ax, .ax-bottom, .roadmap-grid, .cards.four, .rtb-flow, .widget.cols-2, .widget.cols-2e, .stat-row.three, .stat-row.four { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+<!-- Title -->
+<section class="title-slide">
+  <img class="essec-logo" src="../assets/essec-logo.svg" alt="ESSEC Business School"/>
+  <p class="eyebrow">AIDAMS · Marketing Analytics</p>
+  <h1>Session 7</h1>
+  <p class="subtitle">Advertising Analytics</p>
+</section>
+
+<!-- Review -->
+<section class="dense">
+  <h2>Review last session</h2>
+  <p class="lead">We discussed the following topics in the last session</p>
+  <ul class="compact-list">
+    <li><strong>Conjoint analysis:</strong> products as bundles of attributes and levels</li>
+    <li><strong>Partworths</strong> estimated with dummy-variable regression · attribute importance</li>
+    <li><strong>From preferences to choices:</strong> first choice, share of preference and logit rules
+      <ul><li>Market simulations: new products, new entrants and cannibalization</li></ul>
+    </li>
+    <li><strong>Segmentation with conjoint:</strong> individual-level partworths + k-means</li>
+    <li><strong>Dream Destinations</strong> game: from a survey to a market-share competition</li>
+  </ul>
+</section>
+
+<!-- Analytical approach (from Session 1) -->
+<section>
+  <h2>Analytical approach to marketing</h2>
+  <div class="flow-diagram">
+    <div class="flow-node">Consumer Data</div>
+    <div class="flow-v"></div>
+    <div class="flow-node">Statistical Analysis</div>
+    <div class="flow-v" style="height: 20px;"></div>
+    <div class="flow-branch">
+      <div class="flow-leaf"><div class="flow-node">Descriptive Analysis</div></div>
+      <div class="flow-leaf"><div class="flow-node">Predictive Analysis</div></div>
+      <div class="flow-leaf"><div class="flow-node">Causal / Inferential Analysis</div></div>
+    </div>
+    <div class="flow-optimize">
+      <div class="flow-optimize-label">Optimization →</div>
+      <div class="flow-ps">
+        <div class="flow-node">Product</div>
+        <div class="flow-node">Price</div>
+        <div class="flow-node">Promotion</div>
+        <div class="flow-node">Place (distribution)</div>
+      </div>
+    </div>
+  </div>
+  <p class="discuss-prompt" style="text-align: center; font-size: 0.85em;"><strong>Discuss:</strong> How was the content of each session we had related to the 4P?</p>
+</section>
+
+<!-- Agenda -->
+<section>
+  <h2>Today’s agenda</h2>
+  <div class="roadmap-grid">
+    <div class="card">
+      <h3>I · Online advertising</h3>
+      <p>The players and their incentives · programmatic auctions · pricing models: CPM, CPC, CPA</p>
+    </div>
+    <div class="card">
+      <h3>II · Targeting</h3>
+      <p>Demographic, contextual and behavioral targeting · retargeting and the funnel · targeting with less tracking</p>
+    </div>
+    <div class="card">
+      <h3>III · Predictive analytics</h3>
+      <p>Bias–variance trade-off · validation · logistic regression and log loss · CART and XGBoost · RIG and AUC</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PART A ===================== -->
+<section class="section-slide">
+  <p class="eyebrow">Online advertising</p>
+  <p class="part-label">Part A</p>
+  <h1>How does online advertising work?</h1>
+</section>
+
+<!-- First banner ad -->
+<section>
+  <h2>The first banner ad (1994)</h2>
+  <img src="assets/first-banner-ad.jpg" alt="The first banner ad, 'Have you ever clicked your mouse right HERE? YOU WILL', which ran on HotWired in October 1994 and linked to an AT&amp;T landing page" class="demand-fig" style="max-height: 12.8em;"/>
+  <div class="stat-row two" style="max-width: 980px; margin: 0.6em auto 0;">
+    <div class="stat qa">
+      <div class="fragment fade-out" data-fragment-index="0"><span class="qa-q">❓ What click-through rate did this ad get?</span><span class="stat-label">Closest guess wins a silver coin 🥈</span></div>
+      <div class="fragment" data-fragment-index="0"><span class="stat-value">44%</span><span class="stat-label">of viewers clicked it over its three-month life</span></div>
+    </div>
+    <div class="stat warm qa">
+      <div class="fragment fade-out" data-fragment-index="1"><span class="qa-q">❓ What is a typical click-through rate today?</span><span class="stat-label">Think of the last banner you clicked…</span></div>
+      <div class="fragment" data-fragment-index="1"><span class="stat-value">0.02% – 2%</span><span class="stat-label">of ads that online visitors click today (estimate)</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- Landscape -->
+<section>
+  <h2>An industry with many players</h2>
+  <img src="assets/display-landscape.jpg" alt="The display advertising landscape: hundreds of company logos between advertisers on the left and publishers on the right, grouped into agencies, DSPs, exchanges, ad networks, SSPs, data suppliers, measurement and ad servers" class="demand-fig tall"/>
+  <p class="fig-caption">The display landscape: dozens of intermediaries sit between the advertiser and the publisher</p>
+</section>
+
+<!-- Players -->
+<section class="dense-2">
+  <h2>Who does what?</h2>
+  <div class="cards four eq">
+    <div class="card">
+      <h3>Buy side</h3>
+      <ul>
+        <li><strong>Advertisers</strong> — brands that pay for attention (Coca-Cola, Nike, Apple)</li>
+        <li><strong>Agencies &amp; trading desks</strong> — run campaigns for brands (WPP, Publicis)</li>
+        <li><strong>DSPs</strong> — buy impressions automatically across many publishers (Google DV360, The Trade Desk, Amazon DSP)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Sell side</h3>
+      <ul>
+        <li><strong>Publishers</strong> — sites and apps with ad space (NYT, YouTube, mobile games)</li>
+        <li><strong>SSPs</strong> — help publishers sell their inventory (Google Ad Manager, Magnite, PubMatic)</li>
+        <li><strong>Ad networks</strong> — bundle supply from many publishers (AdSense, Taboola, Outbrain)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Marketplaces</h3>
+      <ul>
+        <li><strong>Ad exchanges</strong> — real-time auctions between DSPs and SSPs (Google AdX, OpenX)</li>
+        <li><strong>Walled gardens &amp; retail media</strong> — sell their own audiences directly (Meta, Amazon Ads, Walmart Connect)</li>
+        <li><strong>Ad servers</strong> — deliver the creative and log the impression</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Data &amp; measurement</h3>
+      <ul>
+        <li><strong>Data providers / CDPs</strong> — audience data for targeting (Experian, Acxiom, Adobe)</li>
+        <li><strong>Measurement &amp; attribution</strong> — which ad caused the sale? (Google Analytics, Nielsen)</li>
+        <li><strong>Verification</strong> — real humans, brand-safe context (DoubleVerify, IAS)</li>
+      </ul>
+    </div>
+  </div>
+  <p class="takeaway">Each player takes a cut and has its <strong>own incentive</strong>. Keep asking: <em>who pays, who gets paid, and for what?</em></p>
+</section>
+
+<!-- Programmatic flow -->
+<section class="dense">
+  <h2>Programmatic advertising: an auction for every impression</h2>
+  <p class="lead">Ad exchanges and ad networks are mostly <strong>auction-driven</strong> marketplaces that trade in real time</p>
+  <div class="rtb-flow">
+    <div class="rtb-step fragment" data-fragment-index="0"><span class="step-num">1</span><b>User opens an app</b><span>The publisher has an empty ad slot: an <strong>impression</strong> is for sale</span></div>
+    <div class="rtb-step fragment" data-fragment-index="1"><span class="step-num">2</span><b>Bid request</b><span>The SSP / ad network sends the context: app, time, device, user ID (if any)</span></div>
+    <div class="rtb-step fragment" data-fragment-index="2"><span class="step-num">3</span><b>Advertisers predict</b><span>Each DSP estimates the chance this user clicks or buys, and bids</span></div>
+    <div class="rtb-step fragment" data-fragment-index="3"><span class="step-num">4</span><b>Auction</b><span>The exchange picks the highest bid; the winner pays (first- or second-price rules)</span></div>
+    <div class="rtb-step fragment" data-fragment-index="4"><span class="step-num">5</span><b>Ad is shown</b><span>The winning creative loads, impression and click are logged</span></div>
+  </div>
+  <p class="big-claim fragment" data-fragment-index="5" style="font-size: 0.95em; margin-top: 0.9em;">All of this happens in about 100 milliseconds, billions of times per day</p>
+  <p class="takeaway fragment" data-fragment-index="6">Step 3 is a <strong>prediction problem</strong>. A sensible bid is <em>Pr(click) × value of a click</em>, so better predictions mean better bids.</p>
+</section>
+
+<!-- Live auction -->
+<section class="dense-2" data-auction>
+  <h2>Live: an auction for every impression</h2>
+  <div class="ax">
+    <div class="ax-feed">
+      <span class="ax-label">Incoming impression</span>
+      <div class="ax-imp" data-ax-imp></div>
+      <span class="ax-label">Next in line</span>
+      <div class="ax-queue" data-ax-queue></div>
+    </div>
+    <div class="ax-lanes" data-ax-lanes></div>
+    <div class="ax-phone-wrap">
+      <span class="ax-label">What the user sees</span>
+      <div class="ax-phone" data-ax-phone></div>
+    </div>
+  </div>
+  <div class="ax-bottom">
+    <div class="panel ax-controls">
+      <div class="btn-row">
+        <button type="button" class="w-btn" data-ax-play>❚❚ Pause</button>
+        <button type="button" class="w-btn ghost" data-ax-step>Next ▸</button>
+        <button type="button" class="w-btn ghost" data-ax-ff>⏩ 10,000 auctions</button>
+        <button type="button" class="w-btn ghost" data-ax-reset>Reset</button>
+      </div>
+    </div>
+    <div>
+    <table class="data-table ax-score">
+      <thead><tr><th class="left">Advertiser</th><th>Won</th><th>Clicks</th><th>CTR</th><th>Spend</th><th>Profit</th></tr></thead>
+      <tbody data-ax-score></tbody>
+    </table>
+    <p class="fig-caption" style="text-align: left; margin: 0.2em 0 0;">Bid = Pr(click) × value of a click = what this one impression is worth (platforms often quote it per 1,000 impressions, the CPM). Highest bid wins and pays the runner-up’s bid. Illustrative numbers.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Pricing models -->
+<section>
+  <h2>Online ad pricing models</h2>
+  <div class="cards three eq">
+    <div class="card">
+      <h3>CPM</h3>
+      <p><strong>Cost per mille</strong>: price per 1,000 impressions</p>
+      <ul><li>Pays for <em>visibility</em></li><li>Typical for awareness campaigns</li></ul>
+    </div>
+    <div class="card">
+      <h3>CPC</h3>
+      <p><strong>Cost per click</strong>: pay only when the user clicks</p>
+      <ul><li>Pays for <em>engagement</em></li><li>Search ads, most ad networks</li></ul>
+    </div>
+    <div class="card">
+      <h3>CPA</h3>
+      <p><strong>Cost per acquisition</strong>: pay only when the user converts</p>
+      <ul><li>Pays for <em>outcomes</em> (sale, sign-up, install)</li><li>Affiliate and performance deals</li></ul>
+    </div>
+  </div>
+  <p class="discuss-prompt fragment" style="margin-top: 1.1em;"><strong>Discuss:</strong> which model makes more sense for the <strong>publisher</strong>? For the <strong>advertiser</strong>? Who bears the risk that nobody clicks?</p>
+</section>
+
+<!-- ===================== PART B ===================== -->
+<section class="section-slide">
+  <p class="eyebrow">Targeting</p>
+  <p class="part-label">Part B</p>
+  <h1>Showing the right ad to the right person</h1>
+</section>
+
+<!-- Three types -->
+<section class="dense">
+  <h2>Three types of targeting</h2>
+  <div class="cards three eq">
+    <div class="card target-card">
+      <svg class="target-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9zm0 2c-4.4 0-8 2.2-8 5v2h16v-2c0-2.8-3.6-5-8-5z"/></svg>
+      <h3>Demographic</h3>
+      <span class="q">Who are you?</span>
+      <ul>
+        <li>Age, gender, location, income…</li>
+        <li>Without IDs, vendors <strong>infer</strong> these with probabilistic models</li>
+      </ul>
+    </div>
+    <div class="card target-card">
+      <svg class="target-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a7 7 0 0 0-7 7c0 5.2 7 13 7 13s7-7.8 7-13a7 7 0 0 0-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+      <h3>Contextual</h3>
+      <span class="q">Where are you?</span>
+      <ul>
+        <li>Web page, app, time of the impression</li>
+        <li>Visits espn.com → probably interested in sports</li>
+        <li>Needs <strong>no personal data</strong></li>
+      </ul>
+    </div>
+    <div class="card target-card">
+      <svg class="target-icon" viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M13 3a9 9 0 0 0-9 9H1l3.9 3.9L9 12H6a7 7 0 1 1 2.05 4.95l-1.42 1.42A9 9 0 1 0 13 3zm-1 5v5l4.3 2.5.7-1.2-3.5-2.1V8H12z"/></svg>
+      <h3>Behavioral</h3>
+      <span class="q">What did you do before?</span>
+      <ul>
+        <li>Sites visited, ads clicked, apps installed</li>
+        <li>Unique to digital settings</li>
+        <li>Requires <strong>identity matching</strong>: cookies, device IDs, logged-in accounts</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- Retargeting -->
+<section>
+  <h2>Behavioral retargeting</h2>
+  <div class="two-col text-top">
+    <ul class="compact-list">
+      <li>Most visitors leave a website <strong>without doing</strong> what the marketer wanted
+        <ul><li>Sign up for a newsletter, buy a product, subscribe to a service</li></ul>
+      </li>
+      <li><strong>Dynamic retargeting</strong>: show the products the user was already browsing
+        <ul><li>Reaches consumers at the bottom of the funnel: aware of the product, visited the site, maybe even added it to the cart</li></ul>
+      </li>
+    </ul>
+    <div class="stat" style="padding: 0.8em 0.6em;">
+      <span class="stat-value" style="font-size: 2.2em;">96%</span>
+      <span class="stat-label" style="font-size: 0.66em;">of users leave a website without completing the action marketers want</span>
+    </div>
+  </div>
+</section>
+
+<!-- Privacy -->
+<section class="dense-2">
+  <h2>Targeting with less tracking</h2>
+  <p class="lead">Behavioral targeting needs to recognise the same person across sites and apps, and that is getting harder</p>
+  <div class="cards two eq">
+    <div class="card">
+      <h3>What changed</h3>
+      <ul>
+        <li><strong>Browsers:</strong> Safari and Firefox block third-party cookies by default. Chrome planned to remove them, then reversed course in 2024–25</li>
+        <li><strong>Mobile:</strong> Apple’s App Tracking Transparency (2021) made cross-app tracking opt-in on iOS</li>
+        <li><strong>Regulation:</strong> GDPR and consent banners in the EU, similar laws elsewhere</li>
+      </ul>
+    </div>
+    <div class="card accent">
+      <h3>How the industry adapts</h3>
+      <ul>
+        <li><strong>First-party data:</strong> logged-in users, loyalty programs, retail media networks</li>
+        <li><strong>Contextual targeting</strong> comes back, now powered by ML on page and app content</li>
+        <li><strong>Modeled audiences:</strong> predict attributes and responses instead of observing them</li>
+      </ul>
+    </div>
+  </div>
+  <p class="takeaway">In every case the core skill is the same: <strong>predict who will respond</strong> from the data you are allowed to use.</p>
+</section>
+
+<!-- ===================== PART C ===================== -->
+<section class="section-slide">
+  <p class="eyebrow">Supervised machine learning</p>
+  <p class="part-label">Part C</p>
+  <h1>Predictive analytics</h1>
+</section>
+
+<!-- Predictive analytics 1: learn from past impressions -->
+<section class="dense-2">
+  <h2>Predictive analytics: learn from the past, predict the new</h2>
+  <div class="two-col text-top">
+    <ul class="compact-list">
+      <li>Every past impression is an <strong>example</strong>:
+        <ul>
+          <li><strong>features</strong> \(x\): what we know when the ad is shown (hour, app, ad, the user’s past CTR…)</li>
+          <li><strong>outcome</strong> \(y\): did the user click?</li>
+        </ul>
+      </li>
+      <li>Goal: learn a function \(\hat f\) so that \(\hat f(x)\) predicts \(y\) for impressions <strong>we have not seen yet</strong></li>
+      <li>We do not ask <em>why</em> users click (that is causal analysis), only <em>how well we can predict</em></li>
+    </ul>
+    <div>
+      <table class="data-table" style="font-size: 0.6em; margin-top: 0;">
+        <thead><tr><th>hour</th><th>app</th><th>ad</th><th>user’s past CTR on ad</th><th>ad’s past CTR in app</th><th>click \(y\)</th></tr></thead>
+        <tbody>
+          <tr><td>18</td><td>2</td><td>2</td><td>0.0%</td><td>0.08%</td><td>0</td></tr>
+          <tr><td>24</td><td>1</td><td>3</td><td>0.0%</td><td>1.21%</td><td>0</td></tr>
+          <tr><td>23</td><td>1</td><td>1</td><td>0.0%</td><td>1.32%</td><td><strong>1</strong></td></tr>
+          <tr><td>…</td><td>…</td><td>…</td><td>…</td><td>…</td><td>…</td></tr>
+          <tr class="new-row"><td>21</td><td>1</td><td>4</td><td>2.5%</td><td>1.35%</td><td><strong>?</strong></td></tr>
+        </tbody>
+      </table>
+      <p class="fig-caption">Real rows from today’s case (300,000 training impressions). Last row: a <strong>new</strong> impression to predict.</p>
+    </div>
+  </div>
+  <div class="rtb-flow" style="grid-template-columns: repeat(4, minmax(0, 1fr));">
+    <div class="rtb-step"><span class="step-num">1</span><b>Training data</b><span>Past examples \((x_i, y_i)\), \(i = 1 \dots N\)</span></div>
+    <div class="rtb-step"><span class="step-num">2</span><b>Learn \(\hat f\)</b><span>Choose the function that fits these examples well</span></div>
+    <div class="rtb-step"><span class="step-num">3</span><b>Predict</b><span>Apply \(\hat f\) to <strong>new</strong> \(x\): Pr(click) for each new impression</span></div>
+    <div class="rtb-step"><span class="step-num">4</span><b>Act</b><span>Bid, target, allocate the impression</span></div>
+  </div>
+</section>
+
+<!-- Predictive analytics 2: how flexible should f be -->
+<section class="dense-2" data-flex>
+  <h2>How flexible should \(\hat f\) be?</h2>
+  <p class="lead">Toy example with one feature \(x\): training dots = a true curve (dashed) + noise</p>
+  <div class="flex-row" data-flex-charts></div>
+  <ul class="compact-list">
+    <li><strong>Loss function</strong> \(\ell_i = \big(y_i - \hat f(x_i)\big)^2\): scores <strong>one</strong> prediction (for regression, the squared error)</li>
+    <li><strong>Model’s loss</strong> (the <strong>objective</strong>) \(\text{MSE} = \frac{1}{N}\sum_i \ell_i\): the average over all \(N\) examples. This is what OLS minimizes</li>
+  </ul>
+  <p class="discuss-prompt fragment" style="margin-top: 0.8em;">The more flexible \(\hat f\), the lower its training MSE, <strong>always</strong>. <strong>But our goal is new impressions.</strong> Which of the three would you trust on data it has never seen? Let us test it on the next slide.</p>
+</section>
+
+<!-- Overfitting demo -->
+<section class="dense-2" data-overfit>
+  <h2>Try it: fit on one sample, predict a new one</h2>
+  <div class="widget cols-2">
+    <div data-of-chart></div>
+    <div class="panel">
+      <label><span>Model complexity<br/><small style="color: var(--muted);">polynomial degree</small></span><input type="range" min="1" max="20" step="1" value="1" data-of-degree/><output data-of-degree-out>1</output></label>
+      <div class="btn-row">
+        <button type="button" class="w-btn" data-of-new>Draw a new sample</button>
+        <button type="button" class="w-btn ghost" data-of-reset>Reset</button>
+      </div>
+      <div class="readout" data-of-stats></div>
+      <div data-of-curve></div>
+      <p><span style="color: var(--accent); font-weight: 700;">Orange dots</span>: training sample (the model is fit on these). <span style="color: var(--accent-2); font-weight: 700;">Green circles</span>: a new sample. Dashed: the true relationship. Each “draw” fits the model to a new training sample. Error curves are averages over 40 samples.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Bias variance -->
+<section class="dense">
+  <h2>The bias–variance trade-off</h2>
+  <div class="cards two eq">
+    <div class="card">
+      <h3>Complex model</h3>
+      <ul>
+        <li><strong>Better</strong> prediction on in-sample data (low bias)</li>
+        <li><strong>Less stable</strong> on a new sample: it fits the noise (high variance)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3>Simple model</h3>
+      <ul>
+        <li><strong>Worse</strong> prediction on in-sample data (high bias)</li>
+        <li><strong>More stable</strong>, and maybe better, on a new sample (low variance)</li>
+      </ul>
+    </div>
+  </div>
+  <p class="big-claim" style="font-size: 0.95em; max-width: none;">A good model has good <em>out-of-sample</em> prediction power</p>
+  <ul class="compact-list">
+    <li>Build “knobs” into the estimation that control complexity: <strong>hyper-parameters</strong></li>
+    <li><strong>Tune</strong> the knobs on data the model did not see during estimation</li>
+  </ul>
+</section>
+
+<!-- Validation -->
+<section class="dense">
+  <h2>Validation</h2>
+  <div class="split-bar" aria-hidden="true"><div class="tr">Training</div><div class="va">Validation</div><div class="te">Test</div></div>
+  <ol class="compact-list">
+    <li>Split the data into <strong>training</strong>, <strong>validation</strong> and <strong>test</strong> sets. Do not touch the test data!</li>
+    <li>For each candidate value of the hyper-parameters (a <strong>grid search</strong>, or smarter search algorithms)
+      <ul><li>Estimate the model on the training data, compute the loss on the validation data</li></ul>
+    </li>
+    <li>Pick the hyper-parameters that do best on the validation data: this is your model</li>
+    <li>Predict on the <strong>test</strong> data once: this is the performance you can promise</li>
+  </ol>
+  <p class="takeaway">One validation set is a small, noisy sample, and its data is never used for training. A better way: <strong>k-fold cross-validation</strong> (next slide).</p>
+</section>
+
+<!-- k-fold cross-validation -->
+<section class="dense-2">
+  <h2>k-fold cross-validation</h2>
+  <div class="two-col text-top">
+    <div>
+      <p class="k-title">Training data split into k = 5 folds <span>(the test data stays aside)</span></p>
+      <div class="kfold">
+        <div class="kf-row fragment" data-fragment-index="0"><span class="kf-lab">Round 1</span><b class="va">V</b><b></b><b></b><b></b><b></b><span class="kf-score">score₁</span></div>
+        <div class="kf-row fragment" data-fragment-index="1"><span class="kf-lab">Round 2</span><b></b><b class="va">V</b><b></b><b></b><b></b><span class="kf-score">score₂</span></div>
+        <div class="kf-row fragment" data-fragment-index="1"><span class="kf-lab">Round 3</span><b></b><b></b><b class="va">V</b><b></b><b></b><span class="kf-score">score₃</span></div>
+        <div class="kf-row fragment" data-fragment-index="1"><span class="kf-lab">Round 4</span><b></b><b></b><b></b><b class="va">V</b><b></b><span class="kf-score">score₄</span></div>
+        <div class="kf-row fragment" data-fragment-index="1"><span class="kf-lab">Round 5</span><b></b><b></b><b></b><b></b><b class="va">V</b><span class="kf-score">score₅</span></div>
+      </div>
+      <p class="fig-caption" style="text-align: left;"><span class="kf-key tr"></span> train on these folds · <span class="kf-key va"></span> V = validate on this fold</p>
+    </div>
+    <div>
+      <ol class="compact-list">
+        <li>Split the <strong>training</strong> data into \(k\) equal folds (e.g. 5)</li>
+        <li>Train on \(k - 1\) folds, compute the loss on the fold left out</li>
+        <li>Repeat so that <strong>each fold is left out once</strong></li>
+        <li class="fragment" data-fragment-index="2">CV score = the <strong>average</strong> of the \(k\) scores</li>
+        <li class="fragment" data-fragment-index="3">Do this for every candidate hyper-parameter, <strong>plot</strong> the CV score, pick the best, then refit on all the training data</li>
+      </ol>
+    </div>
+  </div>
+  <p class="takeaway fragment" data-fragment-index="3">Every observation is used for validation exactly once, and the average of \(k\) scores is much less noisy than one validation set. The cost: training \(k\) times. You will tune your own trees this way in <strong>Assignment 5</strong>.</p>
+</section>
+
+<!-- Classification vs prediction -->
+<section class="dense">
+  <h2>Two types of supervised learning problems</h2>
+  <div class="cards two eq">
+    <div class="card">
+      <h3>Regression (prediction)</h3>
+      <ul>
+        <li>Continuous outcomes: the value of \(y\) has meaning</li>
+        <li>How much did the consumer spend on our catalog?</li>
+        <li>How much do sales increase with advertising?</li>
+      </ul>
+    </div>
+    <div class="card accent">
+      <h3>Classification</h3>
+      <ul>
+        <li>Discrete outcomes (binary or multi-class), no ordering between categories</li>
+        <li>Clicked on the ad or not?</li>
+        <li>Which brand did the consumer buy: A, B or C?</li>
+      </ul>
+    </div>
+  </div>
+  <ul class="compact-list">
+    <li>The tree methods we will see today (CART, boosting) work for <strong>both</strong> types</li>
+    <li>Today we focus on <strong>discrete outcomes</strong>: will this user click?</li>
+  </ul>
+</section>
+
+<!-- Logistic regression 1: a line fails -->
+<section class="dense-2" data-lr-line>
+  <h2>Will this user click? A straight line fails</h2>
+  <div class="widget cols-2e">
+    <div>
+      <ul class="compact-list">
+        <li>Data: 14 users. \(x\) = the user’s past CTR (%), \(y = 1\) if they clicked our ad, 0 if not</li>
+        <li>We want \(\Pr(\text{click} \mid x)\): a number between 0 and 1</li>
+        <li>Try what we know, OLS: \(\hat y = -0.09 + 0.11\,x\)</li>
+        <li class="fragment" data-fragment-index="1">The line predicts <strong>impossible values</strong>:
+          <ul>
+            <li>\(x = 0.5\%\;\Rightarrow\;\hat y = -0.04\) (below 0)</li>
+            <li>\(x = 11\%\;\Rightarrow\;\hat y = 1.10\) (above 1)</li>
+          </ul>
+        </li>
+        <li class="fragment" data-fragment-index="1">A line never flattens; a probability must level off at 0 and at 1
+          <ul><li class="fragment" data-fragment-index="2"><strong>How can we solve this issue?</strong></li></ul>
+        </li>
+      </ul>
+    </div>
+    <div class="panel">
+      <div data-lr-line-chart></div>
+    </div>
+  </div>
+</section>
+
+<!-- Logistic regression 2: score + squash -->
+<section class="dense-2" data-sigmoid>
+  <h2>Logistic regression: a score, then squash it</h2>
+  <div class="widget cols-2e">
+    <div>
+      <p class="lead" style="margin-bottom: 0.2em;"><strong>Step 1.</strong> Keep the regression part: a linear <strong>score</strong> (any real number)</p>
+      <div class="eq-block eq-sm">\[ z = \beta_0 + \beta_1 x \]</div>
+      <p class="lead" style="margin-bottom: 0.2em;"><strong>Step 2.</strong> Squash it into \((0, 1)\) with the <strong>sigmoid</strong></p>
+      <div class="eq-block eq-accent eq-sm">\[ \hat p = \Pr(\text{click}) = \sigma(z) = \frac{1}{1 + e^{-z}} \]</div>
+      <ul class="compact-list">
+        <li>\(z = 0\) → \(\hat p = 0.5\) · very negative \(z\) → 0 · very positive \(z\) → 1</li>
+        <li>\(\Pr(\text{no click}) = 1 - \hat p\)</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <div data-sig-chart></div>
+      <label><span>Score \(z\)</span><input type="range" min="-6" max="6" step="0.1" value="0" data-sig-f/><output data-sig-f-out>0.0</output></label>
+      <div class="readout" data-sig-stats></div>
+    </div>
+  </div>
+  <p class="takeaway">Logistic regression = linear regression for the <strong>score</strong>, plus a squashing function.</p>
+</section>
+
+<!-- Logistic regression: what does beta mean? -->
+<section data-visibility="hidden" class="dense-2">
+  <h2>What does \(\beta_1\) mean?</h2>
+  <div class="two-col even text-top">
+    <div class="card">
+      <h3>Linear regression: \(\hat y = \beta_0 + \beta_1 x\)</h3>
+      <p class="discuss-prompt" style="margin: 0.2em 0 0.5em;"><strong>Question:</strong> what does \(\beta_1\) tell us?</p>
+      <ul class="fragment" data-fragment-index="0">
+        <li>+1 unit of \(x\) → \(\hat y\) changes by \(\beta_1\)</li>
+        <li>The <strong>same</strong> change everywhere: from \(x = 1\) to 2, or from 9 to 10</li>
+      </ul>
+    </div>
+    <div class="card fragment" data-fragment-index="1">
+      <h3>Logistic regression: \(\hat p = \sigma(\beta_0 + \beta_1 x)\)</h3>
+      <p class="discuss-prompt" style="margin: 0.2em 0 0.5em;"><strong>Question:</strong> and now? Our 14 users: \(\beta_1 = 0.71\)</p>
+      <ul class="fragment" data-fragment-index="2">
+        <li>+1 unit of \(x\) → the <strong>score</strong> \(z\) rises by 0.71</li>
+        <li>But \(\hat p\) moves by a <strong>different</strong> amount depending on where we are on the S-curve:</li>
+      </ul>
+      <table class="data-table fragment" data-fragment-index="2" style="font-size: 0.66em; margin-top: 0.3em;">
+        <thead><tr><th>past CTR \(x\)</th><th>\(\hat p\) before → after</th><th>change in \(\hat p\)</th></tr></thead>
+        <tbody>
+          <tr><td>1% → 2%</td><td>0.043 → 0.084</td><td>+4.1 pts</td></tr>
+          <tr><td>5% → 6%</td><td>0.436 → 0.612</td><td><strong>+17.6 pts</strong></td></tr>
+          <tr><td>9% → 10%</td><td>0.930 → 0.965</td><td>+3.4 pts</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <p class="takeaway fragment" data-fragment-index="3">So \(\beta_1\) is not “the change in probability”. Is there a quantity that changes by the <strong>same factor</strong> in every row? Yes: the <strong>odds</strong>.</p>
+</section>
+
+<!-- Logistic regression 3: odds -->
+<section data-visibility="hidden" class="dense">
+  <h2>Reading the coefficients: odds</h2>
+  <ul class="compact-list">
+    <li><strong>Odds</strong> \(= \hat p / (1 - \hat p)\). Example: \(\hat p = 0.20\) → odds \(= 0.25\) (“1 to 4”)</li>
+    <li>The score is the <strong>log-odds</strong>, so it is linear in \(x\):</li>
+  </ul>
+  <div class="eq-block eq-sm">\[ \log\frac{\hat p}{1 - \hat p} = \beta_0 + \beta_1 x \quad\Rightarrow\quad \frac{\text{odds}(x+1)}{\text{odds}(x)} = e^{\beta_1} \]</div>
+  <ul class="compact-list">
+    <li>+1 unit of \(x\) <strong>multiplies the odds</strong> by \(e^{\beta_1}\)</li>
+    <li>Our data: \(\beta_1 = 0.71\) → \(e^{0.71} \approx 2.04\). One more point of past CTR <strong>doubles the odds</strong> of a click, in every row of the previous table</li>
+    <li>The effect on \(\hat p\) itself is not constant: large near 0.5, small near 0 or 1</li>
+  </ul>
+  <p class="takeaway">\(\beta\) is an <strong>odds multiplier</strong>, not a change in probability.</p>
+</section>
+
+<!-- Logistic regression 4: loss function -->
+<section class="dense-2" data-logloss>
+  <h2>Scoring one prediction: the loss function</h2>
+  <div class="widget cols-2e">
+    <div>
+      <ul class="compact-list">
+        <li>Recall: a <strong>loss function</strong> \(\ell\) scores <strong>one</strong> prediction. For regression it was the squared error; for a probability we use the <strong>log loss</strong></li>
+        <li>Idea: what probability did the model give to <strong>what actually happened</strong>?
+          <ul><li>Clicked → \(\hat p\) · did not click → \(1 - \hat p\) · loss = −log of that</li></ul>
+        </li>
+      </ul>
+      <div class="eq-block eq-accent eq-sm">\[ \ell(y, \hat p) = -\big[\, y \log \hat p + (1 - y) \log(1 - \hat p) \,\big] \]</div>
+      <ul class="compact-list">
+        <li>Sure and right: \(\ell \approx 0\). Sure and wrong: <strong>huge</strong></li>
+        <li>Squared loss \((y - \hat p)^2\) caps at 1; log loss has no cap</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <div class="btn-row"><span class="panel-title" style="align-self: center;">True outcome</span>
+        <button type="button" class="w-btn on" data-ll-y="1">y = 1 (click)</button>
+        <button type="button" class="w-btn ghost" data-ll-y="0">y = 0 (no click)</button>
+      </div>
+      <div data-ll-chart></div>
+      <label><span>Predicted \(\hat p\)</span><input type="range" min="0.01" max="0.99" step="0.01" value="0.5" data-ll-p/><output data-ll-p-out>0.50</output></label>
+      <div class="readout" data-ll-stats></div>
+    </div>
+  </div>
+</section>
+
+<!-- Logistic regression 5: objective function -->
+<section data-visibility="hidden" class="dense-2">
+  <h2>From one user to all users: the objective function</h2>
+  <div class="two-col text-top">
+    <div>
+      <ul class="compact-list">
+        <li><strong>Likelihood:</strong> the probability the model gives to <strong>everything</strong> that happened = the product over users</li>
+        <li>Take logs (product → sum), flip the sign, average → <strong>average log loss</strong></li>
+        <li>The <strong>objective function</strong> \(L(\beta)\) is what estimation minimizes over the training data</li>
+        <li>Maximum likelihood ⇔ minimum average log loss</li>
+      </ul>
+    </div>
+    <table class="data-table" style="font-size: 0.6em; margin-top: 0;">
+      <thead><tr><th>User</th><th>\(\hat p\)</th><th>\(y\)</th><th>Prob. of what happened</th><th>\(\ell = -\ln(\cdot)\)</th></tr></thead>
+      <tbody>
+        <tr><td>A</td><td>0.90</td><td>1</td><td>0.90</td><td>0.105</td></tr>
+        <tr><td>B</td><td>0.20</td><td>0</td><td>0.80</td><td>0.223</td></tr>
+        <tr><td>C</td><td>0.60</td><td>1</td><td>0.60</td><td>0.511</td></tr>
+        <tr><td>D</td><td>0.10</td><td>1</td><td>0.10</td><td><strong>2.303</strong></td></tr>
+        <tr><td colspan="3" class="left">Product / sum</td><td>0.0432</td><td>3.142 = −ln(0.0432)</td></tr>
+        <tr><td colspan="4" class="left">Average log loss \(L\)</td><td><strong>0.785</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="eq-block eq-accent eq-xs">\[ L(\beta) = \frac{1}{N}\sum_{i=1}^{N} \ell(y_i, \hat p_i) = -\frac{1}{N}\sum_{i=1}^{N}\big[\, y_i \log \hat p_i + (1 - y_i)\log(1 - \hat p_i) \,\big], \qquad \hat p_i = \sigma(\beta_0 + \beta_1 x_i) \]</div>
+  <p class="takeaway"><strong>Loss</strong> = one user; <strong>objective</strong> = the whole training set. User D alone is 73% of the total: confident mistakes dominate. (OLS did the same with squared loss: its objective was the MSE.)</p>
+</section>
+
+<!-- Logistic regression 6: fitting -->
+<section data-visibility="hidden" class="dense-2" data-lr-fit>
+  <h2>Finding β: no formula, so search</h2>
+  <div class="widget cols-2e">
+    <div>
+      <ul class="compact-list">
+        <li>OLS: a formula gives \(\beta\). Logistic regression: <strong>no closed form</strong></li>
+        <li>Start anywhere and repeatedly nudge \(\beta_0, \beta_1\) <strong>downhill</strong> on \(L(\beta)\): <strong>gradient descent</strong></li>
+      </ul>
+      <div class="eq-block eq-xs">\[ \begin{aligned} \beta_0 &\leftarrow \beta_0 - \eta \cdot \tfrac{1}{N}\textstyle\sum_i (\hat p_i - y_i) \\ \beta_1 &\leftarrow \beta_1 - \eta \cdot \tfrac{1}{N}\textstyle\sum_i (\hat p_i - y_i)\, x_i \end{aligned} \]</div>
+      <ul class="compact-list">
+        <li>Each step is driven by the prediction errors \(\hat p_i - y_i\)</li>
+        <li>\(L(\beta)\) is bowl-shaped (convex): one minimum, always found</li>
+        <li><strong>Try it:</strong> beat the computer by hand with the sliders</li>
+      </ul>
+    </div>
+    <div class="panel">
+      <div data-lr-fit-chart></div>
+      <label><span>\(\beta_0\)</span><input type="range" min="-8" max="2" step="0.05" value="0" data-lr-b0/><output data-lr-b0-out>0.00</output></label>
+      <label><span>\(\beta_1\)</span><input type="range" min="-0.5" max="2" step="0.01" value="0" data-lr-b1/><output data-lr-b1-out>0.00</output></label>
+      <div class="btn-row">
+        <button type="button" class="w-btn" data-lr-go>Fit (gradient descent)</button>
+        <button type="button" class="w-btn ghost" data-lr-reset>Reset</button>
+      </div>
+      <div class="readout" data-lr-stats></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== PART D ===================== -->
+<section class="section-slide">
+  <p class="eyebrow">Recursive methods for learning f(x)</p>
+  <p class="part-label">Part D</p>
+  <h1>CART and XGBoost</h1>
+</section>
+
+<!-- CART -->
+<section class="dense">
+  <h2>Classification and Regression Trees (CART)</h2>
+  <ul class="compact-list">
+    <li>A machine learning method for both continuous and discrete outcomes</li>
+    <li>No linear or parametric form: we <strong>let the data decide</strong> the relationship between \(y\) and \(x\)</li>
+    <li>A <strong>recursive</strong> method that partitions the data into groups within which outcomes are as similar as possible</li>
+    <li>The tree splits the \(x\)-space into partitions and gives each partition a value
+      <ul>
+        <li>Binary outcome → share of positive outcomes in the partition (e.g. CTR)</li>
+        <li>Continuous outcome → average of \(y\) in the partition</li>
+      </ul>
+    </li>
+  </ul>
+</section>
+
+<!-- Example tree -->
+<section class="dense-2">
+  <h2>Example of CART</h2>
+  <div class="widget cols-2e">
+    <div>
+      <svg class="tree-svg" style="max-height: 290px;" viewBox="0 0 462 290" role="img" aria-label="Tree: root splits on x1 at most t1. Yes leads to a leaf with Pr(y=1)=0.3. No leads to a split on x2 at most t2, with leaves Pr(y=1)=0.9 if yes and 0.6 if no.">
+        <path class="edge" d="M230 52 L110 140"/><path class="edge" d="M230 52 L330 130"/>
+        <path class="edge" d="M330 160 L255 230"/><path class="edge" d="M330 160 L395 230"/>
+        <text class="yes" x="150" y="92">yes</text><text class="yes" x="290" y="92">no</text>
+        <text class="yes" x="262" y="200">yes</text><text class="yes" x="372" y="200">no</text>
+        <g class="node"><rect x="175" y="20" width="110" height="36" rx="8"/><text x="230" y="44" text-anchor="middle">x₁ ≤ t₁</text></g>
+        <g class="leaf"><rect x="40" y="140" width="140" height="40" rx="8"/><text x="110" y="166" text-anchor="middle">Pr(y=1) = 0.3</text></g>
+        <g class="node"><rect x="275" y="128" width="110" height="36" rx="8"/><text x="330" y="152" text-anchor="middle">x₂ ≤ t₂</text></g>
+        <g class="leaf"><rect x="187" y="230" width="136" height="40" rx="8"/><text x="255" y="256" text-anchor="middle">Pr(y=1) = 0.9</text></g>
+        <g class="leaf"><rect x="327" y="230" width="132" height="40" rx="8"/><text x="393" y="256" text-anchor="middle">Pr(y=1) = 0.6</text></g>
+      </svg>
+    </div>
+    <div class="fragment">
+      <svg class="chart" style="max-height: 290px;" viewBox="0 0 360 290" role="img" aria-label="The same tree as a partition of the x1-x2 plane: left of t1 is 0.3; right of t1 and below t2 is 0.9; right of t1 and above t2 is 0.6.">
+        <rect x="40" y="20" width="130" height="230" fill="color-mix(in srgb, var(--accent) 12%, transparent)"/>
+        <rect x="170" y="140" width="170" height="110" fill="color-mix(in srgb, var(--accent-2) 40%, transparent)"/>
+        <rect x="170" y="20" width="170" height="120" fill="color-mix(in srgb, var(--accent-2) 18%, transparent)"/>
+        <line class="axis" x1="40" y1="250" x2="340" y2="250"/><line class="axis" x1="40" y1="250" x2="40" y2="20"/>
+        <line class="split" x1="170" y1="20" x2="170" y2="250"/><line class="split" x1="170" y1="140" x2="340" y2="140"/>
+        <text class="leaf-lbl" x="105" y="140" text-anchor="middle">0.3</text>
+        <text class="leaf-lbl" x="255" y="200" text-anchor="middle">0.9</text>
+        <text class="leaf-lbl" x="255" y="85" text-anchor="middle">0.6</text>
+        <text class="lbl" x="340" y="270" text-anchor="end">x₁</text><text class="lbl" x="22" y="30">x₂</text>
+        <text class="tick" x="170" y="268" text-anchor="middle">t₁</text><text class="tick" x="350" y="144">t₂</text>
+      </svg>
+    </div>
+  </div>
+  <ul class="compact-list">
+    <li>Each <strong>leaf</strong> is the end of a series of splits: a partition of the \(x\)-space with its own prediction. Leaves do not overlap</li>
+  </ul>
+  <p class="discuss-prompt" style="margin-top: 0.7em;"><strong>Question:</strong> how is this different from a logistic regression? Pros and cons?</p>
+</section>
+
+<!-- Recursive partitioning demo -->
+<section class="dense-2" data-cart>
+  <h2>Try it: grow a tree, one split at a time</h2>
+  <div class="widget cols-2">
+    <div data-cart-chart></div>
+    <div class="panel">
+      <ol style="font-size: 0.56em; margin: 0; padding-left: 1.2em;">
+        <li>Start with all observations in one partition</li>
+        <li>Check every possible split of every partition</li>
+        <li>Make the split that reduces the loss the most</li>
+        <li>Stop if a stopping rule is hit, otherwise go to 2</li>
+      </ol>
+      <label><span>Min. leaf size (K)</span><input type="range" min="5" max="80" step="5" value="20" data-cart-k/><output data-cart-k-out>20</output></label>
+      <div class="btn-row">
+        <button type="button" class="w-btn" data-cart-step>Next split</button>
+        <button type="button" class="w-btn ghost" data-cart-grow>Grow to the end</button>
+        <button type="button" class="w-btn ghost" data-cart-reset>Reset</button>
+      </div>
+      <div class="readout" data-cart-stats></div>
+      <p data-cart-note>Dots: users (orange = clicked). Shading: predicted CTR in each leaf.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Pros cons -->
+<section class="dense-2">
+  <h2>CART: advantages and disadvantages</h2>
+  <div class="cards two eq">
+    <div class="card fragment">
+      <h3>Advantages</h3>
+      <ul>
+        <li>Small trees are <strong>easy to interpret</strong>: managerial insight</li>
+        <li>Works for continuous and discrete outcomes and features</li>
+        <li>Variables on different scales: no standardization needed</li>
+        <li>Captures rich <strong>non-linearities</strong> and interactions</li>
+        <li>Automatic variable selection; robust to outliers</li>
+      </ul>
+    </div>
+    <div class="card fragment">
+      <h3>Disadvantages</h3>
+      <ul>
+        <li>Discontinuous: poor when the true function is smooth</li>
+        <li>Greedy algorithm: can get stuck at a local optimum</li>
+        <li><strong>Deep trees</strong> overfit: low bias, high variance</li>
+        <li><strong>Shallow trees</strong> underfit: low variance, high bias</li>
+      </ul>
+    </div>
+  </div>
+  <p class="discuss-prompt fragment">Can we keep the good properties of trees and drop the bad ones? <strong>Ensembles of trees.</strong></p>
+</section>
+
+<!-- Ensembles / XGBoost -->
+<section class="dense-2">
+  <h2>From one tree to many: random forests and boosting</h2>
+  <div class="cards two eq">
+    <div class="card">
+      <h3>Random forests</h3>
+      <ul>
+        <li><strong>Deep trees + bagging</strong></li>
+        <li>Grow many deep trees on random resamples of the data and average them</li>
+        <li>Averaging cancels out the variance</li>
+      </ul>
+    </div>
+    <div class="card accent">
+      <h3>Boosted trees (XGBoost)</h3>
+      <ul>
+        <li><strong>Shallow trees + boosting</strong></li>
+        <li>Each new small tree corrects the errors of the trees before it</li>
+        <li>XGBoost: Chen &amp; Guestrin (2016). Fast, parallel and scalable</li>
+        <li>Usually outperforms random forests</li>
+      </ul>
+    </div>
+  </div>
+  <ul class="compact-list">
+    <li>Gradient-boosted trees (XGBoost, LightGBM, CatBoost) remain the go-to models for <strong>tabular data</strong> and win many Kaggle competitions</li>
+    <li>Cost: <strong>many hyper-parameters</strong>, which are hard to tune</li>
+  </ul>
+</section>
+
+<!-- Boosting: idea -->
+<section class="dense-2">
+  <h2>Boosting: learn from the mistakes, one small tree at a time</h2>
+  <div class="rtb-flow" style="grid-template-columns: repeat(4, minmax(0, 1fr));">
+    <div class="rtb-step fragment" data-fragment-index="0"><span class="step-num">1</span><b>Start simple</b><span>Predict the average for everyone: \(F_0(x) = \bar y\)</span></div>
+    <div class="rtb-step fragment" data-fragment-index="1"><span class="step-num">2</span><b>Find the mistakes</b><span>Residuals \(r_i = y_i - F_{k-1}(x_i)\): what the model still gets wrong</span></div>
+    <div class="rtb-step fragment" data-fragment-index="2"><span class="step-num">3</span><b>Fit a small tree to the mistakes</b><span>Tree \(h_k\) predicts the residuals, not \(y\)</span></div>
+    <div class="rtb-step fragment" data-fragment-index="3"><span class="step-num">4</span><b>Add it, a little</b><span>\(F_k = F_{k-1} + \eta\, h_k\), then go back to 2</span></div>
+  </div>
+  <div class="eq-block eq-accent eq-sm fragment" data-fragment-index="4">\[ \hat f(x) = F_M(x) = \bar y + \eta\, h_1(x) + \eta\, h_2(x) + \dots + \eta\, h_M(x) \]</div>
+  <ul class="compact-list fragment" data-fragment-index="5">
+    <li>Each tree is <strong>weak</strong> (shallow, 2–8 leaves); together they are <strong>strong</strong></li>
+    <li>The <strong>learning rate</strong> \(\eta\) (e.g. 0.1) makes each step small: slower, but less overfitting</li>
+    <li>Hyper-parameters: number of trees \(M\), tree depth, \(\eta\). Too many trees overfit, so choose them on <strong>validation</strong> data</li>
+    <li>For clicks, XGBoost does the same with log loss: the “mistakes” are \(y_i - \hat p_i\), the same errors that drove gradient descent</li>
+  </ul>
+</section>
+
+<!-- Boosting: interactive -->
+<section class="dense-2" data-boost>
+  <h2>Try it: boosting, step by step</h2>
+  <div class="widget cols-2e">
+    <div>
+      <p class="k-title">Model so far: \(F_k(x)\) <span data-boost-title></span></p>
+      <div data-boost-model></div>
+    </div>
+    <div>
+      <p class="k-title">Mistakes left \(r_i = y_i - F_{k-1}(x_i)\) and the new tree \(h_k\)</p>
+      <div data-boost-resid></div>
+    </div>
+  </div>
+  <div class="widget cols-2e" style="margin-top: 0.8em;">
+    <div class="panel">
+      <div class="btn-row">
+        <button type="button" class="w-btn" data-boost-step>Add the next tree</button>
+        <button type="button" class="w-btn ghost" data-boost-ten>+10 trees</button>
+        <button type="button" class="w-btn ghost" data-boost-reset>Reset</button>
+      </div>
+      <label><span>Learning rate \(\eta\)</span><input type="range" min="0.1" max="1" step="0.1" value="0.5" data-boost-eta/><output data-boost-eta-out>0.5</output></label>
+      <p>Example: CTR (%) of an ad by hour of the day. Each tree has at most 4 leaves.</p>
+    </div>
+    <div class="readout" data-boost-stats></div>
+  </div>
+</section>
+
+<!-- ===================== PART E ===================== -->
+<section class="section-slide">
+  <p class="eyebrow">How good is the model?</p>
+  <p class="part-label">Part E</p>
+  <h1>Evaluation metrics</h1>
+</section>
+
+<!-- Why not accuracy? -->
+<section class="dense">
+  <h2>Why not just accuracy?</h2>
+  <p class="lead fragment" data-fragment-index="0">Accuracy = share of impressions we classify correctly</p>
+  <div class="two-col even">
+    <div>
+      <p class="discuss-prompt fragment" data-fragment-index="0" style="font-size: 0.9em; margin: 0;"><strong>Question:</strong> CTR is 1%. A lazy model predicts “no click” for <em>everyone</em>. What is its accuracy?</p>
+      <div class="stat fragment" data-fragment-index="1" style="margin-top: 0.6em;">
+        <span class="stat-value" style="font-size: 1.8em;">99%</span>
+        <span class="stat-label" style="font-size: 0.7em;">…and it never finds a single clicker</span>
+      </div>
+    </div>
+    <div class="fragment" data-fragment-index="1">
+      <table class="cm" style="font-size: 0.72em;">
+        <thead><tr><th>1,000 impressions</th><th>Predicted click</th><th>Predicted no click</th></tr></thead>
+        <tbody>
+          <tr><th>Clicked</th><td class="bad">0</td><td class="bad">10</td></tr>
+          <tr><th>No click</th><td class="ok">0</td><td class="ok">990</td></tr>
+        </tbody>
+      </table>
+      <p class="discuss-prompt" style="margin-top: 0.6em;"><strong>Question:</strong> what is this table called? <span class="fragment" data-fragment-index="2">→ a <strong>confusion matrix</strong></span></p>
+    </div>
+  </div>
+  <div class="cards three eq fragment acc-why" data-fragment-index="3">
+    <div class="card"><h3>Rare outcomes</h3><p>Doing nothing already scores 99%</p></div>
+    <div class="card"><h3>Ignores probabilities</h3><p>0.51 and 0.99 count the same</p></div>
+    <div class="card"><h3>Ignores costs</h3><p>Every mistake counts the same</p></div>
+  </div>
+  <p class="takeaway fragment" data-fragment-index="4">Better metrics: <strong>AUC</strong> (ranking) and <strong>RIG</strong> (probabilities)</p>
+</section>
+
+<!-- AUC defs -->
+<section class="dense">
+  <h2>AUC: Area Under the (ROC) Curve</h2>
+  <div class="two-col text-top">
+    <div>
+      <ul class="compact-list">
+        <li>Back to the confusion matrix: pick a <strong>threshold</strong>, and predictions above it are classified “click”</li>
+        <li><strong>True positive rate</strong> (sensitivity): what share of the clickers do we catch?
+          <div class="eq-block eq-xs">\[ TPR = \frac{TP}{P} \]</div>
+        </li>
+        <li><strong>False positive rate</strong>: what share of the non-clickers do we wrongly flag?
+          <div class="eq-block eq-xs">\[ FPR = 1 - TNR = \frac{FP}{N} \]</div>
+        </li>
+      </ul>
+    </div>
+    <div>
+      <table class="cm" style="font-size: 0.66em;">
+        <thead><tr><th></th><th>Predicted 1</th><th>Predicted 0</th></tr></thead>
+        <tbody>
+          <tr><th>Actual 1 (P)</th><td class="ok">TP</td><td class="bad">FN</td></tr>
+          <tr><th>Actual 0 (N)</th><td class="bad">FP</td><td class="ok">TN</td></tr>
+        </tbody>
+      </table>
+      <p class="fig-caption" style="text-align: left; margin-top: 0.6em;">The lazy model of the previous slide: TPR = 0 and FPR = 0 at every threshold above 0.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ROC widget -->
+<section class="dense-2" data-roc>
+  <h2>Try it: draw the ROC curve</h2>
+  <div class="widget cols-2e">
+    <div data-roc-dist></div>
+    <div data-roc-curve></div>
+  </div>
+  <div class="widget cols-2e" style="margin-top: 0.8em;">
+    <div class="panel">
+      <label><span>Threshold</span><input type="range" min="0" max="1" step="0.01" value="0.5" data-roc-t/><output data-roc-t-out>0.50</output></label>
+      <label><span>Model quality</span><input type="range" min="0" max="3" step="0.1" value="1.5" data-roc-q/><output data-roc-q-out>1.5</output></label>
+    </div>
+    <div data-roc-cm></div>
+  </div>
+</section>
+
+<!-- AUC interpretation -->
+<section class="dense">
+  <h2>Reading the AUC</h2>
+  <ul class="compact-list">
+    <li><strong>The trade-off:</strong> a low threshold (e.g. 0.1) catches all the clickers, but also flags many non-clickers. A high threshold does the opposite</li>
+    <li>The ROC curve plots TPR against FPR for <strong>every</strong> threshold; AUC is the area under it</li>
+    <li><strong>Interpretation:</strong> AUC = the probability that a randomly chosen clicker gets a higher score than a randomly chosen non-clicker
+      <ul><li>0.5 = coin flip · 1.0 = perfect ranking · around 0.7 is a ball-park minimum; below that, predictive performance is poor</li></ul>
+    </li>
+    <li><strong>Advantages:</strong> threshold-free, and ideal when the goal is to <strong>rank</strong> or classify</li>
+  </ul>
+  <p class="takeaway fragment"><strong>Limit:</strong> AUC only cares about the <em>order</em> of the predictions, not their exact values. To check the probabilities themselves → <strong>RIG</strong>.</p>
+</section>
+
+<!-- RIG 1 -->
+<section class="dense">
+  <h2>Relative Information Gain (RIG)</h2>
+  <ul class="compact-list">
+    <li>Like accuracy, raw log loss looks good when clicks are rare. So compare the model with the <strong>no-model benchmark</strong>: predict the average CTR \(\bar y\) for everyone</li>
+    <li>Average log loss of the model on \(N\) impressions (the objective from logistic regression):
+      <div class="eq-block eq-xs">\[ L_{\text{model}} = -\frac{1}{N}\sum_{i=1}^{N}\Big( y_i \log \hat p_i + (1 - y_i)\log\big(1 - \hat p_i\big) \Big) \]</div>
+    </li>
+    <li><strong>RIG</strong> = the share of the benchmark’s log loss that the model removes:
+      <div class="eq-block eq-accent eq-sm">\[ \text{RIG} = \left(1 - \frac{L_{\text{model}}}{L_{\text{average}}}\right) \times 100\% \]</div>
+    </li>
+  </ul>
+</section>
+
+<!-- RIG 2 -->
+<section>
+  <h2>Using RIG</h2>
+  <ul>
+    <li>Compute it on the <strong>test data</strong></li>
+    <li>Higher RIG = better probabilities
+      <ul>
+        <li>0 = no better than predicting the average</li>
+        <li>Negative = worse than doing nothing</li>
+      </ul>
+    </li>
+    <li><strong>When is RIG not the best metric?</strong> When we only care about <em>classifying</em> or <em>ranking</em>: RIG judges the probabilities themselves, so use AUC</li>
+  </ul>
+</section>
+
+<!-- Metrics summary -->
+<section class="dense-2">
+  <h2>Which metric? Match it to the decision</h2>
+  <table class="data-table" style="font-size: 0.72em;">
+    <thead><tr><th class="left">Business decision</th><th>Metric</th><th class="left">Why</th></tr></thead>
+    <tbody>
+      <tr><td class="left">Whom to target, which impressions first (<strong>ranking</strong>)</td><td><strong>AUC</strong></td><td class="left">Only the order of the users matters</td></tr>
+      <tr><td class="left">How much to bid, how many clicks to expect (<strong>money</strong>)</td><td><strong>RIG / log loss</strong></td><td class="left">Needs the probabilities themselves to be right</td></tr>
+      <tr><td class="left">A yes/no decision where mistakes have <strong>different costs</strong></td><td><strong>Threshold set by costs</strong></td><td class="left">Weigh false positives against false negatives</td></tr>
+      <tr><td class="left">Anything with a rare outcome</td><td><strong>Never accuracy alone</strong></td><td class="left">Doing nothing already scores 99%</td></tr>
+    </tbody>
+  </table>
+  <ul class="compact-list">
+    <li>Metrics usually agree: if model A beats model B on RIG, it will likely beat it on AUC too. If they disagree, find out why</li>
+    <li>Different costs, examples?</li>
+  </ul>
+  <div class="cards two eq fragment" style="margin-top: 0.7em;">
+    <div class="card"><h3>False positive is costly</h3><p style="font-size: 0.72em;">Granting a bank loan to someone who will default</p></div>
+    <div class="card"><h3>False negative is costly</h3><p style="font-size: 0.72em;">Telling a patient with cancer that they are healthy</p></div>
+  </div>
+</section>
+
+
+
+
+
+
+<!-- Takeaway -->
+<section class="quote-slide">
+  <p class="eyebrow">Takeaway</p>
+  <h2 class="quote-line">A targeting model is only as good as its <em>out-of-sample</em> predictions, and only as useful as the decision it improves.</h2>
+</section>
+
+<!-- Feedback -->
+<section class="survey-slide">
+  <p class="eyebrow">Thank you!</p>
+  <h2>Please give me your feedback</h2>
+  <img class="survey-qr" src="assets/feedback-form-qr.png" alt="QR code linking to the anonymous feedback form at forms.gle/GMVDtVdziLpU8xKq8"/>
+  <p class="fb-count"><span class="fb-count-n" data-fb-count>–</span> responses so far</p>
+  <p class="lead">Scan the QR code: 5 short questions, anonymous, about 2 minutes</p>
+  <p class="fig-caption">or go to <strong>forms.gle/GMVDtVdziLpU8xKq8</strong></p>
+</section>
+
+<!-- Feedback results 1: grid -->
+<section class="dense-2">
+  <h2>Your feedback: coins and the no-computer policy</h2>
+  <div class="res-load">
+    <button type="button" class="w-btn" data-fb-live data-url="">Refresh from Google</button>
+    <button type="button" class="w-btn ghost fb-danger" data-fb-clear>Delete all responses</button>
+    <span class="res-status" data-fb-status>Waiting for responses…</span>
+  </div>
+  <div class="fb-clear-panel" data-fb-clear-panel hidden>
+    <span class="fb-clear-msg">Delete <strong>all</strong> responses from the form? A backup CSV is saved to your Google Drive first.</span>
+    <input type="password" placeholder="Admin key" autocomplete="off" data-fb-key/>
+    <button type="button" class="w-btn fb-danger-solid" data-fb-clear-confirm>Delete</button>
+    <button type="button" class="w-btn ghost" data-fb-clear-cancel>Cancel</button>
+  </div>
+  <div data-fb-grid></div>
+</section>
+
+<!-- Feedback results 2: coins in the grade -->
+<section class="dense-2">
+  <h2>Should coins count for 10% of the grade?</h2>
+  <div class="fb-wide" data-fb-coin style="font-size: 1.35em; margin-top: 0.6em;"></div>
+</section>
+
+<!-- Feedback results 3: AI use -->
+<section class="dense-2">
+  <h2>How you used AI in Assignment 4</h2>
+  <div class="two-col even text-top">
+    <div>
+      <p class="k-title">For your own part of the work <span>(orange: AI did most or all)</span></p>
+      <div data-fb-use></div>
+    </div>
+    <div>
+      <p class="k-title">Could you explain the lift factor and ROI now? <span>(orange: not really)</span></p>
+      <div data-fb-explain></div>
+    </div>
+  </div>
+</section>
+
+<!-- Feedback results 4: reading the AI answers together -->
+<section class="dense-2">
+  <h2>Reading the AI answers together</h2>
+  <div class="stat-row four" data-fb-summary></div>
+  <div class="fb-wide" data-fb-guess></div>
+  <p class="takeaway" style="margin-top: 0.8em;">Self-reports are a floor, guesses about classmates an upper estimate: the truth is probably in between.</p>
+</section>
+
+<!-- Open discussion -->
+<section class="discussion-slide">
+  <p class="eyebrow">Open discussion</p>
+  <h2>What other suggestions do you have for the class going forward?</h2>
+  <p class="lead">Assignments · in-class games and coins · the no-computer policy · AI · pace and content</p>
+</section>
+
+    </div>
+  </div>
+
+  <script src="../vendor/reveal.js-5.1.0/dist/reveal.js"></script>
+  <script src="../vendor/reveal.js-5.1.0/plugin/notes/notes.js"></script>
+  <script src="../vendor/reveal.js-5.1.0/plugin/math/math.js"></script>
+  <script src="../js/theme.js"></script>
+  <script src="js/ad-tools.js"></script>
+  <script src="js/ml-demos.js"></script>
+  <script src="js/feedback-results.js"></script>
+  <script>
+    Reveal.initialize({
+      fragments: true,
+      hash: true,
+      slideNumber: 'c/t',
+      width: 1280,
+      height: 720,
+      margin: 0.06,
+      transition: 'fade',
+      backgroundTransition: 'fade',
+      // Prices appear in the text, so "$" must not act as a math delimiter.
+      katex: {
+        local: '../vendor/katex-0.16.11',   // KaTeX served from this site so the deck works offline
+        delimiters: [
+          { left: '\\[', right: '\\]', display: true },
+          { left: '\\(', right: '\\)', display: false }
+        ]
+      },
+      plugins: [ RevealNotes, RevealMath.KaTeX ]
+    }).then(function () {
+      if (window.startAdTools) window.startAdTools();
+      if (window.startMlDemos) window.startMlDemos();
+      if (window.startFeedbackResults) window.startFeedbackResults();
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+# Build / scratch
+_tmp_s1/
+_build_*.py
+*.pyc
+__pycache__/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+Desktop.ini
+.vscode/
+.idea/
+*.swp
+*~
+
+# Local env
+.env
+.env.*
+**/credentials.json
+**/client.json
+**/token.json
+**/*secret*
+
+# Local-only Google Forms / WTP live proxy (never commit — uses OAuth tokens)
+session-03/scripts/
+session-03/data/wtp-clear.json
+session-04/scripts/
+session-*/scripts/*live*server*
+session-*/**/*credentials*
+
+# Local instructor materials (not for GitHub)
+../Updated Assignments/
+Updated Assignments/
+
+
+# Unused / export leftovers in session decks
+session-02/assets/*.emf
+session-02/assets/*.bin
+session-02/assets/*.wdp
+session-02/assets/ppt-slide*.png
+session-02/assets/No electronic poll.png
+session-02/assets/no-phone.png
+session-02/assets/image14.png
+_tmp_s2/
+no phone.png
+no-phone.png
+
+# Assignment materials / solutions (never publish)
+**/assignment*.png
+**/*solution*
+**/*Solution*
+**/*rubric*
+**/*Rubric*
+
+# Exercise handouts / exercise materials (never publish)
+**/*.pdf
+**/*xercise*
